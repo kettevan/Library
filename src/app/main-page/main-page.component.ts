@@ -9,12 +9,20 @@ import {Router} from '@angular/router';
 })
 export class MainPageComponent {
 
+  public userInfo: any;
+
   constructor(private router: Router,
-              public socialAuthServive: SocialAuthService) {
+              public socialAuthService: SocialAuthService) {
+    socialAuthService.authState.subscribe(result =>  {
+      this.userInfo = result;
+      console.log(result)
+    }, error => console.log(error))
   }
 
+
+
   logout(): void {
-    this.socialAuthServive.signOut().then(() => this.router.navigate(['login']));
+    this.socialAuthService.signOut().then(() => this.router.navigate(['login']));
   }
 
 }

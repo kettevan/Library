@@ -2,7 +2,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {RouterModule} from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {MainPageComponent} from './main-page/main-page.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -16,6 +15,7 @@ import {FooterComponent} from './footer/footer.component';
 import {HeaderComponent} from './header/header.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {AppRoutingModule} from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -27,11 +27,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot([
-      {path: 'login', component: LoginComponent},
-      {path: 'mainpage', component: MainPageComponent, canActivate: [AuthGuardService]},
-      {path: '**', component: LoginComponent}
-    ]),
+    AppRoutingModule,
     BrowserAnimationsModule,
     MatCardModule,
     MatFormFieldModule,
