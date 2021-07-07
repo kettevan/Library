@@ -1,0 +1,33 @@
+$background-color: #ffc87c;
+
+img {
+    width: 50px;
+    height: 50px;
+}
+
+.header {
+    background-color: $background-color;
+    overflow: hidden;
+    padding: 20px 10px;
+    margin: 0 auto;
+    display: block;
+    
+}
+
+.header h1 {
+    font-family: 'avaza';
+    padding-top: 20px;
+    padding-left: 20px;
+    position: absolute;
+    font-size: 25px;
+    display: inline;
+}
+
+.header-right {
+    float: right;
+    padding-right: 5%;
+}
+
+.btn {
+    margin: 10px;
+}

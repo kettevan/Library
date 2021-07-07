@@ -1,0 +1,19 @@
+.google-login-btn {
+  background-image: url('src/assets/google-logo.png');
+  background-repeat: no-repeat;
+  background-size: 20%;
+  background-position: 10%;
+  padding-left: 10%;
+}
+
+.login {
+  font-family: 'avaza';
+  justify-content: center;
+  display: flex;
+  margin: auto;
+  padding: 20px 10px
+}
+
+.form {
+  width: 100% !important;
+}
