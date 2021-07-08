@@ -16,6 +16,8 @@ import {HeaderComponent} from './header/header.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from './app-routing.module';
+import {MatMenuModule} from '@angular/material/menu';
+import { UserPageComponent } from './user-page/user-page.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import {AppRoutingModule} from './app-routing.module';
     LoginComponent,
     MainPageComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    UserPageComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,8 @@ import {AppRoutingModule} from './app-routing.module';
     MatInputModule,
     SocialLoginModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    MatMenuModule
   ],
   providers: [{
     provide: 'SocialAuthServiceConfig',

@@ -1,6 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {SocialAuthService} from 'angularx-social-login';
 import {Router} from '@angular/router';
+import {MatMenuTrigger} from '@angular/material/menu';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-page',
@@ -8,12 +10,11 @@ import {Router} from '@angular/router';
   styleUrls: ['./main-page.component.css']
 })
 export class MainPageComponent {
-
   public userInfo: any;
 
   constructor(private router: Router,
               public socialAuthService: SocialAuthService) {
-    socialAuthService.authState.subscribe(result =>  {
+    socialAuthService.authState.pipe(take(1)).subscribe(result =>  {
       this.userInfo = result;
       console.log(result)
     }, error => console.log(error))
