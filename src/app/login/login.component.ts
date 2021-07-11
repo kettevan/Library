@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GoogleLoginProvider, SocialAuthService} from 'angularx-social-login';
 import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -8,7 +8,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
   loginForm: FormGroup;
 
@@ -24,8 +24,17 @@ export class LoginComponent {
     });
   }
 
+  ngOnInit(): void {
+    if (localStorage.getItem("user") != null) {
+      this.router.navigate(['userpage']);
+      return;
+    }
+  }
+
   loginWithGoogle(): void {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
-      .then(() => this.router.navigate(['mainpage']));
+      .then(() => {
+        this.router.navigate(['mainpage'])
+      });
   }
 }

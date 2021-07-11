@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {SocialAuthService} from 'angularx-social-login';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-page',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-page.component.css']
 })
 export class UserPageComponent implements OnInit {
+  public userInfo: any;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+    this.userInfo = JSON.parse(localStorage.getItem('user'));
   }
 
 }

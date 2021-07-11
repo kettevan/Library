@@ -18,6 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from './app-routing.module';
 import {MatMenuModule} from '@angular/material/menu';
 import { UserPageComponent } from './user-page/user-page.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { UserPageComponent } from './user-page/user-page.component';
     SocialLoginModule,
     ReactiveFormsModule,
     NgbModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTabsModule
   ],
   providers: [{
     provide: 'SocialAuthServiceConfig',

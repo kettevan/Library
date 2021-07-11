@@ -16,7 +16,7 @@ export class MainPageComponent {
               public socialAuthService: SocialAuthService) {
     socialAuthService.authState.pipe(take(1)).subscribe(result =>  {
       this.userInfo = result;
-      console.log(result)
+      localStorage.setItem('user', JSON.stringify(result));
     }, error => console.log(error))
   }
 
