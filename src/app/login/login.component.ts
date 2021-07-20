@@ -13,6 +13,7 @@ import {GoogleUserRequestInterface} from '../interfaces/login/google-user-reques
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
+  private subs = [];
   loginForm: FormGroup;
 
 
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // unsubscribe
+    this.subs.forEach(subscription => subscription.unsubscribe);
   }
 
   ngOnInit(): void {
@@ -41,12 +42,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   loginAsAdmin(): void {
     if (this.loginForm.invalid) return;
-    this.loginService.checkAdminUser(this.username.value, this.password.value).subscribe(
+    const checkAdminSubs = this.loginService.checkAdminUser(this.username.value, this.password.value)
+    checkAdminSubs.subscribe(
       result => {
+        this.subs.push(checkAdminSubs);
         if (result) {
           localStorage.setItem("admin", JSON.stringify(result));
           this.router.navigate(['adminpage']);
-          return;
         } else {
           this.toastr.error('დაფიქსირდა შეცდომა')
         }
@@ -57,7 +59,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginWithGoogle(): void {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
       .then(() => {
-        this.socialAuthService.authState.subscribe(result => {
+        const socialSubs = this.socialAuthService.authState
+          socialSubs.subscribe(result => {
+            this.subs.push(socialSubs);
           if (result && result.email.includes('freeuni.edu.ge')) {
             var request: GoogleUserRequestInterface = {
               firstName: result.firstName,
@@ -65,7 +69,9 @@ export class LoginComponent implements OnInit, OnDestroy {
               mail: result.email,
               source: result.provider
             };
-            this.loginService.getGoogleUserInfo(request).subscribe(res => {
+            const googleSubs = this.loginService.getGoogleUserInfo(request)
+              googleSubs.subscribe(res => {
+                this.subs.push(googleSubs);
               if (res) {
                 localStorage.setItem("token", res.accessToken);
                 this.router.navigate(['mainpage'])
@@ -73,9 +79,11 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.toastr.error("მონაცემები არასწორია");
               }
             })
+
           } else {
             this.toastr.error("მონაცემები არასწორია");
           }
+
         })
       }).catch(error => console.log(error));
   }

@@ -23,8 +23,8 @@ export class LoginService {
   }
 
   checkAdminUser(username: string, password: string): Observable<AdminResponseInterface> {
+    console.log(username, password)
     if (username === 'admin' && password === 'admin') {
-
       return of({
         username: 'admin',
         isAdmin: true,
