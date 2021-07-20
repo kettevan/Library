@@ -3,9 +3,9 @@
     <div class="form-group">
       <mat-form-field style="width: 100%">
         <mat-label>სტუდენტის მეილი</mat-label>
-        <input type='email' matInput formControlName='userEmail'>
+        <input type='email' matInput formControlName='username'>
       </mat-form-field>
-      <div *ngIf='email.invalid && (email.dirty || email.touched)'
+      <div *ngIf='username.invalid && (username.dirty || username.touched)'
            class="alert alert-danger" style="font-size: 0.8rem;">
         <p> მეილი სავალდებულოა</p>
       </div>
@@ -23,7 +23,7 @@
 
     <mat-card-actions>
       <div>
-        <button mat-raised-button>Login</button>
+        <button (click)="loginAsAdmin()" mat-raised-button>Login</button>
         <button (click)="loginWithGoogle()" mat-raised-button class="google-login-btn googleBtn">Google</button>
       </div>
     </mat-card-actions>

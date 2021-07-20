@@ -10,7 +10,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {GoogleLoginProvider, SocialLoginModule} from 'angularx-social-login';
-import {AuthGuardService} from './auth-guard.service';
+import {AuthGuardService} from './services/guards/auth-guard.service';
 import {FooterComponent} from './footer/footer.component';
 import {HeaderComponent} from './header/header.component';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -19,6 +19,9 @@ import {AppRoutingModule} from './app-routing.module';
 import {MatMenuModule} from '@angular/material/menu';
 import { UserPageComponent } from './user-page/user-page.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import {ToastNoAnimationModule} from 'ngx-toastr';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,9 +30,11 @@ import {MatTabsModule} from '@angular/material/tabs';
     MainPageComponent,
     FooterComponent,
     HeaderComponent,
-    UserPageComponent
+    UserPageComponent,
+    AdminPageComponent
   ],
   imports: [
+    ToastNoAnimationModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -41,7 +46,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     ReactiveFormsModule,
     NgbModule,
     MatMenuModule,
-    MatTabsModule
+    MatTabsModule,
+    HttpClientModule
   ],
   providers: [{
     provide: 'SocialAuthServiceConfig',

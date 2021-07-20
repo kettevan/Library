@@ -23,7 +23,11 @@ export class MainPageComponent {
 
 
   logout(): void {
-    this.socialAuthService.signOut().then(() => this.router.navigate(['login']));
+    this.socialAuthService.signOut().then(() =>  {
+      localStorage.removeItem('user');
+      this.router.navigate(['login']);
+    }
+    );
   }
 
 }
