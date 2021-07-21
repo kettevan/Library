@@ -6,7 +6,8 @@ import jwt_decode from "jwt-decode"
 @Injectable({
   providedIn: 'root'
 })
-export class AdminGuardService implements CanActivate {
+
+export class CommonGuardService implements CanActivate {
 
   constructor(private router: Router) {
   }
@@ -20,7 +21,8 @@ export class AdminGuardService implements CanActivate {
       return false;
     }
     var decoded = jwt_decode(token);
-    if (decoded['Role'].toUpperCase() === 'ADMIN') {
+    console.log(decoded['Role']);
+    if (decoded['Role'].toUpperCase() === 'ADMIN' || decoded['Role'].toUpperCase() === 'USER') {
       return true;
     } else {
       this.router.navigate(['/login']);

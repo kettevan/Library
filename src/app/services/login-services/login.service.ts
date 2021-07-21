@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {AdminResponseInterface} from '../../interfaces/login/admin-response.interface';
 import {Observable, throwError} from 'rxjs';
 import { of } from 'rxjs';
-import {GoogleUserRequestInterface} from '../../interfaces/login/google-user-request.interface';
-import {GoogleUserResponseInterface} from '../../interfaces/login/google-user-response.interface';
+import {UserRequestInterface} from '../../interfaces/login/google-user-request.interface';
+import {UserResponseInterface} from '../../interfaces/login/google-user-response.interface';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 
@@ -17,21 +17,9 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
 
-  getGoogleUserInfo(userInfo: GoogleUserRequestInterface): Observable<GoogleUserResponseInterface> {
+  login(userInfo: UserRequestInterface): Observable<UserResponseInterface> {
     const requestUrl = this.BASE_URL + `auth/signup`
-    return this.http.post<GoogleUserResponseInterface>(requestUrl, userInfo)
-  }
-
-  checkAdminUser(username: string, password: string): Observable<AdminResponseInterface> {
-    console.log(username, password)
-    if (username === 'admin' && password === 'admin') {
-      return of({
-        username: 'admin',
-        isAdmin: true,
-        role: 'ADMIN'
-      })
-    }
-    return of(null);
+    return this.http.post<UserResponseInterface>(requestUrl, userInfo)
   }
 
 }

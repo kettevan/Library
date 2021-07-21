@@ -20,7 +20,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { UserPageComponent } from './user-page/user-page.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { AdminPageComponent } from './admin-page/admin-page.component';
-import {ToastNoAnimationModule} from 'ngx-toastr';
+import {ToastrModule} from 'ngx-toastr';
 import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
@@ -34,7 +34,11 @@ import {HttpClientModule} from '@angular/common/http';
     AdminPageComponent
   ],
   imports: [
-    ToastNoAnimationModule.forRoot(),
+    ToastrModule.forRoot({
+        positionClass: 'toast-top-right',
+        timeOut: 2000
+      }
+    ),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

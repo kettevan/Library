@@ -2,10 +2,10 @@
   <form [formGroup]="loginForm" class="col-8 col-md-4">
     <div class="form-group">
       <mat-form-field style="width: 100%">
-        <mat-label>სტუდენტის მეილი</mat-label>
-        <input type='email' matInput formControlName='username'>
+        <mat-label>მეილი</mat-label>
+        <input type='email' matInput formControlName='mail'>
       </mat-form-field>
-      <div *ngIf='username.invalid && (username.dirty || username.touched)'
+      <div *ngIf='mail.invalid && (mail.dirty || mail.touched)'
            class="alert alert-danger" style="font-size: 0.8rem;">
         <p> მეილი სავალდებულოა</p>
       </div>
@@ -20,7 +20,6 @@
         <p> პაროლი სავალდებულოა</p>
       </div>
     </div>
-
     <mat-card-actions>
       <div>
         <button (click)="loginAsAdmin()" mat-raised-button>Login</button>

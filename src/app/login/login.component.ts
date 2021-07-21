@@ -3,8 +3,8 @@ import {GoogleLoginProvider, SocialAuthService} from 'angularx-social-login';
 import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {LoginService} from '../services/login-services/login.service';
-import {ToastrService} from 'ngx-toastr';
-import {GoogleUserRequestInterface} from '../interfaces/login/google-user-request.interface';
+import { ToastrService } from 'ngx-toastr';
+import {UserRequestInterface} from '../interfaces/login/google-user-request.interface';
 
 @Component({
   selector: 'app-login',
@@ -17,14 +17,18 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
 
 
-  username = new FormControl('', [Validators.required]);
+  mail = new FormControl('', [Validators.required]);
   password = new FormControl('', Validators.required);
 
   constructor(private fb: FormBuilder, private router: Router,
               private socialAuthService: SocialAuthService, private loginService: LoginService,
               private toastr: ToastrService) {
+    var token = localStorage.getItem('token');
+    if (token != null) {
+      this.router.navigate(["mainpage"])
+    }
     this.loginForm = fb.group( {
-      username: this.username,
+      mail: this.mail,
       password: this.password
     });
   }
@@ -42,17 +46,22 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   loginAsAdmin(): void {
     if (this.loginForm.invalid) return;
-    const checkAdminSubs = this.loginService.checkAdminUser(this.username.value, this.password.value)
+    var request: UserRequestInterface = {
+      email: this.mail.value,
+      password: this.password.value,
+      source: "manual"
+    };
+    const checkAdminSubs = this.loginService.login(request)
     checkAdminSubs.subscribe(
       result => {
         this.subs.push(checkAdminSubs);
         if (result) {
-          localStorage.setItem("admin", JSON.stringify(result));
+          localStorage.setItem("token", result.accessToken);
           this.router.navigate(['adminpage']);
         } else {
           this.toastr.error('დაფიქსირდა შეცდომა')
         }
-      }, error => {console.log(error)}
+      }, error => {this.toastr.error('მონაცემები არასწორია')}
     )
   }
 
@@ -61,15 +70,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       .then(() => {
         const socialSubs = this.socialAuthService.authState
           socialSubs.subscribe(result => {
-            this.subs.push(socialSubs);
           if (result && result.email.includes('freeuni.edu.ge')) {
-            var request: GoogleUserRequestInterface = {
+            var request: UserRequestInterface = {
               firstName: result.firstName,
               lastName: result.lastName,
-              mail: result.email,
+              email: result.email,
               source: result.provider
             };
-            const googleSubs = this.loginService.getGoogleUserInfo(request)
+            const googleSubs = this.loginService.login(request)
               googleSubs.subscribe(res => {
                 this.subs.push(googleSubs);
               if (res) {
@@ -79,8 +87,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.toastr.error("მონაცემები არასწორია");
               }
             })
-
-          } else {
+          } else if (result && !result.email.includes('freeuni.edu.ge')) {
             this.toastr.error("მონაცემები არასწორია");
           }
 

@@ -1,6 +1,7 @@
-export interface GoogleUserRequestInterface {
-  firstName: string;
-  lastName: string;
-  mail: string;
+export interface UserRequestInterface {
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  password?: string;
   source: string;
 }

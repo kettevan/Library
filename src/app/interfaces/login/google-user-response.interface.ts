@@ -1,4 +1,4 @@
-export interface GoogleUserResponseInterface {
+export interface UserResponseInterface {
   authorities: [string];
   fullName: string;
   email: string;

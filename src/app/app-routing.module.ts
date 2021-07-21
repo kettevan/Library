@@ -6,11 +6,12 @@ import {AuthGuardService} from './services/guards/auth-guard.service';
 import {UserPageComponent} from './user-page/user-page.component';
 import {AdminGuardService} from './services/guards/admin-guard.service';
 import {AdminPageComponent} from './admin-page/admin-page.component';
+import {CommonGuardService} from './services/guards/common-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'mainpage', component: MainPageComponent, canActivate: [AuthGuardService] },
+  { path: 'mainpage', component: MainPageComponent, canActivate: [CommonGuardService] },
   { path: 'userpage', component: UserPageComponent, canActivate: [AuthGuardService] },
   { path: 'adminpage', component: AdminPageComponent, canActivate: [AdminGuardService]}
 ];
