@@ -1,15 +1,41 @@
-<mat-tab-group>
-  <mat-tab label="მომხმარებლის ინფორმაცია">
-    <div *ngIf="userInfo">
-      <img src="{{userInfo.photoUrl}}">
+<div class="d-md-flex h-md-100 align-items-center">
+  <div class="col-md-4 p-0 h-md-100">
+    <div class="text-white d-md-flex h-100 text-center justify-content-center">
+      <div class="logoarea pt-5 pb-5">
+        <div *ngIf="userInfo">
+            <mat-card>
+              <mat-card-title>
+                პირადი ინფორმაცია
+              </mat-card-title>
+              <img mat-card-image src="../../assets/images/my-image.jpeg">
+              <mat-card-content>
+                <h3>სახელი: <span>{{  userInfo.firstName}}</span> </h3>
+                <h3>გვარი: <span>{{  userInfo.lastName}}</span> </h3>
+                <h3>მეილი: <span>{{  userInfo.email}}</span> </h3>
+                <h3>ქვეყანა: <span> Georgia</span> </h3>
+              </mat-card-content>
+            </mat-card>
+
+        </div>
+      </div>
     </div>
-  </mat-tab>
-  <mat-tab label="დაჯავშნილი/გატანილი წიგნები">
+  </div>
 
-  </mat-tab>
-  <mat-tab label="შენახული წიგნები">
+  <div class="col-md-8 p-0 bg-white h-md-100">
+    <div class="d-md-flex h-md-100 justify-content-center">
+      <mat-tab-group style="width: 100%">
+        <mat-tab label="დაჯავშნილი/გატანილი წიგნები">
 
-  </mat-tab>
-</mat-tab-group>
+        </mat-tab>
+        <mat-tab label="შენახული წიგნები">
+
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+
+</div>
+
+
 
 

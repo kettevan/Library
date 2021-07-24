@@ -1,4 +1,4 @@
-import {Component, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SocialAuthService} from 'angularx-social-login';
 import {Router} from '@angular/router';
 import {MatMenuTrigger} from '@angular/material/menu';
@@ -20,6 +20,7 @@ export class MainPageComponent implements OnDestroy{
       if (result) {
         this.userInfo = result;
         localStorage.setItem('user', JSON.stringify(result));
+        window.dispatchEvent( new Event('storage'));
       }
     }, error => console.log(error));
     this.subs.push(socialAuthSubs);
@@ -31,6 +32,7 @@ export class MainPageComponent implements OnDestroy{
     this.socialAuthService.signOut().then(() =>  {
       localStorage.removeItem('user');
       localStorage.removeItem('token');
+      window.dispatchEvent( new Event('storage'));
       this.router.navigate(['login']);
     }
     );
