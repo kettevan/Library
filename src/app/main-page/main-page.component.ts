@@ -3,6 +3,7 @@ import {SocialAuthService} from 'angularx-social-login';
 import {Router} from '@angular/router';
 import {MatMenuTrigger} from '@angular/material/menu';
 import {take} from 'rxjs/operators';
+import {SharedService} from '../services/shared/shared.service';
 
 @Component({
   selector: 'app-main-page',
@@ -14,13 +15,12 @@ export class MainPageComponent implements OnDestroy{
   private subs = [];
 
   constructor(private router: Router,
-              public socialAuthService: SocialAuthService) {
+              public socialAuthService: SocialAuthService, private sharedService: SharedService) {
     const socialAuthSubs = socialAuthService.authState.pipe(take(1))
     socialAuthSubs.subscribe(result =>  {
       if (result) {
         this.userInfo = result;
         localStorage.setItem('user', JSON.stringify(result));
-        window.dispatchEvent( new Event('storage'));
       }
     }, error => console.log(error));
     this.subs.push(socialAuthSubs);
@@ -32,7 +32,7 @@ export class MainPageComponent implements OnDestroy{
     this.socialAuthService.signOut().then(() =>  {
       localStorage.removeItem('user');
       localStorage.removeItem('token');
-      window.dispatchEvent( new Event('storage'));
+      this.sharedService.editUser('');
       this.router.navigate(['login']);
     }
     );

@@ -1,11 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Injectable, OnDestroy, OnInit, Output} from '@angular/core';
 import {GoogleLoginProvider, SocialAuthService} from 'angularx-social-login';
 import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {LoginService} from '../services/login-services/login.service';
 import { ToastrService } from 'ngx-toastr';
 import {UserRequestInterface} from '../interfaces/login/google-user-request.interface';
+import {BehaviorSubject} from 'rxjs';
+import {SharedService} from '../services/shared/shared.service';
 
+@Injectable({
+  providedIn: 'root',
+})
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,13 +21,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   private subs = [];
   loginForm: FormGroup;
 
-
   mail = new FormControl('', [Validators.required]);
   password = new FormControl('', Validators.required);
 
   constructor(private fb: FormBuilder, private router: Router,
               private socialAuthService: SocialAuthService, private loginService: LoginService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService, private sharedService: SharedService) {
     var token = localStorage.getItem('token');
     if (token != null) {
       this.router.navigate(["mainpage"])
@@ -56,6 +60,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       result => {
         this.subs.push(checkAdminSubs);
         if (result) {
+          this.sharedService.editUser("ADMIN");
           localStorage.setItem("token", result.accessToken);
           this.router.navigate(['adminpage']);
         } else {
@@ -81,6 +86,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               googleSubs.subscribe(res => {
                 this.subs.push(googleSubs);
               if (res) {
+                this.sharedService.editUser("USER");
                 localStorage.setItem("token", res.accessToken);
                 this.router.navigate(['mainpage'])
               } else {
