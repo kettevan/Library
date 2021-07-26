@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import {AdminResponseInterface} from '../../interfaces/login/admin-response.interface';
-import {Observable, throwError} from 'rxjs';
-import { of } from 'rxjs';
+import {Observable} from 'rxjs';
 import {UserRequestInterface} from '../../interfaces/login/google-user-request.interface';
 import {UserResponseInterface} from '../../interfaces/login/google-user-response.interface';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {catchError} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +13,8 @@ export class LoginService {
 
   constructor(private http: HttpClient) { }
 
-
   login(userInfo: UserRequestInterface): Observable<UserResponseInterface> {
-    const requestUrl = this.BASE_URL + `auth/signup`
+    const requestUrl = this.BASE_URL + `user/signing`
     return this.http.post<UserResponseInterface>(requestUrl, userInfo)
   }
 

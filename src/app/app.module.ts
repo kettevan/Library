@@ -22,6 +22,11 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import {ToastrModule} from 'ngx-toastr';
 import {HttpClientModule} from '@angular/common/http';
+import {MatIconModule} from '@angular/material/icon';
+import { CreateAdminDialogComponent } from './admin-page/create-admin-dialog/create-admin-dialog.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -31,7 +36,8 @@ import {HttpClientModule} from '@angular/common/http';
     FooterComponent,
     HeaderComponent,
     UserPageComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    CreateAdminDialogComponent
   ],
   imports: [
     ToastrModule.forRoot({
@@ -51,7 +57,11 @@ import {HttpClientModule} from '@angular/common/http';
     NgbModule,
     MatMenuModule,
     MatTabsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatDialogModule
   ],
   providers: [{
     provide: 'SocialAuthServiceConfig',

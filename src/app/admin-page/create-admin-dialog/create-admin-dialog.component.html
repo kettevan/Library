@@ -1,0 +1,63 @@
+<div>
+  <h3>ახალი მომხმარებლის შექმნა</h3>
+  <form [formGroup]="createUserForm" style="width: 100%">
+    <mat-form-field appearance="fill">
+      <mat-label>მომხმარებლის სახელი</mat-label>
+      <input type="text" matInput formControlName="firstName" required/>
+    </mat-form-field>
+    <div *ngIf='firstName.invalid && (firstName.dirty || firstName.touched)'
+         class="alert alert-danger" style="font-size: 0.8rem;">
+      <p> სახელი სავალდებულოა</p>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>მომხმარებლის გვარი</mat-label>
+      <input type="text" matInput formControlName="lastName" required/>
+    </mat-form-field>
+    <div *ngIf='lastName.invalid && (lastName.dirty || lastName.touched)'
+         class="alert alert-danger" style="font-size: 0.8rem;">
+      <p> გვარი სავალდებულოა</p>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>პირადი ნომერი</mat-label>
+      <input type="text" matInput formControlName="personalNo" required/>
+    </mat-form-field>
+    <div *ngIf='personalNo.invalid && (personalNo.dirty || personalNo.touched)'
+         class="alert alert-danger" style="font-size: 0.6rem;">
+      <p> პირადი ნომერი სავალდებულოა, მხოლოდ ციფრებით</p>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>მეილი</mat-label>
+      <input type="text" matInput formControlName="email" required/>
+    </mat-form-field>
+    <div *ngIf='email.invalid && (email.dirty || email.touched)'
+         class="alert alert-danger" style="font-size: 0.8rem;">
+      <p> მეილი სავალდებულოა</p>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>პაროლი</mat-label>
+      <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password" required/>
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+    <div *ngIf='password.invalid && (password.dirty || password.touched)'
+         class="alert alert-danger" style="font-size: 0.8rem;">
+      <p> პაროლი სავალდებულოა</p>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>გაიმეორეთ პაროლი</mat-label>
+      <input [type]="hideRepPassword ? 'password' : 'text'" matInput formControlName="repeatPassword" required/>
+      <button mat-icon-button matSuffix (click)="hideRepPassword = !hideRepPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideRepPassword">
+        <mat-icon>{{hideRepPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+    <div *ngIf='repeatPassword.invalid && (repeatPassword.dirty || repeatPassword.touched)'
+         class="alert alert-danger" style="font-size: 0.8rem;">
+      <p> პაროლის გამეორება სავალდებულოა</p>
+    </div>
+    <div class="action-buttons">
+      <button mat-raised-button mat-dialog-close>გაუქმება</button>
+      <button mat-raised-button class="save-button" (click)="onSubmit()">შენახვა</button>
+    </div>
+  </form>
+</div>
