@@ -1,8 +1,7 @@
 import {Component,OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogRef} from '@angular/material/dialog';
 import { EventEmitter } from '@angular/core';
-import {CreateAdminInterface} from '../../interfaces/admin/create-admin.interface';
 import {ToastrService} from 'ngx-toastr';
 
 @Component({

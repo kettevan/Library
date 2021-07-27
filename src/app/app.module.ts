@@ -27,6 +27,11 @@ import { CreateAdminDialogComponent } from './admin-page/create-admin-dialog/cre
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatListModule} from '@angular/material/list';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { SettingEditDialogComponent } from './admin-page/setting-edit-dialog/setting-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +42,8 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
     HeaderComponent,
     UserPageComponent,
     AdminPageComponent,
-    CreateAdminDialogComponent
+    CreateAdminDialogComponent,
+    SettingEditDialogComponent
   ],
   imports: [
     ToastrModule.forRoot({
@@ -61,7 +67,11 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
     MatIconModule,
     MatTableModule,
     MatPaginatorModule,
-    MatDialogModule
+    MatDialogModule,
+    MatGridListModule,
+    MatListModule,
+    MatSidenavModule,
+    MatExpansionModule
   ],
   providers: [{
     provide: 'SocialAuthServiceConfig',

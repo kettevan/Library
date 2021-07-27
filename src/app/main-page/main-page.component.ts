@@ -1,9 +1,9 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {SocialAuthService} from 'angularx-social-login';
 import {Router} from '@angular/router';
-import {MatMenuTrigger} from '@angular/material/menu';
 import {take} from 'rxjs/operators';
 import {SharedService} from '../services/shared/shared.service';
+import jwt_decode from "jwt-decode";
 
 @Component({
   selector: 'app-main-page',
@@ -16,14 +16,17 @@ export class MainPageComponent implements OnDestroy{
 
   constructor(private router: Router,
               public socialAuthService: SocialAuthService, private sharedService: SharedService) {
-    const socialAuthSubs = socialAuthService.authState.pipe(take(1))
-    socialAuthSubs.subscribe(result =>  {
-      if (result) {
-        this.userInfo = result;
-        localStorage.setItem('user', JSON.stringify(result));
-      }
-    }, error => console.log(error));
-    this.subs.push(socialAuthSubs);
+    const token = localStorage.getItem('token');
+    if (token != null && jwt_decode(token)['Role'].toUpperCase() === 'USER') {
+      const socialAuthSubs = socialAuthService.authState.pipe(take(1))
+      socialAuthSubs.subscribe(result => {
+        if (result) {
+          this.userInfo = result;
+          localStorage.setItem('user', JSON.stringify(result));
+        }
+      }, error => console.log(error));
+      this.subs.push(socialAuthSubs);
+    }
   }
 
 

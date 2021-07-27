@@ -1,0 +1,12 @@
+<div>
+  <form [formGroup]="settingForm" style="width: 100%">
+    <mat-form-field appearance="fill">
+      <mat-label>დასახელება</mat-label>
+      <input type="text" matInput formControlName="name" required/>
+    </mat-form-field>
+    <div class="action-buttons">
+      <button mat-raised-button mat-dialog-close>გაუქმება</button>
+      <button mat-raised-button class="save-button" (click)="onSubmit()">შენახვა</button>
+    </div>
+  </form>
+</div>

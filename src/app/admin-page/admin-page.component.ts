@@ -10,6 +10,10 @@ import {CreateAdminDialogComponent} from './create-admin-dialog/create-admin-dia
 import {CreateAdminInterface} from '../interfaces/admin/create-admin.interface';
 import {BehaviorSubject} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
+import {SettingsService} from '../services/admin-services/settings.service';
+import {RubricsResponseInterface} from '../interfaces/admin/settings/rubrics-response.interface';
+import {SettingsBasicInterface} from '../interfaces/admin/settings/settings-basic.interface';
+import {SettingEditDialogComponent} from './setting-edit-dialog/setting-edit-dialog.component';
 
 @Component({
   selector: 'app-admin-page',
@@ -17,39 +21,81 @@ import {switchMap} from 'rxjs/operators';
   styleUrls: ['./admin-page.component.scss']
 })
 export class AdminPageComponent implements OnInit, AfterViewInit {
+  genresOpenState = false;
 
-  public displayedColumns: string[] = ['firstName', 'lastName', 'personalNo', 'email', 'createDate'];
+  public usersDisplayedColumns: string[] = ['firstName', 'lastName', 'personalNo', 'email', 'createDate'];
   usersRequest$ = new BehaviorSubject<boolean>(true);
   users$ = this.usersRequest$.pipe(switchMap(() => this.adminService.getAdminUsers()))
-  dataSource = new MatTableDataSource<UsersResponseInterface>();
+  usersDataSource = new MatTableDataSource<UsersResponseInterface>();
+
+  public rubricDisplayedColumns: string[] = ['id', 'name', 'actions'];
+  rubricsRequest$ = new BehaviorSubject<boolean>(true);
+  rubrics$ = this.rubricsRequest$.pipe(switchMap(() => this.settingsService.getAllGenres()))
+  rubricsDataSource = new MatTableDataSource<SettingsBasicInterface>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private adminService: AdminService,
+              private settingsService: SettingsService,
               private toastr: ToastrService,
               public dialog: MatDialog)
   {
-    this.users$.subscribe(result => {
+    this.subscribeToUsers();
+    this.subscribeToRubrics();
+  }
+
+  private subscribeToRubrics(): void {
+    this.rubrics$.subscribe(result => {
       if (result != null) {
-        this.dataSource = new MatTableDataSource<UsersResponseInterface>(result);
-        this.dataSource.paginator = this.paginator;
+        this.rubricsDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
+        this.rubricsDataSource.paginator = this.paginator;
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
     })
-    // adminService.getAdminUsers().subscribe(result => {
-    //   if (result != null) {
-    //     this.dataSource = new MatTableDataSource<UsersResponseInterface>(result);
-    //     this.dataSource.paginator = this.paginator;
-    //   } else {
-    //     this.toastr.error('არ გაქვს შესაბამისი უფლება');
-    //   }
-    // }, error => {
-    //   this.toastr.error('დაფიქსირდა შეცდომა');
-    // })
   }
 
-  createNewUser() {
+  private subscribeToUsers(): void {
+    this.users$.subscribe(result => {
+      if (result != null) {
+        this.usersDataSource = new MatTableDataSource<UsersResponseInterface>(result);
+        this.usersDataSource.paginator = this.paginator;
+      } else {
+        this.toastr.error('არ გაქვს შესაბამისი უფლება');
+      }
+    })
+  }
+
+  public editRubric(rubric: SettingsBasicInterface) {
+    this.dialog.open(SettingEditDialogComponent, {
+      width: '400px',
+      data: rubric
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.updateRubric(result);
+      }
+      console.log(result);
+    })
+  }
+
+  public addRubric(): void {
+    this.dialog.open(SettingEditDialogComponent, {
+      width: '400px',
+      data: null
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result);
+        this.createRubric(result);
+      }
+      console.log(result);
+    })
+  }
+
+  public deleteRubric(): void {
+
+  }
+
+  public createNewUser() {
     this.dialog.open(CreateAdminDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -61,7 +107,37 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  createAdminUser(newUser: CreateAdminInterface): void {
+  private createRubric(rubric: SettingsBasicInterface): void {
+    this.settingsService.createGenre(rubric).subscribe(result => {
+      if (result == null) {
+        this.toastr.error('რუბრიკა ვერ დაემატა');
+      } else {
+        this.rubricsRequest$.next(true);
+        this.toastr.success('რუბრიკა წარმატებით დაემატა');
+    }
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+  private deleteRubricServ(rubric: SettingsBasicInterface): void {
+
+  }
+
+  private updateRubric(rubric: SettingsBasicInterface): void {
+    this.settingsService.updateGenre(rubric).subscribe(result => {
+      if (result == null) {
+        this.toastr.error('რუბრიკა ვერ განახლდა');
+      } else {
+        this.rubricsRequest$.next(true);
+        this.toastr.success('რუბრუკა წარმატებით განახლდა');
+      }
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+  private createAdminUser(newUser: CreateAdminInterface): void {
     this.adminService.createAdmin(newUser).subscribe(result => {
       if (result == null) {
         this.toastr.error('მომხმარებელი ვერ დაემატა');
@@ -75,7 +151,8 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.usersDataSource.paginator = this.paginator;
+    this.rubricsDataSource.paginator = this.paginator;
   }
 
   ngOnInit(): void {
