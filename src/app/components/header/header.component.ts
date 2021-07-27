@@ -1,9 +1,9 @@
 import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import jwt_decode from "jwt-decode"
 import {LoginComponent} from '../login/login.component';
-import {LoginService} from '../services/login-services/login.service';
+import {LoginService} from '../../services/login-services/login.service';
 import {Observable, of} from 'rxjs';
-import {SharedService} from '../services/shared/shared.service';
+import {SharedService} from '../../services/shared/shared.service';
 
 @Component({
   selector: 'app-header',

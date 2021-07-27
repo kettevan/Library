@@ -1,4 +1,4 @@
-@import "../../assets/styles/functions";
+@import "../../../assets/styles/functions";
 
 mat-form-field {
   width: 100%;
@@ -73,5 +73,9 @@ mat-icon {
   &::ng-deep .mat-button-wrapper{
     line-height: 25px;
     padding: 0;
+  }
+  .mat-icon {
+    font-size: 16px;
+    line-height: 25px;
   }
 }

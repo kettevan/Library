@@ -2,11 +2,11 @@ import {Component, EventEmitter, Injectable, OnDestroy, OnInit, Output} from '@a
 import {GoogleLoginProvider, SocialAuthService} from 'angularx-social-login';
 import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {LoginService} from '../services/login-services/login.service';
+import {LoginService} from '../../services/login-services/login.service';
 import { ToastrService } from 'ngx-toastr';
-import {UserRequestInterface} from '../interfaces/login/google-user-request.interface';
+import {UserRequestInterface} from '../../interfaces/login/google-user-request.interface';
 import {BehaviorSubject} from 'rxjs';
-import {SharedService} from '../services/shared/shared.service';
+import {SharedService} from '../../services/shared/shared.service';
 
 @Injectable({
   providedIn: 'root',

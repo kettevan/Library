@@ -2,8 +2,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {LoginComponent} from './login/login.component';
-import {MainPageComponent} from './main-page/main-page.component';
+import {LoginComponent} from './components/login/login.component';
+import {MainPageComponent} from './components/main-page/main-page.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -11,19 +11,19 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {GoogleLoginProvider, SocialLoginModule} from 'angularx-social-login';
 import {AuthGuardService} from './services/guards/auth-guard.service';
-import {FooterComponent} from './footer/footer.component';
-import {HeaderComponent} from './header/header.component';
+import {FooterComponent} from './components/footer/footer.component';
+import {HeaderComponent} from './components/header/header.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from './app-routing.module';
 import {MatMenuModule} from '@angular/material/menu';
-import { UserPageComponent } from './user-page/user-page.component';
+import { UserPageComponent } from './components/user-page/user-page.component';
 import {MatTabsModule} from '@angular/material/tabs';
-import { AdminPageComponent } from './admin-page/admin-page.component';
+import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import {ToastrModule} from 'ngx-toastr';
 import {HttpClientModule} from '@angular/common/http';
 import {MatIconModule} from '@angular/material/icon';
-import { CreateAdminDialogComponent } from './admin-page/create-admin-dialog/create-admin-dialog.component';
+import { CreateAdminDialogComponent } from './components/admin-page/create-admin-dialog/create-admin-dialog.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
@@ -31,7 +31,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatListModule} from '@angular/material/list';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { SettingEditDialogComponent } from './admin-page/setting-edit-dialog/setting-edit-dialog.component';
+import { SettingEditDialogComponent } from './components/admin-page/setting-edit-dialog/setting-edit-dialog.component';
+import { ConfirmDeleteDialogComponent } from './components/shared/confirm-delete-dialog/confirm-delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { SettingEditDialogComponent } from './admin-page/setting-edit-dialog/set
     UserPageComponent,
     AdminPageComponent,
     CreateAdminDialogComponent,
-    SettingEditDialogComponent
+    SettingEditDialogComponent,
+    ConfirmDeleteDialogComponent
   ],
   imports: [
     ToastrModule.forRoot({

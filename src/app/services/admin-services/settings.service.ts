@@ -39,8 +39,9 @@ export class SettingsService {
 
   deleteGenre(rubric: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
-    if (!this.shared.isAdminToken(token)) return of(null);
+    if (!this.shared.isAdminToken(token)) return of(1);
     const requestUrl = this.BASE_URL + `/genres/${rubric.id}`
+    console.log(requestUrl);
     return this.http.delete(requestUrl, { headers: {'Authorization': `Bearer ${token}`} });
   }
 }

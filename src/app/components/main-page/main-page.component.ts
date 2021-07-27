@@ -2,7 +2,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {SocialAuthService} from 'angularx-social-login';
 import {Router} from '@angular/router';
 import {take} from 'rxjs/operators';
-import {SharedService} from '../services/shared/shared.service';
+import {SharedService} from '../../services/shared/shared.service';
 import jwt_decode from "jwt-decode";
 
 @Component({

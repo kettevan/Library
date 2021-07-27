@@ -1,19 +1,20 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AdminService} from '../services/admin-services/admin.service';
+import {AdminService} from '../../services/admin-services/admin.service';
 import {MatTableDataSource} from '@angular/material/table';
-import {UsersResponseInterface} from '../interfaces/admin/users-response.interface';
+import {UsersResponseInterface} from '../../interfaces/admin/users-response.interface';
 import {MatPaginator} from '@angular/material/paginator';
 import {ToastrService} from 'ngx-toastr';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateAdminDialogComponent} from './create-admin-dialog/create-admin-dialog.component';
-import {CreateAdminInterface} from '../interfaces/admin/create-admin.interface';
+import {CreateAdminInterface} from '../../interfaces/admin/create-admin.interface';
 import {BehaviorSubject} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {SettingsService} from '../services/admin-services/settings.service';
-import {RubricsResponseInterface} from '../interfaces/admin/settings/rubrics-response.interface';
-import {SettingsBasicInterface} from '../interfaces/admin/settings/settings-basic.interface';
+import {SettingsService} from '../../services/admin-services/settings.service';
+import {RubricsResponseInterface} from '../../interfaces/admin/settings/rubrics-response.interface';
+import {SettingsBasicInterface} from '../../interfaces/admin/settings/settings-basic.interface';
 import {SettingEditDialogComponent} from './setting-edit-dialog/setting-edit-dialog.component';
+import {ConfirmDeleteDialogComponent} from '../shared/confirm-delete-dialog/confirm-delete-dialog.component';
 
 @Component({
   selector: 'app-admin-page',
@@ -28,7 +29,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   users$ = this.usersRequest$.pipe(switchMap(() => this.adminService.getAdminUsers()))
   usersDataSource = new MatTableDataSource<UsersResponseInterface>();
 
-  public rubricDisplayedColumns: string[] = ['id', 'name', 'actions'];
+  public rubricDisplayedColumns: string[] = ['id', 'name', 'actions', 'delete'];
   rubricsRequest$ = new BehaviorSubject<boolean>(true);
   rubrics$ = this.rubricsRequest$.pipe(switchMap(() => this.settingsService.getAllGenres()))
   rubricsDataSource = new MatTableDataSource<SettingsBasicInterface>();
@@ -84,15 +85,19 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
       data: null
     }).afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
         this.createRubric(result);
       }
-      console.log(result);
     })
   }
 
-  public deleteRubric(): void {
-
+  public deleteRubric(rubric: SettingsBasicInterface): void {
+    this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '400px'
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteRubricServ(rubric);
+      }
+    })
   }
 
   public createNewUser() {
@@ -121,7 +126,12 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   private deleteRubricServ(rubric: SettingsBasicInterface): void {
-
+    this.settingsService.deleteGenre(rubric).subscribe(result => {
+      this.rubricsRequest$.next(true);
+      this.toastr.success('რუბრუკა წარმატებით წაიშალა');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
   }
 
   private updateRubric(rubric: SettingsBasicInterface): void {
