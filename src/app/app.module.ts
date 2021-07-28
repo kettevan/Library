@@ -33,6 +33,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { SettingEditDialogComponent } from './components/admin-page/setting-edit-dialog/setting-edit-dialog.component';
 import { ConfirmDeleteDialogComponent } from './components/shared/confirm-delete-dialog/confirm-delete-dialog.component';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { ConfirmDeleteDialogComponent } from './components/shared/confirm-delete
     MatGridListModule,
     MatListModule,
     MatSidenavModule,
-    MatExpansionModule
+    MatExpansionModule,
+    ScrollingModule
   ],
   providers: [{
     provide: 'SocialAuthServiceConfig',

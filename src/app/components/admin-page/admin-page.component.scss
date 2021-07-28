@@ -1,4 +1,5 @@
 @import "../../../assets/styles/functions";
+@import "../../../assets/styles/global";
 
 mat-form-field {
   width: 100%;
@@ -14,6 +15,10 @@ table {
 
 .add-btn {
   float: right;
+}
+
+.small-add {
+  margin-right: pxToRem(30);
 }
 
 mat-icon {
@@ -58,8 +63,9 @@ mat-icon {
 }
 
 .panel-title {
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
 }
 
 .my-fab {
@@ -78,4 +84,22 @@ mat-icon {
     font-size: 16px;
     line-height: 25px;
   }
+}
+
+
+.panel {
+  overflow-y: scroll;
+}
+
+mat-tab {
+  min-height: 100%
+}
+
+mat-expansion-panel {
+  margin-bottom: 10px;
+}
+
+.small-add {
+  float: right !important;
+  margin-right: 40px !important;
 }
