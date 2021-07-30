@@ -20,14 +20,14 @@ export class SettingsService {
   getAllGenres(): Observable<SettingsBasicInterface[]> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_URL + `/genres`
+    const requestUrl = this.BASE_URL + `/subjects`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
   }
 
   updateGenre(rubric: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_URL + `/genres/${rubric.id}`
+    const requestUrl = this.BASE_URL + `/subjects/${rubric.id}`
     console.log(requestUrl);
     return this.http.put(requestUrl, rubric, { headers: {'Authorization': `Bearer ${token}`} });
   }
@@ -35,14 +35,14 @@ export class SettingsService {
   createGenre(rubric: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_URL + `/genres`
+    const requestUrl = this.BASE_URL + `/subjects`
     return this.http.post(requestUrl, rubric, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
   deleteGenre(rubric: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(1);
-    const requestUrl = this.BASE_URL + `/genres/${rubric.id}`
+    const requestUrl = this.BASE_URL + `/subjects/${rubric.id}`
     console.log(requestUrl);
     return this.http.delete(requestUrl, { headers: {'Authorization': `Bearer ${token}`} });
   }
@@ -53,7 +53,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres`
+    const requestUrl = this.BASE_SETTINGS_URL + `/funds`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
   }
 
@@ -61,7 +61,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres`
+    const requestUrl = this.BASE_SETTINGS_URL + `/funds`
     return this.http.post(requestUrl, collection, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
@@ -69,7 +69,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres/${collection.id}`
+    const requestUrl = this.BASE_SETTINGS_URL + `/funds/${collection.id}`
     console.log(requestUrl);
     return this.http.put(requestUrl, collection, { headers: {'Authorization': `Bearer ${token}`} });
   }
@@ -78,7 +78,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(1);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres/${collection.id}`
+    const requestUrl = this.BASE_SETTINGS_URL + `/funds/${collection.id}`
     console.log(requestUrl);
     return this.http.delete(requestUrl, { headers: {'Authorization': `Bearer ${token}`} });
   }
@@ -89,7 +89,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres`
+    const requestUrl = this.BASE_SETTINGS_URL + `/resourceForms`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
   }
 
@@ -97,7 +97,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres`
+    const requestUrl = this.BASE_SETTINGS_URL + `/resourceForms`
     return this.http.post(requestUrl, form, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
@@ -105,8 +105,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres/${form.id}`
-    console.log(requestUrl);
+    const requestUrl = this.BASE_SETTINGS_URL + `/resourceForms/${form.id}`
     return this.http.put(requestUrl, form, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
@@ -114,8 +113,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(1);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres/${form.id}`
-    console.log(requestUrl);
+    const requestUrl = this.BASE_SETTINGS_URL + `/resourceForms/${form.id}`
     return this.http.delete(requestUrl, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
@@ -125,7 +123,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres`
+    const requestUrl = this.BASE_SETTINGS_URL + `/resourceTypes`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
   }
 
@@ -133,7 +131,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres`
+    const requestUrl = this.BASE_SETTINGS_URL + `/resourceTypes`
     return this.http.post(requestUrl, type, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
@@ -141,8 +139,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres/${type.id}`
-    console.log(requestUrl);
+    const requestUrl = this.BASE_SETTINGS_URL + `/resourceTypes/${type.id}`
     return this.http.put(requestUrl, type, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
@@ -150,8 +147,7 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(1);
     // TO DO change url
-    const requestUrl = this.BASE_URL + `/genres/${type.id}`
-    console.log(requestUrl);
+    const requestUrl = this.BASE_SETTINGS_URL + `/resourceTypes/${type.id}`
     return this.http.delete(requestUrl, {headers: {'Authorization': `Bearer ${token}`}});
   }
 
@@ -175,15 +171,13 @@ export class SettingsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     const requestUrl = this.BASE_SETTINGS_URL + `/languages/${language.id}`
-    console.log(requestUrl);
     return this.http.put(requestUrl, language, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
   deleteLanguage(language: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(1);
-    const requestUrl = this.BASE_SETTINGS_URL + `/Languages/${language.id}`
-    console.log(requestUrl);
+    const requestUrl = this.BASE_SETTINGS_URL + `/languages/${language.id}`
     return this.http.delete(requestUrl, { headers: {'Authorization': `Bearer ${token}`} });
   }
   // გამომცემლობა
@@ -191,30 +185,28 @@ export class SettingsService {
   getAllPublishers(): Observable<SettingsBasicInterface[]> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_SETTINGS_URL + `/Publishers`
+    const requestUrl = this.BASE_SETTINGS_URL + `/publishers`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
   }
 
   createPublisher(publisher: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_SETTINGS_URL + `/Publishers`
+    const requestUrl = this.BASE_SETTINGS_URL + `/publishers`
     return this.http.post(requestUrl, publisher, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
   updatePublisher(publisher: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_SETTINGS_URL + `/Publishers/${publisher.id}`
-    console.log(requestUrl);
+    const requestUrl = this.BASE_SETTINGS_URL + `/publishers/${publisher.id}`
     return this.http.put(requestUrl, publisher, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
   deletePublisher(publisher: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(1);
-    const requestUrl = this.BASE_SETTINGS_URL + `/Publishers/${publisher.id}`
-    console.log(requestUrl);
+    const requestUrl = this.BASE_SETTINGS_URL + `/publishers/${publisher.id}`
     return this.http.delete(requestUrl, {headers: {'Authorization': `Bearer ${token}`}});
   }
 

@@ -85,7 +85,7 @@
             <tr mat-row *matRowDef="let row; columns: rubricDisplayedColumns;"></tr>
           </table>
 
-          <mat-paginator [length]="rubricsDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          <mat-paginator [length]="rubricsDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" (click)="genresOpenState = !genresOpenState" showFirstLastButtons></mat-paginator>
         </div>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
@@ -132,7 +132,7 @@
             <tr mat-row *matRowDef="let row; columns: rubricDisplayedColumns;"></tr>
           </table>
 
-          <mat-paginator [length]="rubricsDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          <mat-paginator [length]="collectionsDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" (click)="collectionOpenState = !collectionOpenState" showFirstLastButtons></mat-paginator>
         </div>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
@@ -179,7 +179,7 @@
             <tr mat-row *matRowDef="let row; columns: rubricDisplayedColumns;"></tr>
           </table>
 
-          <mat-paginator [length]="formsDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          <mat-paginator [length]="formsDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" (click)="formOpenState" showFirstLastButtons></mat-paginator>
         </div>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
@@ -226,7 +226,7 @@
             <tr mat-row *matRowDef="let row; columns: rubricDisplayedColumns;"></tr>
           </table>
 
-          <mat-paginator [length]="typesDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          <mat-paginator [length]="typesDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" (click)="typeOpenState = !typeOpenState" showFirstLastButtons></mat-paginator>
         </div>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
@@ -273,7 +273,7 @@
             <tr mat-row *matRowDef="let row; columns: rubricDisplayedColumns;"></tr>
           </table>
 
-          <mat-paginator [length]="languagesDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          <mat-paginator [length]="languagesDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" (click)="languageOpenState = !languageOpenState" showFirstLastButtons></mat-paginator>
         </div>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
@@ -320,7 +320,7 @@
             <tr mat-row *matRowDef="let row; columns: rubricDisplayedColumns;"></tr>
           </table>
 
-          <mat-paginator [length]="publishersDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          <mat-paginator [length]="publishersDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" (click)="publisherOpenState = !publisherOpenState" showFirstLastButtons></mat-paginator>
         </div>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
