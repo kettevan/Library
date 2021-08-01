@@ -1,7 +1,56 @@
-<div *ngIf="userInfo">
-  <p>Hello, {{userInfo.name}}!</p>
-  <br>
-  <p>Your email: {{userInfo.email}}</p>
-  <br>
-  <button mat-raised-button (click)="logout()">Logout</button>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="booksDatasource">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.id ? element.id : '' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="place">
+      <th mat-header-cell *matHeaderCellDef> მდებარეობა </th>
+      <td mat-cell *matCellDef="let element"> {{element.id ? element.id : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef> დასახელება </th>
+      <td mat-cell *matCellDef="let element"> {{element.title ? element.title : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="author">
+      <th mat-header-cell *matHeaderCellDef> ავტორი </th>
+      <td mat-cell *matCellDef="let element"> {{element.author ? element.author : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="book_copy">
+      <th mat-header-cell *matHeaderCellDef> ეგზემპლარი </th>
+      <td mat-cell *matCellDef="let element"> {{element.bookCopies ? element.bookCopies.length : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isbn">
+      <th mat-header-cell *matHeaderCellDef> ISBN </th>
+      <td mat-cell *matCellDef="let element"> {{element.isbn ? element.isbn : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="publish_year">
+      <th mat-header-cell *matHeaderCellDef> წელი </th>
+      <td mat-cell *matCellDef="let element"> {{element.publishDate ? element.publishDate.split('-')[0] : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="publisher">
+      <th mat-header-cell *matHeaderCellDef> გამომცემლობა </th>
+      <td mat-cell *matCellDef="let element"> {{element.publisher ? element.publisher.name : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="rubric">
+      <th mat-header-cell *matHeaderCellDef> რუბრიკა </th>
+      <td mat-cell *matCellDef="let element"> {{element.subject ? element.subject.name : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="language">
+      <th mat-header-cell *matHeaderCellDef> ენა </th>
+      <td mat-cell *matCellDef="let element"> {{element.language ? element.language.name : ''}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 </div>

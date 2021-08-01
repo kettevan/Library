@@ -1,44 +1,47 @@
-import {Component, OnDestroy} from '@angular/core';
-import {SocialAuthService} from 'angularx-social-login';
-import {Router} from '@angular/router';
-import {take} from 'rxjs/operators';
+import {AfterViewInit, Component, OnDestroy, ViewChild} from '@angular/core';
 import {SharedService} from '../../services/shared/shared.service';
-import jwt_decode from "jwt-decode";
+import {BooksAdminService} from '../../services/books-admin/books-admin.service';
+import {BooksResponseInterface} from '../../interfaces/admin/main-page/books-response.interface';
+import {BookDataSource} from '../../data-sources/book-data-source.datasource';
+import {MatPaginator} from '@angular/material/paginator';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page-admin.component.html',
   styleUrls: ['./main-page-admin.component.scss']
 })
-export class MainPageAdminComponent implements OnDestroy{
-  public userInfo: any;
+export class MainPageAdminComponent implements OnDestroy, AfterViewInit{
   private subs = [];
+  private books: BooksResponseInterface;
+  private pageLimit: number = 25;
+  public displayColumns: string[] = ['id', 'place', 'title', 'author', 'book_copy', 'isbn', 'publish_year', 'publisher', 'rubric', 'language']
+  public booksDatasource: BookDataSource;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private router: Router,
-              public socialAuthService: SocialAuthService, private sharedService: SharedService) {
-    const token = localStorage.getItem('token');
-    if (token != null && jwt_decode(token)['Role'].toUpperCase() === 'USER') {
-      const socialAuthSubs = socialAuthService.authState.pipe(take(1))
-      socialAuthSubs.subscribe(result => {
-        if (result) {
-          this.userInfo = result;
-          localStorage.setItem('user', JSON.stringify(result));
-        }
-      }, error => console.log(error));
-      this.subs.push(socialAuthSubs);
-    }
+  constructor(private booksAdminService: BooksAdminService, private sharedService: SharedService) {
+    this.booksDatasource = new BookDataSource(this.booksAdminService);
+    this.booksDatasource.loadBooks();
   }
 
+  ngAfterViewInit() {
+    this.booksDatasource.counter$
+      .pipe(
+        tap((count) => {
+          this.paginator.length = count;
+        })
+      )
+      .subscribe();
 
+    this.paginator.page
+      .pipe(
+        tap(() => this.loadBooks())
+      )
+      .subscribe();
+  }
 
-  logout(): void {
-    this.socialAuthService.signOut().then(() =>  {
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-      this.sharedService.editUser('');
-      this.router.navigate(['login']);
-    }
-    );
+  private loadBooks() {
+    this.booksDatasource.loadBooks(this.paginator.pageIndex+1, this.paginator.pageSize);
   }
 
   ngOnDestroy(): void {

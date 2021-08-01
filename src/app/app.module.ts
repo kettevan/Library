@@ -34,6 +34,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { SettingEditDialogComponent } from './components/admin-page/setting-edit-dialog/setting-edit-dialog.component';
 import { ConfirmDeleteDialogComponent } from './components/shared/confirm-delete-dialog/confirm-delete-dialog.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { MainPageUserComponent } from './components/main-page-user/main-page-user.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     AdminPageComponent,
     CreateAdminDialogComponent,
     SettingEditDialogComponent,
-    ConfirmDeleteDialogComponent
+    ConfirmDeleteDialogComponent,
+    MainPageUserComponent
   ],
   imports: [
     ToastrModule.forRoot({
