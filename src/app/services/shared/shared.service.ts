@@ -25,4 +25,15 @@ export class SharedService {
     return true;
   }
 
+  public isUserToken(token: string) {
+    if (token == null) {
+      return false;
+    }
+    const role = jwt_decode(token)['Role'].toUpperCase()
+    if (role != 'USER') return false;
+    return true;
+  }
+
+
+
 }

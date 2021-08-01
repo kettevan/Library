@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AdminService} from '../../services/admin-services/admin.service';
 import {MatTableDataSource} from '@angular/material/table';
@@ -59,7 +59,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   publishers$ = this.publishersRequest$.pipe(switchMap(() => this.settingsService.getAllPublishers()));
   publishersDataSource = new MatTableDataSource<SettingsBasicInterface>();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
   constructor(private adminService: AdminService,
               private settingsService: SettingsService,
@@ -79,7 +79,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.forms$.subscribe(result => {
       if (result != null) {
         this.formsDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.formsDataSource.paginator = this.paginator;
+        this.formsDataSource.paginator = this.paginator.toArray()[3];
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -90,7 +90,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.types$.subscribe(result => {
       if (result != null) {
         this.typesDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.typesDataSource.paginator = this.paginator;
+        this.typesDataSource.paginator = this.paginator.toArray()[4];
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -101,7 +101,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.languages$.subscribe(result => {
       if (result != null) {
         this.languagesDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.languagesDataSource.paginator = this.paginator;
+        this.languagesDataSource.paginator = this.paginator.toArray()[5];
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -112,7 +112,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.publishers$.subscribe(result => {
       if (result != null) {
         this.publishersDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.publishersDataSource.paginator = this.paginator;
+        this.publishersDataSource.paginator = this.paginator.toArray()[6];
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -123,7 +123,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.collections$.subscribe(result => {
       if (result != null) {
         this.collectionsDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.collectionsDataSource.paginator = this.paginator;
+        this.collectionsDataSource.paginator = this.paginator.toArray()[2];
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -134,7 +134,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.rubrics$.subscribe(result => {
       if (result != null) {
         this.rubricsDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.rubricsDataSource.paginator = this.paginator;
+        this.rubricsDataSource.paginator = this.paginator.toArray()[1];
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -144,8 +144,8 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   private subscribeToUsers(): void {
     this.users$.subscribe(result => {
       if (result != null) {
-        this.usersDataSource = new MatTableDataSource<UsersResponseInterface>(result);
-        this.usersDataSource.paginator = this.paginator;
+        this.usersDataSource = new MatTableDataSource<UsersResponseInterface>(result['content']);
+        this.usersDataSource.paginator = this.paginator.toArray()[0];
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -153,7 +153,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editRubric(rubric: SettingsBasicInterface) {
-    this.genresOpenState = !this.genresOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: rubric
@@ -178,7 +177,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteRubric(rubric: SettingsBasicInterface): void {
-    this.genresOpenState = !this.genresOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -203,7 +201,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editCollection(collection: SettingsBasicInterface): void {
-    this.collectionOpenState = !this.collectionOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: collection
@@ -215,7 +212,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteCollection(collection: SettingsBasicInterface): void {
-    this.collectionOpenState = !this.collectionOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -240,7 +236,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editForm(form: SettingsBasicInterface): void {
-    this.formOpenState = !this.formOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: form
@@ -252,7 +247,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteForm(form: SettingsBasicInterface): void {
-    this.formOpenState = !this.formOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -277,7 +271,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editType(type: SettingsBasicInterface): void {
-    this.typeOpenState = !this.typeOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: type
@@ -289,7 +282,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteType(type: SettingsBasicInterface): void {
-    this.typeOpenState = !this.typeOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -313,7 +305,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editLanguage(language: SettingsBasicInterface): void {
-    this.languageOpenState = !this.languageOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: language
@@ -325,7 +316,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteLanguage(language: SettingsBasicInterface): void {
-    this.languageOpenState = !this.languageOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -349,7 +339,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editPublisher(publisher: SettingsBasicInterface): void {
-    this.publisherOpenState = !this.publisherOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: publisher
@@ -361,7 +350,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deletePublisher(publisher: SettingsBasicInterface): void {
-    this.publisherOpenState = !this.publisherOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -611,13 +599,13 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.usersDataSource.paginator = this.paginator;
-    this.rubricsDataSource.paginator = this.paginator;
-    this.collectionsDataSource.paginator = this.paginator;
-    this.formsDataSource.paginator = this.paginator;
-    this.typesDataSource.paginator = this.paginator;
-    this.languagesDataSource.paginator = this.paginator;
-    this.publishersDataSource.paginator = this.paginator;
+    this.usersDataSource.paginator = this.paginator.toArray()[0];
+    this.rubricsDataSource.paginator = this.paginator.toArray()[1];
+    this.collectionsDataSource.paginator = this.paginator.toArray()[2];
+    this.formsDataSource.paginator = this.paginator.toArray()[3];
+    this.typesDataSource.paginator = this.paginator.toArray()[4];
+    this.languagesDataSource.paginator = this.paginator.toArray()[5];
+    this.publishersDataSource.paginator = this.paginator.toArray()[6];
   }
 
   ngOnInit(): void {

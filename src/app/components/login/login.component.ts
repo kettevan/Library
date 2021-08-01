@@ -28,9 +28,12 @@ export class LoginComponent implements OnInit, OnDestroy {
               private socialAuthService: SocialAuthService, private loginService: LoginService,
               private toastr: ToastrService, private sharedService: SharedService) {
     var token = localStorage.getItem('token');
-    if (token != null) {
-      this.router.navigate(["mainpage"])
+    if (sharedService.isAdminToken(token)) {
+      this.router.navigate(["adminmainpage"])
+    } else if (sharedService.isUserToken(token)) {
+      this.router.navigate(["usermainpage"])
     }
+
     this.loginForm = fb.group( {
       mail: this.mail,
       password: this.password
@@ -88,7 +91,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               if (res) {
                 this.sharedService.editUser("USER");
                 localStorage.setItem("token", res.accessToken);
-                this.router.navigate(['mainpage'])
+                this.router.navigate(['usermainpage'])
               } else {
                 this.toastr.error("მონაცემები არასწორია");
               }

@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/login/login.component';
-import {MainPageComponent} from './components/main-page/main-page.component';
+import {MainPageAdminComponent} from './components/main-page-admin/main-page-admin.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -39,7 +39,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
   declarations: [
     AppComponent,
     LoginComponent,
-    MainPageComponent,
+    MainPageAdminComponent,
     FooterComponent,
     HeaderComponent,
     UserPageComponent,

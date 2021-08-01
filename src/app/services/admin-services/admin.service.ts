@@ -19,7 +19,7 @@ export class AdminService {
   getAdminUsers(): Observable<UsersResponseInterface[]>{
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_URL + `user`;
+    const requestUrl = this.BASE_URL + `user?page=1&limit=200&admin=true`;
     return this.http.get<UsersResponseInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}});
   }
 

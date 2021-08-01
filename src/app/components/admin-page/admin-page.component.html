@@ -35,7 +35,6 @@
         <tr mat-header-row *matHeaderRowDef="usersDisplayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: usersDisplayedColumns;"></tr>
       </table>
-
       <mat-paginator [length]="usersDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
   </mat-tab>
@@ -89,7 +88,8 @@
         </div>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
-      <mat-expansion-panel [expanded]="collectionOpenState"  (click)="collectionOpenState = !collectionOpenState">
+      <mat-expansion-panel [expanded]="collectionOpenState" (opened)="collectionOpenState = true"
+       (closed)="collectionOpenState = false">
         <mat-expansion-panel-header>
           <mat-panel-title class="panel-title">
             ფონდი / კოლექციის დამატება / რედაქტირება
@@ -132,7 +132,7 @@
             <tr mat-row *matRowDef="let row; columns: rubricDisplayedColumns;"></tr>
           </table>
 
-          <mat-paginator [length]="collectionsDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" (click)="collectionOpenState = !collectionOpenState" showFirstLastButtons></mat-paginator>
+          <mat-paginator [length]="collectionsDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page"></mat-paginator>
         </div>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
