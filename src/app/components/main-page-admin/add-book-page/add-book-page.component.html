@@ -1,0 +1,170 @@
+
+<form [formGroup]="newBookForm">
+  <div class="container">
+    <div class="bordered">
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ავტორი</mat-label>
+            <input type='text' matInput formControlName='author'>
+            <mat-error *ngIf='author.invalid && (author.dirty || author.touched)'>
+              ავტორი სავალდებულოა
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>სათაური</mat-label>
+            <input type='text' matInput formControlName='title'>
+            <mat-error *ngIf='title.invalid && (title.dirty || title.touched)'>
+              სათაური სავალდებულოა
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ქვესათაური</mat-label>
+            <input type='text' matInput formControlName='subtitle'>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>გამოცემა</mat-label>
+            <input type='text' matInput formControlName='edition'>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>გამომცემლობა</mat-label>
+            <mat-select formControlName="publisherId">
+              <mat-option *ngFor="let publishers of publishers" [value]="publishers.id">
+                {{publishers.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>გამოცემის თარიღი</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="publishDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ენა</mat-label>
+            <mat-select formControlName="languageId">
+              <mat-option *ngFor="let language of languages" [value]="language.id">
+                {{language.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>გვერდების რაოდენობა</mat-label>
+            <input type='text' matInput formControlName='pageNumber'>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ISBN</mat-label>
+            <input type='text' matInput formControlName='ISBN'>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>UDC</mat-label>
+            <input type='text' matInput formControlName='UDC'>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ბმული</mat-label>
+            <input type='text' matInput formControlName='link'>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>საგნობრივი რუბრიკა</mat-label>
+            <mat-select formControlName="rubricId">
+              <mat-option *ngFor="let rubric of rubrics" [value]="rubric.id">
+                {{rubric.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>მასალის ტიპი</mat-label>
+            <mat-select formControlName="typeId">
+              <mat-option *ngFor="let type of types" [value]="type.id">
+                {{type.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>მასალის სახე</mat-label>
+            <mat-select formControlName="formId">
+              <mat-option *ngFor="let form of forms" [value]="form.id">
+                {{form.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ფონდი / კოლექცია</mat-label>
+            <mat-select formControlName="collectionId">
+              <mat-option *ngFor="let collection of collections" [value]="collection.id">
+                {{collection.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button mat-button (click)="fileInput.click()">
+            <mat-icon>upload</mat-icon>ფაილის ატვირთვა
+          </button>
+          <input #fileInput type="file" accept=".dpf" class="hidden" (change)="uploadFile($event)">
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>მდებარეობა</mat-label>
+            <input type='text' matInput formControlName='place'>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>შესყიდვის ფასი</mat-label>
+            <input type='text' matInput formControlName='price'>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%" appearance="outline">
+            <mat-label>კომენტარი / შენიშვნა</mat-label>
+            <textarea matInput
+                      cdkTextareaAutosize
+                      formControlName="note"
+                      #autosize="cdkTextareaAutosize"
+                      cdkAutosizeMinRows="1"
+                      cdkAutosizeMaxRows="5"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

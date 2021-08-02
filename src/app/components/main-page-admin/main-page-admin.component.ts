@@ -5,6 +5,8 @@ import {BooksResponseInterface} from '../../interfaces/admin/main-page/books-res
 import {BookDataSource} from '../../data-sources/book-data-source.datasource';
 import {MatPaginator} from '@angular/material/paginator';
 import {tap} from 'rxjs/operators';
+import {BooksInterface} from '../../interfaces/admin/main-page/books.interface';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
@@ -13,16 +15,27 @@ import {tap} from 'rxjs/operators';
 })
 export class MainPageAdminComponent implements OnDestroy, AfterViewInit{
   private subs = [];
-  private books: BooksResponseInterface;
-  private pageLimit: number = 25;
-  public displayColumns: string[] = ['id', 'place', 'title', 'author', 'book_copy', 'isbn', 'publish_year', 'publisher', 'rubric', 'language']
+  public displayColumns: string[] = ['id', 'place', 'title', 'author', 'book_copy', 'isbn', 'publish_year', 'publisher', 'rubric', 'language', 'actions']
   public booksDatasource: BookDataSource;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private booksAdminService: BooksAdminService, private sharedService: SharedService) {
+  constructor(private booksAdminService: BooksAdminService, private sharedService: SharedService, private router: Router) {
     this.booksDatasource = new BookDataSource(this.booksAdminService);
     this.booksDatasource.loadBooks();
   }
+
+  public createBook(): void {
+    this.router.navigate(['/addbook']);
+  }
+
+  public editBook(book: BooksInterface): void {
+    console.log(book);
+  }
+
+  public deleteBook(book: BooksInterface): void {
+    console.log(book);
+  }
+
 
   ngAfterViewInit() {
     this.booksDatasource.counter$

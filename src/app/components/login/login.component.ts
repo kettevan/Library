@@ -5,7 +5,6 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {LoginService} from '../../services/login-services/login.service';
 import { ToastrService } from 'ngx-toastr';
 import {UserRequestInterface} from '../../interfaces/login/google-user-request.interface';
-import {BehaviorSubject} from 'rxjs';
 import {SharedService} from '../../services/shared/shared.service';
 
 @Injectable({

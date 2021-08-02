@@ -35,6 +35,11 @@ import { SettingEditDialogComponent } from './components/admin-page/setting-edit
 import { ConfirmDeleteDialogComponent } from './components/shared/confirm-delete-dialog/confirm-delete-dialog.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { MainPageUserComponent } from './components/main-page-user/main-page-user.component';
+import { AddBookPageComponent } from './components/main-page-admin/add-book-page/add-book-page.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -48,37 +53,42 @@ import { MainPageUserComponent } from './components/main-page-user/main-page-use
     CreateAdminDialogComponent,
     SettingEditDialogComponent,
     ConfirmDeleteDialogComponent,
-    MainPageUserComponent
+    MainPageUserComponent,
+    AddBookPageComponent
   ],
-  imports: [
-    ToastrModule.forRoot({
-        positionClass: 'toast-top-right',
-        timeOut: 2000
-      }
-    ),
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatInputModule,
-    SocialLoginModule,
-    ReactiveFormsModule,
-    NgbModule,
-    MatMenuModule,
-    MatTabsModule,
-    HttpClientModule,
-    MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatListModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    ScrollingModule
-  ],
+    imports: [
+        ToastrModule.forRoot({
+                positionClass: 'toast-top-right',
+                timeOut: 2000
+            }
+        ),
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatInputModule,
+        SocialLoginModule,
+        ReactiveFormsModule,
+        NgbModule,
+        MatMenuModule,
+        MatTabsModule,
+        HttpClientModule,
+        MatIconModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatListModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        ScrollingModule,
+        MatTooltipModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule
+    ],
   providers: [{
     provide: 'SocialAuthServiceConfig',
     useValue: {
@@ -91,7 +101,7 @@ import { MainPageUserComponent } from './components/main-page-user/main-page-use
       ]
     }
   },
-    AuthGuardService],
+    AuthGuardService, MatDatepickerModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {
