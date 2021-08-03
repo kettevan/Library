@@ -1,7 +1,7 @@
 import {SettingsBasicInterface} from '../settings/settings-basic.interface';
 
 export interface BooksInterface {
-  id: number;
+  id?: number;
   title?: string;
   author?: string;
   note?: string;
@@ -19,8 +19,8 @@ export interface BooksInterface {
 
 
 export interface BookCopyInterface {
-  id: number;
-  book: BooksInterface;
-  description: string;
+  id?: number;
+  book?: BooksInterface;
+  description?: string;
   code: string;
 }

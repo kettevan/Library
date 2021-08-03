@@ -1,7 +1,7 @@
-
 <form [formGroup]="newBookForm">
-  <div class="container">
-    <div class="bordered">
+  <div class="bordered">
+    <div class="row">
+    <div class="col-md-9">
       <div class="row">
         <div class="col">
           <mat-form-field style="width: 100%;" appearance="outline">
@@ -166,5 +166,32 @@
         </div>
       </div>
     </div>
+    <div class="col-5 justify-content-md-center" class="bookCopyLabel">
+      <mat-label>egzemplarebi</mat-label>
+      <button class="my-fab"  mat-mini-fab type="button" [matTooltip]="'დამატება'" (click)="addBookCopy()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button class="my-fab" mat-mini-fab type="button" [matTooltip]="'წაშლა'" (click)="deleteCopy(copies.selectedOptions.selected)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <mat-selection-list #copies>
+        <mat-list-option *ngFor="let copy of bookCopies" style="display: block" color="accent" [value]="copy">
+          {{copy}}
+<!--          <span>-->
+<!--            <button class="my-fab copyDelete" mat-mini-fab type="button" [matTooltip]="'წაშლა'" (click)="deleteCopy(copy)">-->
+<!--              <mat-icon>delete</mat-icon>-->
+<!--            </button>-->
+<!--          </span>-->
+
+        </mat-list-option>
+
+      </mat-selection-list>
+    </div>
+  </div>
+  </div>
+  <div class="d-flex justify-end mt-24 child-ml-12 actions">
+    <button type="button" class="cancelBtn" mat-raised-button (click)="onCancelClick()">გაუქმება</button>
+    <button type="button" color="accent" mat-raised-button (click)="onCreateClick()">შენახვა</button>
   </div>
 </form>
+

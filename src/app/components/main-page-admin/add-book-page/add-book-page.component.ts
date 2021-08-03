@@ -1,9 +1,17 @@
-import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {SettingsService} from '../../../services/admin-services/settings.service';
 import {SettingsBasicInterface} from '../../../interfaces/admin/settings/settings-basic.interface';
-import {CdkTextareaAutosize} from '@angular/cdk/text-field';
-import {take} from 'rxjs/operators';
+import {BooksAdminService} from '../../../services/books-admin/books-admin.service';
+import {NewBookRequestInterface} from '../../../interfaces/admin/main-page/new-book-request.interface';
+import {Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
+import {BehaviorSubject} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
+import {SettingEditDialogComponent} from '../../admin-page/setting-edit-dialog/setting-edit-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {MatListOption} from '@angular/material/list';
+import {BookCopyInterface} from '../../../interfaces/admin/main-page/books.interface';
 
 @Component({
   selector: 'app-add-book-page',
@@ -14,25 +22,25 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
   subs = [];
   newBookForm: FormGroup;
 
-  author = new FormControl('', [Validators.required]);
-  title = new FormControl('', [Validators.required]);
-  subtitle = new FormControl('');
-  edition = new FormControl('');
-  note = new FormControl('');
-  ISBN = new FormControl('', [Validators.required]);
-  publisherId = new FormControl('');
-  publishDate = new FormControl('');
-  languageId = new FormControl('');
-  pageNumber = new FormControl('');
-  UDC = new FormControl('');
-  rubricId = new FormControl('');
-  formId = new FormControl('');
-  typeId = new FormControl('');
-  link = new FormControl('');
-  collectionId = new FormControl('');
-  file = new FormControl('');
-  place = new FormControl('');
-  price = new FormControl('');
+  author = new FormControl(null, [Validators.required]);
+  title = new FormControl( null, [Validators.required]);
+  subtitle = new FormControl(null);
+  edition = new FormControl(null);
+  note = new FormControl(null);
+  ISBN = new FormControl(null, [Validators.required]);
+  publisherId = new FormControl(null);
+  publishDate = new FormControl(null);
+  languageId = new FormControl(null);
+  pageNumber = new FormControl(null);
+  UDC = new FormControl(null);
+  rubricId = new FormControl(null);
+  formId = new FormControl(null);
+  typeId = new FormControl(null);
+  link = new FormControl(null);
+  collectionId = new FormControl(null);
+  file = new FormControl(null);
+  place = new FormControl(null);
+  price = new FormControl(null);
 
   publishers: SettingsBasicInterface[] = []
   languages: SettingsBasicInterface[] = []
@@ -41,7 +49,13 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
   forms: SettingsBasicInterface[] = []
   collections: SettingsBasicInterface[] = []
 
-  constructor(private fb: FormBuilder, private settingsService: SettingsService) {
+  bookCopies: string[] = []
+
+  constructor(private fb: FormBuilder,
+              private settingsService: SettingsService,
+              private booksService: BooksAdminService,
+              private router: Router,
+              private toastr: ToastrService, public dialog: MatDialog) {
     this.newBookForm = fb.group( {
       author: this.author,
       title: this.title,
@@ -94,12 +108,68 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     this.subs.push(collectionSubs);
   }
 
+  addBookCopy(): void {
+    console.log('book copy');
+    this.dialog.open(SettingEditDialogComponent, {
+      width: '400px',
+      data: null
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.bookCopies.push(result.name);
+        console.log(result.name);
+      }
+    })
+  }
+
+  deleteCopy(copies: MatListOption[]): void {
+    const copiesCodesToDelete = copies.map(x => x.value)
+    this.bookCopies = this.bookCopies.filter(x => copiesCodesToDelete.indexOf(x) == -1)
+  }
+
   uploadFile(event: Event): void {
     console.log('ფაილის ატვირთვა')
   }
 
   ngOnDestroy(): void {
-    this.subs.forEach(x => x.unsubscribe());
+    this.subs.forEach(x => x.unsubscribe);
   }
 
+  onCancelClick(): void {
+    this.router.navigate(["adminmainpage"]);
+  }
+
+
+  onCreateClick(): void {
+    const bookCopiesResult = this.bookCopies.map(x => {
+      const res: BookCopyInterface = {
+        code: x
+      }
+      return res;
+    })
+    console.log(bookCopiesResult);
+    const newBook: NewBookRequestInterface = {
+      title: this.title.value,
+      author: this.author.value,
+      note: this.note.value,
+      publishDate: this.publishDate.value,
+      subjectId: this.rubricId.value,
+      languageId: this.languageId.value,
+      fundId: this.collectionId.value,
+      publisherId: this.publisherId.value,
+      resourceTypeId: this.typeId.value,
+      resourceFormId: this.formId.value,
+      isbn: this.ISBN.value,
+      bookCopies: bookCopiesResult
+    }
+    this.booksService.addBook(newBook).subscribe(result => {
+      if (result) {
+        this.toastr.success('წიგნი წარმატებით შეიქმნა');
+        this.router.navigate(["adminmainpage"]);
+      } else {
+        this.toastr.error('დაფიქსირდა შეცდომა');
+      }
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
 }

@@ -15,3 +15,79 @@
 .hidden {
   display: none;
 }
+
+.bookCopyLabel {
+  font-size: 16px;
+  font-family: 'avaza';
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.my-fab {
+  margin: 0 auto;
+  transition: none !important;
+  box-shadow: none !important;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+
+
+  &::ng-deep .mat-button-wrapper{
+    line-height: 25px;
+    padding: 0;
+  }
+  .mat-icon {
+    font-size: 16px;
+    line-height: 25px;
+  }
+}
+
+.mat-flat-button .mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+  color: black;
+  background-color: #ffc87c;
+}
+
+.actions {
+  padding: 10px;
+  float: right;
+}
+
+.cancelBtn {
+  margin-right: 10px;
+  color: black;
+}
+
+mat-label {
+  margin-right: 5px;
+}
+
+mat-list {
+  max-height: 500px !important;
+  overflow: auto;
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+  height: 25px !important;
+  margin: 3px;
+}
+
+.copyDelete {
+  float: right;
+  position: relative;
+}
+
+.mat-list-item {
+  display: block !important;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
+}
+
+.mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+  display: block!important;
+  float: right;
+}
+
+::ng-deep .mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate, .mat-accent .mat-pseudo-checkbox-checked, .mat-accent .mat-pseudo-checkbox-indeterminate {
+  background: #ffc87c !important;
+}
