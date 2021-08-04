@@ -5,9 +5,13 @@ export interface NewBookRequestInterface {
   id?: number;
   title?: string;
   author?: string;
+  subtitle?: string;
   note?: string;
+  edition?: string;
   bookCopies?: BookCopyInterface[];
   publishDate?: Date;
+  createDate?: Date;
+  active?: boolean;
   subjectId?: number;
   languageId?: number;
   fundId?: number;
@@ -15,4 +19,9 @@ export interface NewBookRequestInterface {
   resourceTypeId?: number;
   resourceFormId?: number;
   isbn: string;
+  udc?: string;
+  link?: string;
+  place?: string;
+  price?: string;
+  file?: string;
 }

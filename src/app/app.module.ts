@@ -40,6 +40,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import { ViewBookPageComponent } from './components/main-page-admin/view-book-page/view-book-page.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {MatNativeDateModule} from '@angular/material/core';
     SettingEditDialogComponent,
     ConfirmDeleteDialogComponent,
     MainPageUserComponent,
-    AddBookPageComponent
+    AddBookPageComponent,
+    ViewBookPageComponent
   ],
     imports: [
         ToastrModule.forRoot({

@@ -1,17 +1,18 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {SettingsService} from '../../../services/admin-services/settings.service';
 import {SettingsBasicInterface} from '../../../interfaces/admin/settings/settings-basic.interface';
 import {BooksAdminService} from '../../../services/books-admin/books-admin.service';
 import {NewBookRequestInterface} from '../../../interfaces/admin/main-page/new-book-request.interface';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
-import {BehaviorSubject} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
 import {SettingEditDialogComponent} from '../../admin-page/setting-edit-dialog/setting-edit-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {MatListOption} from '@angular/material/list';
-import {BookCopyInterface} from '../../../interfaces/admin/main-page/books.interface';
+import {BookCopyInterface, BooksInterface} from '../../../interfaces/admin/main-page/books.interface';
+import {Observable} from 'rxjs';
+import {startWith} from 'rxjs/operators';
+import {resolve} from '@angular/compiler-cli/src/ngtsc/file_system';
 
 @Component({
   selector: 'app-add-book-page',
@@ -19,9 +20,12 @@ import {BookCopyInterface} from '../../../interfaces/admin/main-page/books.inter
   styleUrls: ['./add-book-page.component.scss']
 })
 export class AddBookPageComponent implements OnInit, OnDestroy {
+  private data: BooksInterface = null;
   subs = [];
   newBookForm: FormGroup;
+  private bookId: number;
 
+  id = new FormControl(null);
   author = new FormControl(null, [Validators.required]);
   title = new FormControl( null, [Validators.required]);
   subtitle = new FormControl(null);
@@ -30,9 +34,11 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
   ISBN = new FormControl(null, [Validators.required]);
   publisherId = new FormControl(null);
   publishDate = new FormControl(null);
+  createDate = new FormControl(null);
   languageId = new FormControl(null);
   pageNumber = new FormControl(null);
   UDC = new FormControl(null);
+  active = new FormControl(null);
   rubricId = new FormControl(null);
   formId = new FormControl(null);
   typeId = new FormControl(null);
@@ -49,22 +55,39 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
   forms: SettingsBasicInterface[] = []
   collections: SettingsBasicInterface[] = []
 
-  bookCopies: string[] = []
+  bookCopies: BookCopyInterface[] = []
 
-  constructor(private fb: FormBuilder,
+  constructor(private route: ActivatedRoute, private fb: FormBuilder,
               private settingsService: SettingsService,
               private booksService: BooksAdminService,
               private router: Router,
               private toastr: ToastrService, public dialog: MatDialog) {
+    // id უნდა ამოვიღო Url-დან და ისე მივიღო data
+    this.route.params.pipe(startWith(this.route.snapshot.params)).subscribe(params => {
+      const id = parseInt(params.id, 10);
+      console.log(id);
+      if (isFinite(id)) {
+        this.bookId = id;
+        // გამოვიძახო სერვისი და მივიღო წიგნზე ინფო
+        this.booksService.getBookById(id).subscribe(result => {
+          this.data = result;
+          console.log(this.data);
+          this.setDataValues()
+        })
+      }
+    });
     this.newBookForm = fb.group( {
+      id: this.id,
       author: this.author,
       title: this.title,
       subtitle: this.subtitle,
       edition: this.edition,
       note: this.note,
       ISBN: this.ISBN,
+      active: this.active,
       publisherId: this.publisherId,
       publishDate: this.publishDate,
+      createDate: this.createDate,
       languageId: this.languageId,
       typeId: this.typeId,
       pageNumber: this.pageNumber,
@@ -77,6 +100,46 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       place: this.place,
       price: this.price
     })
+  }
+
+  private setDataValues(): void {
+    if (this.data != null) {
+      this.id.setValue(this.data.id);
+      this.author.setValue(this.data.author);
+      this.title.setValue(this.data.title);
+      this.subtitle.setValue(this.data.subtitle);
+      this.edition.setValue(this.data.edition);
+      this.note.setValue(this.data.note);
+      this.ISBN.setValue(this.data.isbn);
+      if (this.data.publisher) {
+        this.publisherId.setValue(this.data.publisher.id);
+      }
+      this.active.setValue(this.data.active);
+      this.publishDate.setValue(this.data.publishDate);
+      if (this.data.language) {
+        this.languageId.setValue(this.data.language.id);
+      }
+      this.createDate.setValue(this.data.createDate);
+      this.pageNumber.setValue(this.data.pageNumber);
+      this.UDC.setValue(this.data.udc);
+      if (this.data.subject) {
+        this.rubricId.setValue(this.data.subject.id);
+      }
+      if (this.data.resourceForm) {
+        this.formId.setValue(this.data.resourceForm.id);
+      }
+      if (this.data.resourceType) {
+        this.typeId.setValue(this.data.resourceType.id);
+      }
+      this.link.setValue(this.data.link);
+      if (this.data.fund) {
+        this.collectionId.setValue(this.data.fund.id);
+      }
+      //file = new FormControl(null);
+      this.place.setValue(this.data.place);
+      this.price.setValue(this.data.price);
+      this.bookCopies = this.data.bookCopies;
+    }
   }
 
   ngOnInit(): void {
@@ -109,14 +172,15 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
   }
 
   addBookCopy(): void {
-    console.log('book copy');
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: null
     }).afterClosed().subscribe(result => {
       if (result) {
-        this.bookCopies.push(result.name);
-        console.log(result.name);
+        const newBookCopy: BookCopyInterface = {
+          code: result.name
+        }
+        this.bookCopies.push(newBookCopy);
       }
     })
   }
@@ -138,30 +202,8 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     this.router.navigate(["adminmainpage"]);
   }
 
-
-  onCreateClick(): void {
-    const bookCopiesResult = this.bookCopies.map(x => {
-      const res: BookCopyInterface = {
-        code: x
-      }
-      return res;
-    })
-    console.log(bookCopiesResult);
-    const newBook: NewBookRequestInterface = {
-      title: this.title.value,
-      author: this.author.value,
-      note: this.note.value,
-      publishDate: this.publishDate.value,
-      subjectId: this.rubricId.value,
-      languageId: this.languageId.value,
-      fundId: this.collectionId.value,
-      publisherId: this.publisherId.value,
-      resourceTypeId: this.typeId.value,
-      resourceFormId: this.formId.value,
-      isbn: this.ISBN.value,
-      bookCopies: bookCopiesResult
-    }
-    this.booksService.addBook(newBook).subscribe(result => {
+  private createBook(book: NewBookRequestInterface): void {
+    this.booksService.addBook(book).subscribe(result => {
       if (result) {
         this.toastr.success('წიგნი წარმატებით შეიქმნა');
         this.router.navigate(["adminmainpage"]);
@@ -171,5 +213,50 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
     })
+  }
+
+  private updateBook(book: NewBookRequestInterface): void {
+    this.booksService.updateBook(book.id, book).subscribe(result => {
+      if (result) {
+        this.toastr.success('წიგნი წარმატებით განახლდა');
+        this.router.navigate(["adminmainpage"]);
+      } else {
+        this.toastr.error('დაფიქსირდა შეცდომა');
+      }
+    }, error => {
+      console.log(error);
+    })
+  }
+
+  onCreateClick(): void {
+    const newBook: NewBookRequestInterface = {
+      id: this.id.value,
+      title: this.title.value,
+      subtitle: this.subtitle.value,
+      author: this.author.value,
+      note: this.note.value,
+      edition: this.edition.value,
+      active: this.active.value,
+      publishDate: this.publishDate.value,
+      createDate: this.createDate.value,
+      subjectId: this.rubricId.value,
+      languageId: this.languageId.value,
+      fundId: this.collectionId.value,
+      publisherId: this.publisherId.value,
+      resourceTypeId: this.typeId.value,
+      resourceFormId: this.formId.value,
+      isbn: this.ISBN.value,
+      udc: this.UDC.value,
+      link: this.link.value,
+      place: this.place.value,
+      file: this.file.value,
+      bookCopies: this.bookCopies
+    }
+    if (this.data == null) {
+      this.createBook(newBook)
+    } else {
+      this.updateBook(newBook);
+    }
+
   }
 }

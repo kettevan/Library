@@ -176,13 +176,7 @@
       </button>
       <mat-selection-list #copies>
         <mat-list-option *ngFor="let copy of bookCopies" style="display: block" color="accent" [value]="copy">
-          {{copy}}
-<!--          <span>-->
-<!--            <button class="my-fab copyDelete" mat-mini-fab type="button" [matTooltip]="'წაშლა'" (click)="deleteCopy(copy)">-->
-<!--              <mat-icon>delete</mat-icon>-->
-<!--            </button>-->
-<!--          </span>-->
-
+          {{copy.code}}
         </mat-list-option>
 
       </mat-selection-list>

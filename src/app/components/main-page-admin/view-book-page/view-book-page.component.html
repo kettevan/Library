@@ -1,0 +1,141 @@
+<div class="bordered">
+      <div class="row">
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>კოდი</mat-label>
+            <input type='text' matInput value="{{data.id ? data.id : ''}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ეგზემპლარები</mat-label>
+            <input type='text' matInput value="{{data.bookCopies ? data.bookCopies.length : 0}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>მდებარეობა</mat-label>
+            <input type='text' matInput value="{{data.place ? data.place : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ტიპი</mat-label>
+            <input type='text' matInput value="{{data.resourceType ? data.resourceType.name : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>სახე</mat-label>
+            <input type='text' matInput value="{{data.resourceForm ? data.resourceForm.name : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ფაილი</mat-label>
+            <input type='text' matInput value="{{data.file ? data.file : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ბმული</mat-label>
+            <input type='text' matInput value="{{data.link ? data.link : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ავტორი</mat-label>
+            <input type='text' matInput value="{{data.author ? data.author : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>სათაური</mat-label>
+            <input type='text' matInput value="{{data.title ? data.title : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ქვესათაური</mat-label>
+            <input type='text' matInput value="{{data.subtitle ? data.subtitle : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>გამოცემა</mat-label>
+            <input type='text' matInput value="{{data.edition ? data.edition : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>გამოცემა</mat-label>
+            <input type='text' matInput value="{{data.publisher ? data.publisher.name : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>წელი</mat-label>
+            <input type='text' matInput value="{{data.publishDate ? data.publishDate.toString().split('-')[0] : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>გვ. რაოდენოდა</mat-label>
+            <input type='text' matInput value="{{data.pageNumber ? data.pageNumber : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ფასი</mat-label>
+            <input type='text' matInput value="{{data.price ? data.price : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>ISBN</mat-label>
+            <input type='text' matInput value="{{data.isbn ? data.isbn : 'არ არის მითითებული'}}" [readonly]="true">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+<div>
+  <mat-tab-group>
+    <mat-tab label="ისტორია">
+    </mat-tab>
+    <mat-tab label="ეგზემპლარები ({{data.bookCopies.length}})">
+      <table mat-table [dataSource]="booksCopyDataSource" style="width: 100%">
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef> კოდი </th>
+          <td mat-cell class="row-height" *matCellDef="let element"> {{element.code ? element.code : '' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> სტატუსი </th>
+          <td mat-cell class="row-height"  *matCellDef="let element"> {{element.description ? element.description : ''}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell class="row-height"  *matCellDef="let element">
+            <button type="button" class="cancelBtn" mat-raised-button (click)="onBookingClick(element)">გაცემა</button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+      </table>
+      <mat-paginator [length]="booksCopyDataSource.data.length" [pageSizeOptions]="[1, 10, 20]" [pageSize]="1" showFirstLastButtons></mat-paginator>
+    </mat-tab>
+    <mat-tab label="გატანილი ეგზემპლარები">
+    </mat-tab>
+    <mat-tab label="დაჯავშნილი ეგზემპლარები">
+    </mat-tab>
+  </mat-tab-group>
+
+</div>
+<div class="d-flex justify-end mt-24 child-ml-12 actions">
+  <button type="button" class="cancelBtn" mat-raised-button (click)="onCancelClick()">გაუქმება</button>
+</div>

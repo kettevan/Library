@@ -29,4 +29,25 @@ export class BooksAdminService {
     return this.http.post<BooksInterface>(requestUrl, book, {headers: {'Authorization': `Bearer ${token}`}});
   }
 
+  getBookById(id: number): Observable<BooksInterface> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `books/${id}`;
+    return this.http.get<BooksInterface>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
+  }
+
+  updateBook(id: number, book: NewBookRequestInterface): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `books/${id}`;
+    return this.http.put<any>(requestUrl, book, {headers: {'Authorization': `Bearer ${token}`}})
+  }
+
+  deleteBook(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `books/${id}`;
+    return this.http.delete<any>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
+  }
+
 }

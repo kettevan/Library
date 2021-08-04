@@ -16,7 +16,8 @@ const routes: Routes = [
   { path: 'usermainpage', component: MainPageUserComponent, canActivate: [AuthGuardService] },
   { path: 'userpage', component: UserPageComponent, canActivate: [AuthGuardService] },
   { path: 'adminpage', component: AdminPageComponent, canActivate: [AdminGuardService]},
-  { path: 'addbook', component: AddBookPageComponent, canActivate: [AdminGuardService] }
+  { path: 'book/:id', component: AddBookPageComponent, canActivate: [AdminGuardService] },
+  { path: 'book', component: AddBookPageComponent, canActivate: [AdminGuardService] }
 ];
 
 @NgModule({

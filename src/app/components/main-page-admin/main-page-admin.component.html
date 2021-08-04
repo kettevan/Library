@@ -62,6 +62,9 @@
 
       <td mat-cell class="row-height" *matCellDef="let element">
         <div class="d-flex ml-12 child-ml-12">
+          <button  mat-mini-fab class="my-fab" type="button" [matTooltip]="'ნახვა'" (click)="viewBook(element)">
+            <mat-icon>visibility</mat-icon>
+          </button>
           <button  mat-mini-fab class="my-fab" type="button" [matTooltip]="'რედაქტირება'" (click)="editBook(element)">
             <mat-icon>edit</mat-icon>
           </button>
