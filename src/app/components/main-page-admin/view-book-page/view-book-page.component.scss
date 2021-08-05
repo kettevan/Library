@@ -6,3 +6,13 @@
 .mat-flat-button, .mat-raised-button, .mat-fab, .mat-mini-fab {
   background-color: #ffc87c;
 }
+
+
+.cancelBtn {
+  //position: absolute;
+  //bottom: 10px;
+}
+
+:host ::ng-deep.mat-paginator .mat-form-field-underline {
+  display: none;
+}

@@ -11,6 +11,7 @@ import {SettingsBasicInterface} from '../../../interfaces/admin/settings/setting
   templateUrl: './view-book-page.component.html',
   styleUrls: ['./view-book-page.component.scss']
 })
+
 export class ViewBookPageComponent implements OnInit, AfterViewInit {
   constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface) { }
   displayColumns: string[] = ['code', 'status', 'action']
@@ -19,7 +20,16 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.booksCopyDataSource = new MatTableDataSource<BookCopyInterface>(this.data.bookCopies);
+    this.booksCopyDataSource.filterPredicate = function(data, filter: string): boolean {
+      return data.code.toLowerCase().includes(filter);
+    };
+  }
 
+  applyFilter(filterValue: string) {
+    console.log(filterValue)
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    this.booksCopyDataSource.filter = filterValue;
   }
 
   onBookingClick(bookCopy: BookCopyInterface): void {

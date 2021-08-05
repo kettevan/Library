@@ -1,4 +1,130 @@
-
+<form [formGroup]="bookFilterForm">
+  <div class="bordered">
+  <div class="row">
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>საგნობრივი რუბრიკა</mat-label>
+        <mat-select formControlName="rubricId">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let rubric of rubrics" [value]="rubric.id">
+            {{rubric.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field style="width: 100%;" appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>წიგნის ID</mat-label>
+        <input type='text' matInput formControlName='id'>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>სათაური</mat-label>
+        <input type='text' matInput formControlName='title'>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>ავტორი</mat-label>
+        <input type='text' matInput formControlName='author'>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>ენა</mat-label>
+        <mat-select formControlName="rubricId">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let language of languages" [value]="language.id">
+            {{language.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline"  style="padding-bottom: 2px!important;">
+        <mat-label>მასალის ტიპი</mat-label>
+        <mat-select formControlName="typeId">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let type of types" [value]="type.id">
+            {{type.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>კოლექცია</mat-label>
+        <mat-select formControlName="collectionId">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let collection of collections" [value]="collection.id">
+            {{collection.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>ეგზემპლარის კოდი</mat-label>
+        <input type='text' matInput formControlName='bookCopyCode'>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>გამომცემლობა</mat-label>
+        <mat-select formControlName="bookStatus">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let publisher of publishers" [value]="publisher.id">
+            {{publisher.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>გამოცემა</mat-label>
+        <input type='text' matInput formControlName='edition'>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>UDC</mat-label>
+        <input type='text' matInput formControlName='UDC'>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>ISBN</mat-label>
+        <input type='text' matInput formControlName='ISBN'>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>დამატების თარიღი (დან)</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="fromCreateDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+        <mat-label>გამოცემის თარიღი (დან)</mat-label>
+        <input matInput [matDatepicker]="picker2" formControlName="publishDate">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col vertically-centered">
+      <section style="padding-bottom: 2px!important;">
+        <mat-checkbox color="accent" formControlName="booked">აქტიური ჯავშანი</mat-checkbox>
+      </section>
+    </div>
+    <div class="col vertically-centered">
+      <button type="button"  color="accent" class="cancelBtn searchBtn" mat-raised-button (click)="filterBooks()">ძებნა</button>
+    </div>
+  </div>
+  </div>
+</form>
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="booksDatasource">
     <ng-container matColumnDef="id">

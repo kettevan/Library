@@ -41,6 +41,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { ViewBookPageComponent } from './components/main-page-admin/view-book-page/view-book-page.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { ViewBookPageComponent } from './components/main-page-admin/view-book-pa
         MatTooltipModule,
         MatSelectModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatCheckboxModule
     ],
   providers: [{
     provide: 'SocialAuthServiceConfig',

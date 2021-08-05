@@ -1,10 +1,18 @@
-div {
-  margin: 20px;
-}
+//div {
+//  margin: 20px;
+//}
 
 table {
   width: 100%;
 }
+
+.bordered {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 7px !important;
+  border-radius: 5px;
+}
+
+
 
 
 mat-icon {
@@ -39,4 +47,54 @@ tr {
 
 .row-height {
   height: 20px !important;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}
+
+.vertically-centered {
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  color: black;
+  background: #ffc87c !important;
+}
+
+::ng-deep .mat-button-wrapper {
+  color: black;
+}
+
+.searchBtn {
+  float: right;
+}
+
+:host ::ng-deep.mat-paginator .mat-form-field-underline {
+  display: none;
+}
+
+table {
+  border-collapse: separate;
+}
+
+th.mat-header-cell {
+  text-align: left;
+  padding-left: 3px;
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+td.mat-cell {
+  /* row border */
+  text-align: left;
+  padding-left: 3px;
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+
+
+tr.mat-row {
+  /* row border */
+  border: 1px solid #ffa600;
 }

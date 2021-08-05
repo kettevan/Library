@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SharedService} from '../../services/shared/shared.service';
 import {BooksAdminService} from '../../services/books-admin/books-admin.service';
 import {BooksResponseInterface} from '../../interfaces/admin/main-page/books-response.interface';
@@ -12,22 +12,75 @@ import {ConfirmDeleteDialogComponent} from '../shared/confirm-delete-dialog/conf
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {SettingsBasicInterface} from '../../interfaces/admin/settings/settings-basic.interface';
 import {ViewBookPageComponent} from './view-book-page/view-book-page.component';
+import {SettingsService} from '../../services/admin-services/settings.service';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page-admin.component.html',
   styleUrls: ['./main-page-admin.component.scss']
 })
-export class MainPageAdminComponent implements OnDestroy, AfterViewInit{
+export class MainPageAdminComponent implements OnInit, OnDestroy, AfterViewInit{
   private subs = [];
   public displayColumns: string[] = ['id', 'place', 'title', 'author', 'book_copy', 'isbn', 'publish_year', 'publisher', 'rubric', 'language', 'actions']
   public booksDatasource: BookDataSource;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  public bookFilterForm: FormGroup;
+
+  publishers: SettingsBasicInterface[] = []
+  languages: SettingsBasicInterface[] = []
+  rubrics: SettingsBasicInterface[] = []
+  types: SettingsBasicInterface[] = []
+  forms: SettingsBasicInterface[] = []
+  collections: SettingsBasicInterface[] = []
+
+  id = new FormControl(null);
+  title = new FormControl(null);
+  author = new FormControl(null);
+  languageId = new FormControl(null);
+  typeId = new FormControl(null);
+  formId = new FormControl(null);
+  rubricId = new FormControl(null);
+  collectionId = new FormControl(null);
+  publisherId = new FormControl(null);
+  publishDate = new FormControl(null);
+  edition = new FormControl(null);
+  bookCopyId = new FormControl(null);
+  bookStatus = new FormControl(null);
+  UDC = new FormControl(null);
+  ISBN = new FormControl(null);
+  fromCreateDate = new FormControl(null);
+  booked = new FormControl(false);
+
   constructor(private route: ActivatedRoute, private booksAdminService: BooksAdminService, private sharedService: SharedService, private router: Router,
-              private toastr: ToastrService, private changeDetectorRefs: ChangeDetectorRef, public dialog: MatDialog) {
+              private toastr: ToastrService, private changeDetectorRefs: ChangeDetectorRef, public dialog: MatDialog, private settingsService: SettingsService,
+              private fb: FormBuilder) {
     this.booksDatasource = new BookDataSource(this.booksAdminService);
     this.booksDatasource.loadBooks();
+    this.bookFilterForm = this.fb.group({
+      id: this.id,
+      title: this.title,
+      author: this.author,
+      languageId: this.languageId,
+      typeId: this.typeId,
+      formId: this.formId,
+      rubricId: this.rubricId,
+      collectionId: this.collectionId,
+      publisherId: this.publisherId,
+      publishDate: this.publishDate,
+      edition: this.edition,
+      bookCopyCode: this.bookCopyId,
+      bookStatus: this.bookStatus,
+      UDC: this.UDC,
+      ISBN: this.ISBN,
+      fromCreateDate: this.fromCreateDate,
+      booked: this.booked
+    });
+  }
+
+  public filterBooks(): void{
+    console.log('filter');
   }
 
   public createBook(): void {
@@ -53,7 +106,7 @@ export class MainPageAdminComponent implements OnDestroy, AfterViewInit{
     console.log(book);
     this.dialog.open(ViewBookPageComponent, {
       data: book,
-      width: '1000px'
+      width: '1000px',
     }).afterClosed().subscribe(result => {
       if (result) {
         this.deleteBookSer(book);
@@ -96,6 +149,35 @@ export class MainPageAdminComponent implements OnDestroy, AfterViewInit{
 
   ngOnDestroy(): void {
     this.subs.forEach(subscription => subscription.unsubscribe);
+  }
+
+  ngOnInit(): void {
+    // გამომცემლობები
+    const publishersSubs = this.settingsService.getAllPublishers()
+    publishersSubs.subscribe(result => {
+      this.publishers = result
+    })
+    this.subs.push(publishersSubs);
+    // ენები
+    const languagesSubs = this.settingsService.getAllLanguages()
+    languagesSubs.subscribe(result => this.languages = result)
+    this.subs.push(languagesSubs);
+    // რუბრიკები
+    const rubricsSubs = this.settingsService.getAllGenres()
+    rubricsSubs.subscribe(result => this.rubrics = result);
+    this.subs.push(rubricsSubs);
+    // ტიპები
+    const typesSubs = this.settingsService.getAllTypes();
+    typesSubs.subscribe(result => this.types = result);
+    this.subs.push(typesSubs);
+    // წიგნის სახეები
+    const formsSubs = this.settingsService.getAllForms();
+    formsSubs.subscribe(result => this.forms = result);
+    this.subs.push(formsSubs);
+    // კოლექციები
+    const collectionSubs = this.settingsService.getAllCollections();
+    collectionSubs.subscribe(result => this.collections = result);
+    this.subs.push(collectionSubs);
   }
 
 }
