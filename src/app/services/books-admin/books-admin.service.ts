@@ -50,4 +50,11 @@ export class BooksAdminService {
     return this.http.delete<any>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
   }
 
+  filterBooks(filterObj: any): Observable<BooksResponseInterface> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `books`;
+    return this.http.get<any>(requestUrl, {params: filterObj, headers: {'Authorization': `Bearer ${token}`}})
+  }
+
 }

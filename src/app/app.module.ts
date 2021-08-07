@@ -42,6 +42,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { ViewBookPageComponent } from './components/main-page-admin/view-book-page/view-book-page.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { BookingPageComponent } from './components/main-page-admin/booking-page/booking-page.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ConfirmDeleteDialogComponent,
     MainPageUserComponent,
     AddBookPageComponent,
-    ViewBookPageComponent
+    ViewBookPageComponent,
+    BookingPageComponent
   ],
     imports: [
         ToastrModule.forRoot({

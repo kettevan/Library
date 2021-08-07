@@ -6,7 +6,7 @@
         <div class="col">
           <mat-form-field style="width: 100%;" appearance="outline">
             <mat-label>ავტორი</mat-label>
-            <input type='text' matInput formControlName='author'>
+            <input type='text' matInput placeholder="შეიყვანეთ ავტორი" formControlName='author'>
             <mat-error *ngIf='author.invalid && (author.dirty || author.touched)'>
               ავტორი სავალდებულოა
             </mat-error>

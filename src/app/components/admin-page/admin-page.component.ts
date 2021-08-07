@@ -31,8 +31,15 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
 
   public usersDisplayedColumns: string[] = ['firstName', 'lastName', 'personalNo', 'email', 'createDate'];
   usersRequest$ = new BehaviorSubject<boolean>(true);
-  users$ = this.usersRequest$.pipe(switchMap(() => this.adminService.getAdminUsers()))
+  users$ = this.usersRequest$.pipe(switchMap(() => this.adminService.getUsers(true)))
   usersDataSource = new MatTableDataSource<UsersResponseInterface>();
+
+
+  // მკითხველები
+  public readersDisplayedColumns: string[] = ['firstName', 'lastName', 'personalNo', 'email', 'phoneNumber', 'createDate', 'actions'];
+  readersRequest$ = new BehaviorSubject<boolean>(true);
+  readers$ = this.readersRequest$.pipe(switchMap(() => this.adminService.getUsers(false)))
+  studentsDataSource = new MatTableDataSource<UsersResponseInterface>();
 
   public rubricDisplayedColumns: string[] = ['id', 'name', 'actions', 'delete'];
   rubricsRequest$ = new BehaviorSubject<boolean>(true);
@@ -59,7 +66,14 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   publishers$ = this.publishersRequest$.pipe(switchMap(() => this.settingsService.getAllPublishers()));
   publishersDataSource = new MatTableDataSource<SettingsBasicInterface>();
 
-  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild('collectionPagination', {static: true}) collectionPagination: MatPaginator;
+  @ViewChild('rubricsPagination', {static: true}) rubricsPagination: MatPaginator;
+  @ViewChild('formsPagination', {static: true}) formsPagination: MatPaginator;
+  @ViewChild('typesPagination', {static: true}) typesPagination: MatPaginator;
+  @ViewChild('languagesPagination', {static: true}) languagesPagination: MatPaginator;
+  @ViewChild('publishersPagination', {static: true}) publishersPagination: MatPaginator;
+  @ViewChild('readersPagination', {static: true}) readersPagination: MatPaginator;
+  @ViewChild('usersPagination', {static: true}) usersPagination: MatPaginator;
 
   constructor(private adminService: AdminService,
               private settingsService: SettingsService,
@@ -69,17 +83,58 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.subscribeToUsers();
     this.subscribeToRubrics();
     this.subscribeToCollections();
-    this.subscribeToTypes();
     this.subscribeToForms();
+    this.subscribeToTypes();
+    this.subscribeToLanguages();
     this.subscribeToLanguages();
     this.subscribeToPublishers();
+    this.subscribeToStudents();
+  }
+
+  public addReader() {
+    this.dialog.open(CreateAdminDialogComponent, {
+      width: '400px'
+    }).afterClosed().subscribe(result => {
+      console.log(result);
+      // გავაგზავნო ბექში მთელი ინფორმაცია
+    })
+  }
+
+  public deleteReader(reader: UsersResponseInterface) {
+    this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '400px'
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteReaderServ(reader);
+      }
+    }, error => {
+      this.toastr.error('მკითხველის წაშლისას დაფიქსირდა შეცდომა');
+    })
+  }
+
+  private deleteReaderServ(reader: UsersResponseInterface): void {
+    this.adminService.deleteUser(reader.id).subscribe(result => {
+      this.readersRequest$.next(true);
+      this.toastr.success('მკითხველი წარმატებით წაიშალა');
+    }, error => {
+      this.toastr.error('მკითხველის წაშლისას დაფიქსირდა შეცდომა');
+    })
+  }
+
+  private subscribeToStudents(): void {
+    this.adminService.getUsers(false).subscribe(result => {
+      if (result != null) {
+        this.studentsDataSource = new MatTableDataSource<UsersResponseInterface>(result['content']);
+        this.studentsDataSource.paginator = this.readersPagination;
+      }
+    })
   }
 
   private subscribeToForms(): void {
     this.forms$.subscribe(result => {
       if (result != null) {
         this.formsDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.formsDataSource.paginator = this.paginator.toArray()[3];
+        this.formsDataSource.paginator = this.formsPagination;
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -90,7 +145,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.types$.subscribe(result => {
       if (result != null) {
         this.typesDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.typesDataSource.paginator = this.paginator.toArray()[4];
+        this.typesDataSource.paginator = this.typesPagination;
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -101,7 +156,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.languages$.subscribe(result => {
       if (result != null) {
         this.languagesDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.languagesDataSource.paginator = this.paginator.toArray()[5];
+        this.languagesDataSource.paginator = this.languagesPagination
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -112,7 +167,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.publishers$.subscribe(result => {
       if (result != null) {
         this.publishersDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.publishersDataSource.paginator = this.paginator.toArray()[6];
+        this.publishersDataSource.paginator = this.publishersPagination;
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -123,7 +178,8 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.collections$.subscribe(result => {
       if (result != null) {
         this.collectionsDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.collectionsDataSource.paginator = this.paginator.toArray()[2];
+        //this.collectionsDataSource.paginator = this.paginator.toArray()[2];
+        this.collectionsDataSource.paginator = this.collectionPagination;
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -134,7 +190,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.rubrics$.subscribe(result => {
       if (result != null) {
         this.rubricsDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        this.rubricsDataSource.paginator = this.paginator.toArray()[1];
+        this.rubricsDataSource.paginator = this.rubricsPagination;
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -145,7 +201,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.users$.subscribe(result => {
       if (result != null) {
         this.usersDataSource = new MatTableDataSource<UsersResponseInterface>(result['content']);
-        this.usersDataSource.paginator = this.paginator.toArray()[0];
+        this.usersDataSource.paginator = this.usersPagination;
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
@@ -153,6 +209,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editRubric(rubric: SettingsBasicInterface) {
+    this.genresOpenState = !this.genresOpenState;
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: rubric
@@ -177,6 +234,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteRubric(rubric: SettingsBasicInterface): void {
+    this.genresOpenState = !this.genresOpenState;
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -201,6 +259,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editCollection(collection: SettingsBasicInterface): void {
+    this.collectionOpenState = !this.collectionOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: collection
@@ -212,6 +271,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteCollection(collection: SettingsBasicInterface): void {
+    this.collectionOpenState = !this.collectionOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -236,6 +296,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editForm(form: SettingsBasicInterface): void {
+    this.formOpenState = !this.formOpenState;
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: form
@@ -247,6 +308,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteForm(form: SettingsBasicInterface): void {
+    this.formOpenState = !this.formOpenState;
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -271,6 +333,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editType(type: SettingsBasicInterface): void {
+    this.typeOpenState = !this.typeOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: type
@@ -282,6 +345,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteType(type: SettingsBasicInterface): void {
+    this.typeOpenState = !this.typeOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -305,6 +369,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editLanguage(language: SettingsBasicInterface): void {
+    this.languageOpenState = !this.languageOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: language
@@ -316,6 +381,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteLanguage(language: SettingsBasicInterface): void {
+    this.languageOpenState = !this.languageOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -339,6 +405,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editPublisher(publisher: SettingsBasicInterface): void {
+    this.publisherOpenState = !this.publisherOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: publisher
@@ -350,6 +417,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deletePublisher(publisher: SettingsBasicInterface): void {
+    this.publisherOpenState = !this.publisherOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {
@@ -358,7 +426,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
       }
     })
   }
-
 
   public createNewUser() {
     this.dialog.open(CreateAdminDialogComponent, {
@@ -599,13 +666,14 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.usersDataSource.paginator = this.paginator.toArray()[0];
-    this.rubricsDataSource.paginator = this.paginator.toArray()[1];
-    this.collectionsDataSource.paginator = this.paginator.toArray()[2];
-    this.formsDataSource.paginator = this.paginator.toArray()[3];
-    this.typesDataSource.paginator = this.paginator.toArray()[4];
-    this.languagesDataSource.paginator = this.paginator.toArray()[5];
-    this.publishersDataSource.paginator = this.paginator.toArray()[6];
+    this.usersDataSource.paginator = this.usersPagination;
+    this.rubricsDataSource.paginator = this.rubricsPagination;
+    this.collectionsDataSource.paginator = this.collectionPagination;
+    this.formsDataSource.paginator = this.formsPagination;
+    this.typesDataSource.paginator = this.typesPagination;
+    this.languagesDataSource.paginator = this.languagesPagination
+    this.publishersDataSource.paginator = this.publishersPagination;
+    this.studentsDataSource.paginator = this.readersPagination;
   }
 
   ngOnInit(): void {

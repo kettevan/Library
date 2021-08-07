@@ -20,14 +20,14 @@ export class SettingsService {
   getAllGenres(): Observable<SettingsBasicInterface[]> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_URL + `/subjects`
+    const requestUrl = this.BASE_URL + `/rubrics`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
   }
 
   updateGenre(rubric: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_URL + `/subjects/${rubric.id}`
+    const requestUrl = this.BASE_URL + `/rubrics/${rubric.id}`
     console.log(requestUrl);
     return this.http.put(requestUrl, rubric, { headers: {'Authorization': `Bearer ${token}`} });
   }
@@ -35,14 +35,14 @@ export class SettingsService {
   createGenre(rubric: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_URL + `/subjects`
+    const requestUrl = this.BASE_URL + `/rubrics`
     return this.http.post(requestUrl, rubric, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
   deleteGenre(rubric: SettingsBasicInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(1);
-    const requestUrl = this.BASE_URL + `/subjects/${rubric.id}`
+    const requestUrl = this.BASE_URL + `/rubrics/${rubric.id}`
     console.log(requestUrl);
     return this.http.delete(requestUrl, { headers: {'Authorization': `Bearer ${token}`} });
   }

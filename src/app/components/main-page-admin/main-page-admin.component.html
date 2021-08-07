@@ -101,17 +101,26 @@
     <div class="col">
       <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
         <mat-label>დამატების თარიღი (დან)</mat-label>
-        <input matInput [matDatepicker]="picker1" formControlName="fromCreateDate">
+        <mat-date-range-input [rangePicker]="picker1">
+          <input matStartDate placeholder="დასაწყისი" formControlName="createDateFrom">
+          <input matEndDate placeholder="დასასრული" formControlName="createDateTo">
+        </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
+        <mat-date-range-picker #picker1></mat-date-range-picker>
+<!--        <input matInput [matDatepicker]="picker1" formControlName="fromCreateDate">-->
+<!--        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>-->
+<!--        <mat-datepicker #picker1></mat-datepicker>-->
       </mat-form-field>
     </div>
     <div class="col">
       <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
         <mat-label>გამოცემის თარიღი (დან)</mat-label>
-        <input matInput [matDatepicker]="picker2" formControlName="publishDate">
+        <mat-date-range-input [rangePicker]="picker2">
+          <input matStartDate placeholder="დასაწყისი" formControlName="publishDateFrom">
+          <input matEndDate placeholder="დასასრული" formControlName="publishDateTo">
+        </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>
+        <mat-date-range-picker #picker2></mat-date-range-picker>
       </mat-form-field>
     </div>
     <div class="col vertically-centered">
@@ -121,6 +130,7 @@
     </div>
     <div class="col vertically-centered">
       <button type="button"  color="accent" class="cancelBtn searchBtn" mat-raised-button (click)="filterBooks()">ძებნა</button>
+      <button type="button"  color="accent" class="cancelBtn searchBtn" mat-raised-button (click)="clearFilter()">გასუფთავება</button>
     </div>
   </div>
   </div>

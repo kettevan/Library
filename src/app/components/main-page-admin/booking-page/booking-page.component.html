@@ -1,0 +1,29 @@
+<form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>აირჩიეთ თარიღები</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="დასაწყისი" formControlName="createDateFrom">
+        <input matEndDate placeholder="დასასრული" formControlName="createDateTo">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  <mat-form-field style="width: 85%;" appearance="outline">
+    <mat-label>პირადი ნომერი</mat-label>
+    <input type='text' matInput placeholder="მკითხველის პირადი ნომრით ძებნა" formControlName='personalNo'>
+    <mat-error *ngIf='personalNo.invalid && (personalNo.dirty || personalNo.touched)'>
+      მხოლოდ ციფრები, 11 სიგრძის
+    </mat-error>
+  </mat-form-field>
+  <button  mat-mini-fab class="my-fab searchButton" type="button" [matTooltip]="'ძენნა'" (click)="findReaderByPersonalNum()">
+    <mat-icon>search</mat-icon>
+  </button>
+  <mat-form-field style="width: 100%;" appearance="outline" >
+    <mat-label>მკითხველი</mat-label>
+    <input type='text' matInput formControlName='reader' [readonly]="true">
+  </mat-form-field>
+  <div class="action-buttons">
+    <button mat-raised-button mat-dialog-close>გაუქმება</button>
+    <button mat-raised-button class="save-button" (click)="onSubmit()">შენახვა</button>
+  </div>
+</form>

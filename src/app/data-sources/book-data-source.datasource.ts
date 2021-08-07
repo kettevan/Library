@@ -39,4 +39,18 @@ export class BookDataSource implements DataSource<BooksInterface> {
       );
   }
 
+  filterBooks(filterObj: any) {
+    this.loadingSubject.next(true);
+    this.booksService.filterBooks(filterObj)
+      .pipe(
+        catchError(() => of([])),
+        finalize(() => this.loadingSubject.next(false))
+      )
+      .subscribe((result: BooksResponseInterface) => {
+          this.booksSubject.next(result.content);
+          this.countSubject.next(result.totalElements);
+        }
+      );
+  }
+
 }

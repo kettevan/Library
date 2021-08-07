@@ -1,10 +1,9 @@
-import {Component, Input, OnInit, EventEmitter, Output, Inject, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, OnInit, Inject, ViewChild, AfterViewInit} from '@angular/core';
 import {BookCopyInterface, BooksInterface} from '../../../interfaces/admin/main-page/books.interface';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatPaginator} from '@angular/material/paginator';
-import {tap} from 'rxjs/operators';
 import {MatTableDataSource} from '@angular/material/table';
-import {SettingsBasicInterface} from '../../../interfaces/admin/settings/settings-basic.interface';
+import {BookingPageComponent} from '../booking-page/booking-page.component';
 
 @Component({
   selector: 'app-view-book-page',
@@ -13,7 +12,8 @@ import {SettingsBasicInterface} from '../../../interfaces/admin/settings/setting
 })
 
 export class ViewBookPageComponent implements OnInit, AfterViewInit {
-  constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface) { }
+  constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface,
+              public dialog: MatDialog) { }
   displayColumns: string[] = ['code', 'status', 'action']
   public booksCopyDataSource = new MatTableDataSource<BookCopyInterface>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -26,14 +26,20 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(filterValue: string) {
-    console.log(filterValue)
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     this.booksCopyDataSource.filter = filterValue;
   }
 
   onBookingClick(bookCopy: BookCopyInterface): void {
-    console.log(bookCopy);
+    this.dialog.open(BookingPageComponent, {
+      width: '400px',
+      data: bookCopy
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result);
+      }
+    })
   }
 
   onCancelClick(): void {

@@ -44,13 +44,15 @@ export class MainPageAdminComponent implements OnInit, OnDestroy, AfterViewInit{
   rubricId = new FormControl(null);
   collectionId = new FormControl(null);
   publisherId = new FormControl(null);
-  publishDate = new FormControl(null);
+  publishDateFrom = new FormControl(null);
+  publishDateTo = new FormControl(null);
   edition = new FormControl(null);
   bookCopyId = new FormControl(null);
   bookStatus = new FormControl(null);
   UDC = new FormControl(null);
   ISBN = new FormControl(null);
-  fromCreateDate = new FormControl(null);
+  createDateFrom = new FormControl(null);
+  createDateTo = new FormControl(null);
   booked = new FormControl(false);
 
   constructor(private route: ActivatedRoute, private booksAdminService: BooksAdminService, private sharedService: SharedService, private router: Router,
@@ -68,19 +70,34 @@ export class MainPageAdminComponent implements OnInit, OnDestroy, AfterViewInit{
       rubricId: this.rubricId,
       collectionId: this.collectionId,
       publisherId: this.publisherId,
-      publishDate: this.publishDate,
+      publishDateFrom: this.publishDateFrom,
+      publishDateTo: this.publishDateTo,
       edition: this.edition,
       bookCopyCode: this.bookCopyId,
       bookStatus: this.bookStatus,
       UDC: this.UDC,
       ISBN: this.ISBN,
-      fromCreateDate: this.fromCreateDate,
+      createDateFrom: this.createDateFrom,
+      createDateTo: this.createDateTo,
       booked: this.booked
     });
   }
 
   public filterBooks(): void{
-    console.log('filter');
+    const filtered = {};
+    if (this.bookFilterForm.valid) {
+      for (let key in this.bookFilterForm.value) {
+        if (this.bookFilterForm.value[key]) {
+          filtered[key] = this.bookFilterForm.value[key];
+        }
+      }
+    }
+    this.booksDatasource.filterBooks(filtered);
+  }
+
+  public clearFilter(): void {
+    this.bookFilterForm.reset();
+    this.loadBooks();
   }
 
   public createBook(): void {

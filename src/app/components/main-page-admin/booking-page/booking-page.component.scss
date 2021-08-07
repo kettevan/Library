@@ -1,0 +1,51 @@
+.action-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.save-button {
+  background-color: #ffc87c;
+}
+
+button {
+  margin: pxToRem(5);
+}
+
+button {
+  margin-left: 5px;
+}
+
+.my-fab {
+  margin: 0 auto;
+  transition: none !important;
+  box-shadow: none !important;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+
+  &::ng-deep .mat-button-wrapper{
+    line-height: 25px;
+    padding: 0;
+  }
+  .mat-icon {
+    font-size: 16px;
+    line-height: 25px;
+  }
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  color: black;
+  background: #ffc87c !important;
+}
+
+mat-icon {
+  color: #030303;
+}
+
+.mat-flat-button .mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+  background-color: #ffc87c;
+}
+
+.searchButton {
+  margin: 10px;
+}

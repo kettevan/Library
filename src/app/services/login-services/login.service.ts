@@ -14,7 +14,7 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   login(userInfo: UserRequestInterface): Observable<UserResponseInterface> {
-    const requestUrl = this.BASE_URL + `user/signing`
+    const requestUrl = this.BASE_URL + `users/signing`
     return this.http.post<UserResponseInterface>(requestUrl, userInfo)
   }
 
