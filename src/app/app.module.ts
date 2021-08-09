@@ -43,6 +43,8 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { ViewBookPageComponent } from './components/main-page-admin/view-book-page/view-book-page.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { BookingPageComponent } from './components/main-page-admin/booking-page/booking-page.component';
+import { HeaderBookingComponent } from './components/header-booking/header-booking.component';
+import {MatStepperModule} from '@angular/material/stepper';
 
 @NgModule({
   declarations: [
@@ -59,42 +61,44 @@ import { BookingPageComponent } from './components/main-page-admin/booking-page/
     MainPageUserComponent,
     AddBookPageComponent,
     ViewBookPageComponent,
-    BookingPageComponent
+    BookingPageComponent,
+    HeaderBookingComponent
   ],
-    imports: [
-        ToastrModule.forRoot({
-                positionClass: 'toast-top-right',
-                timeOut: 2000
-            }
-        ),
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatButtonModule,
-        MatInputModule,
-        SocialLoginModule,
-        ReactiveFormsModule,
-        NgbModule,
-        MatMenuModule,
-        MatTabsModule,
-        HttpClientModule,
-        MatIconModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatDialogModule,
-        MatGridListModule,
-        MatListModule,
-        MatSidenavModule,
-        MatExpansionModule,
-        ScrollingModule,
-        MatTooltipModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatCheckboxModule
-    ],
+  imports: [
+    ToastrModule.forRoot({
+        positionClass: 'toast-top-right',
+        timeOut: 2000
+      }
+    ),
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatInputModule,
+    SocialLoginModule,
+    ReactiveFormsModule,
+    NgbModule,
+    MatMenuModule,
+    MatTabsModule,
+    HttpClientModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatDialogModule,
+    MatGridListModule,
+    MatListModule,
+    MatSidenavModule,
+    MatExpansionModule,
+    ScrollingModule,
+    MatTooltipModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatStepperModule
+  ],
   providers: [{
     provide: 'SocialAuthServiceConfig',
     useValue: {

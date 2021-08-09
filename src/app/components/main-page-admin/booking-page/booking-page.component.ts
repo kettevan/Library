@@ -18,25 +18,27 @@ export class BookingPageComponent implements OnInit {
 
   bookingForm: FormGroup;
 
-  createDateFrom = new FormControl(null, [Validators.required]);
-  createDateTo = new FormControl(null, [Validators.required]);
+  dateFrom = new FormControl(null, [Validators.required]);
+  dateTo = new FormControl(null, [Validators.required]);
   reader = new FormControl(null, [Validators.required]);
   personalNo = new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern("^[0-9]*$")]);
   readerObj = new FormControl(null);
+  public minDate: Date = new Date();
+  public maxDate: Date = new Date();
 
   readers: UsersResponseInterface[] = [];
-
-  //readerObj: UsersResponseInterface = null;
 
   constructor(private fb: FormBuilder, private adminService: AdminService, private toastr: ToastrService,
               @Inject(MAT_DIALOG_DATA) public data: BookCopyInterface,
               private matDialogRef: MatDialogRef<any>) {
+    this.maxDate.setMonth(this.maxDate.getMonth() + 1);
+    console.log(this.maxDate)
     if (this.data == null) {
       matDialogRef.close();
     } else {
       this.bookingForm = this.fb.group({
-        createDateFrom: this.createDateFrom,
-        createDateTo: this.createDateTo,
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo,
         reader: this.reader,
         personalNo: this.personalNo,
         readersObj: this.readerObj
@@ -56,7 +58,7 @@ export class BookingPageComponent implements OnInit {
     this.adminService.getUsers(false, this.personalNo.value).subscribe(result => {
       if (result['content'].length == 1) {
         this.readerObj.setValue(result['content'][0])
-        this.reader.setValue(this.readerObj['firstName'] + ' ' + this.readerObj['lastName']);
+        this.reader.setValue(this.readerObj.value.firstName + ' ' + this.readerObj.value.lastName);
       } else {
         this.readerObj.setValue(null);
         this.reader.setValue(null);

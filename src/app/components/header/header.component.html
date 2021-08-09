@@ -4,10 +4,12 @@
       Tavisufali universiteti
     </h1>
     <div class="header-right">
+      <a *ngIf="admin$ | async" class="navigation" href="/booking">gacema</a>
       <a *ngIf="user$ | async" class="navigation" href="/usermainpage">mTavari gverdi</a>
       <a *ngIf="admin$ | async" class="navigation" href="/adminmainpage">mTavari gverdi</a>
       <a *ngIf="user$ | async" class="navigation" href="/userpage">Cemi gverdi</a>
       <a *ngIf="admin$ | async" class="navigation" href="/adminpage">adminis gverdi</a>
+
     </div>
 
 

@@ -31,6 +31,8 @@ export interface BookCopyInterface {
   id?: number;
   bookId?: null;
   description?: string;
+  bookedDates?: [];
+  confirmerAdminId?: number;
   code: string;
   createDate?: Date;
   active?: boolean

@@ -57,4 +57,10 @@ export class BooksAdminService {
     return this.http.get<any>(requestUrl, {params: filterObj, headers: {'Authorization': `Bearer ${token}`}})
   }
 
+  bookingFilter(filterValue: string): Observable<BooksResponseInterface> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `books`;
+    return this.http.get<any>(requestUrl, {params: {author: filterValue}, headers: {'Authorization': `Bearer ${token}`}})
+  }
 }

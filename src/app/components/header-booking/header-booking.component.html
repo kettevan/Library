@@ -1,0 +1,180 @@
+<div class="container">
+  <mat-horizontal-stepper #stepper>
+    <mat-step [stepControl]="readerFormGroup">
+      <form [formGroup]="readerFormGroup">
+        <ng-template matStepLabel>მკითხველი</ng-template>
+        <mat-form-field style="width: 40%" appearance="outline">
+          <mat-label>პირადი ნომრით ძებნა</mat-label>
+          <input matInput placeholder="მკითხველის პირადი ნომერი" formControlName="readerPersonalNum" required>
+          <mat-error *ngIf='readerPersonalNum.invalid && (readerPersonalNum.dirty || readerPersonalNum.touched)'>
+            მხოლოდ ციფრები, 11 სიგრძის
+          </mat-error>
+        </mat-form-field>
+        <button  mat-mini-fab class="my-fab searchButton" type="button" [matTooltip]="'ძენნა'" (click)="findReaderByPersonalNum()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <br>
+        <mat-form-field style="width: 40%" appearance="outline">
+          <mat-label>მკითხველი</mat-label>
+          <input matInput placeholder="მკითხველი" formControlName="reader" [readonly]="true">
+        </mat-form-field>
+        <div>
+          <button class="nextBtn" [disabled]="readerFormGroup.invalid" mat-button matStepperNext>შემდეგი</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="reservedBooksForm">
+      <form [formGroup]="reservedBooksForm">
+        <ng-template matStepLabel>აირჩიეთ წიგნები</ng-template>
+        <mat-form-field style="width: 70%" appearance="outline">
+          <mat-label>წიგნის ძებნა</mat-label>
+          <input matInput placeholder="შეიყვანეთ საძიებო პარამეტრი" formControlName="bookSearchField" required>
+          <mat-error *ngIf='bookSearchField.invalid && (bookSearchField.dirty || bookSearchField.touched)'>
+            საძიებო ველის შეყვანა აუცილებელია
+          </mat-error>
+        </mat-form-field>
+        <button  mat-mini-fab class="my-fab searchButton" type="button" [matTooltip]="'ძენნა'" (click)="findBooksWithSearchParam()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="booksDatasource">
+
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef> დასახელება </th>
+              <td mat-cell class="row-height"  *matCellDef="let element"> {{element.title ? element.title : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="author">
+              <th mat-header-cell *matHeaderCellDef> ავტორი </th>
+              <td mat-cell class="row-height" *matCellDef="let element"> {{element.author ? element.author : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="publish_year">
+              <th mat-header-cell *matHeaderCellDef> წელი </th>
+              <td mat-cell class="row-height" *matCellDef="let element"> {{element.publishDate ? element.publishDate.split('-')[0] : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="rubric">
+              <th mat-header-cell *matHeaderCellDef> რუბრიკა </th>
+              <td mat-cell class="row-height" *matCellDef="let element"> {{element.subject ? element.subject.name : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="language">
+              <th mat-header-cell *matHeaderCellDef> ენა </th>
+              <td mat-cell class="row-height" *matCellDef="let element"> {{element.language ? element.language.name : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> </th>
+
+              <td mat-cell class="row-height" *matCellDef="let element">
+                <div class="d-flex ml-12 child-ml-12">
+                  <button  mat-mini-fab class="my-fab small-fab" type="button" [matTooltip]="'ნახვა'" (click)="viewBook(element)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button  mat-mini-fab class="my-fab small-fab" type="button" [matTooltip]="'დამატება'" (click)="addBookInReservedList(element)">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </td>
+
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+          </table>
+          <mat-paginator #booksPagination="matPaginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+        </div>
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="savedBooks">
+
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef> დასახელება </th>
+              <td mat-cell class="row-height"  *matCellDef="let element"> {{element.title ? element.title : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="author">
+              <th mat-header-cell *matHeaderCellDef> ავტორი </th>
+              <td mat-cell class="row-height" *matCellDef="let element"> {{element.author ? element.author : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="publish_year">
+              <th mat-header-cell *matHeaderCellDef> წელი </th>
+              <td mat-cell class="row-height" *matCellDef="let element"> {{element.publishDate ? element.publishDate.split('-')[0] : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="rubric">
+              <th mat-header-cell *matHeaderCellDef> რუბრიკა </th>
+              <td mat-cell class="row-height" *matCellDef="let element"> {{element.subject ? element.subject.name : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="language">
+              <th mat-header-cell *matHeaderCellDef> ენა </th>
+              <td mat-cell class="row-height" *matCellDef="let element"> {{element.language ? element.language.name : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> </th>
+
+              <td mat-cell class="row-height" *matCellDef="let element">
+                <div class="d-flex ml-12 child-ml-12">
+                  <button  mat-mini-fab class="my-fab small-fab" type="button" [matTooltip]="'ნახვა'" (click)="viewBook(element)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button  mat-mini-fab class="my-fab small-fab" type="button" [matTooltip]="'წაშლა'" (click)="removeElementFromReservedList(element)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </td>
+
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+          </table>
+          <mat-paginator #savedBooksPagination="matPaginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+        </div>
+        <div>
+          <button class="nextBtn" [disabled]="reservedBooksForm.invalid" mat-button matStepperNext>შემდეგი</button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+  <!--  <mat-stepper #stepper>-->
+<!--    <mat-step [stepControl]="firstFormGroup" errorMessage="Name is required.">-->
+<!--      <form [formGroup]="firstFormGroup">-->
+<!--        <ng-template matStepLabel>Fill out your name</ng-template>-->
+<!--        <mat-form-field appearance="fill">-->
+<!--          <mat-label>Name</mat-label>-->
+<!--          <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>-->
+<!--        </mat-form-field>-->
+<!--        <div>-->
+<!--          <p>Go to a different step to see the error state</p>-->
+<!--          <button mat-button matStepperNext>Next</button>-->
+<!--        </div>-->
+<!--      </form>-->
+<!--    </mat-step>-->
+<!--    <mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">-->
+<!--      <form [formGroup]="secondFormGroup">-->
+<!--        <ng-template matStepLabel>Fill out your address</ng-template>-->
+<!--        <mat-form-field appearance="fill">-->
+<!--          <mat-label>Address</mat-label>-->
+<!--          <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"-->
+<!--                 required>-->
+<!--        </mat-form-field>-->
+<!--        <div>-->
+<!--          <p>Go to a different step to see the error state</p>-->
+<!--          <button mat-button matStepperPrevious>Back</button>-->
+<!--          <button mat-button matStepperNext>Next</button>-->
+<!--        </div>-->
+<!--      </form>-->
+<!--    </mat-step>-->
+<!--    <mat-step>-->
+<!--      <ng-template matStepLabel>Done</ng-template>-->
+<!--      <p>You are now done.</p>-->
+<!--      <div>-->
+<!--        <button mat-button matStepperPrevious>Back</button>-->
+<!--        <button mat-button (click)="stepper.reset()">Reset</button>-->
+<!--      </div>-->
+<!--    </mat-step>-->
+<!--  </mat-stepper>-->
+</div>

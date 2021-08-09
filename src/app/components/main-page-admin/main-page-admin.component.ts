@@ -124,11 +124,6 @@ export class MainPageAdminComponent implements OnInit, OnDestroy, AfterViewInit{
     this.dialog.open(ViewBookPageComponent, {
       data: book,
       width: '1000px',
-    }).afterClosed().subscribe(result => {
-      if (result) {
-        this.deleteBookSer(book);
-        this.loadBooks();
-      }
     })
   }
 

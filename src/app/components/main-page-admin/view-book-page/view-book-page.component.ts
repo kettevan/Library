@@ -4,6 +4,9 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {BookingPageComponent} from '../booking-page/booking-page.component';
+import {ReservationsService} from '../../../services/admin-services/reservations.service';
+import {ToastrService} from 'ngx-toastr';
+import {BooksReservationRequestInterface} from '../../../interfaces/admin/main-page/books-reservation.interface';
 
 @Component({
   selector: 'app-view-book-page',
@@ -13,7 +16,7 @@ import {BookingPageComponent} from '../booking-page/booking-page.component';
 
 export class ViewBookPageComponent implements OnInit, AfterViewInit {
   constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog, private reservationService: ReservationsService, private toastr: ToastrService) { }
   displayColumns: string[] = ['code', 'status', 'action']
   public booksCopyDataSource = new MatTableDataSource<BookCopyInterface>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -37,8 +40,23 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
       data: bookCopy
     }).afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
+        this.reserveBook(result, bookCopy);
       }
+    })
+  }
+
+  private reserveBook(reservationInfo: any, bookCopy: BookCopyInterface): void {
+    console.log(reservationInfo);
+    const reservationRequest: BooksReservationRequestInterface = {
+      bookCopyId: bookCopy.id,
+      userId: reservationInfo.readersObj.id,
+      startDate: reservationInfo.dateFrom,
+      endDate: reservationInfo.dateTo
+    }
+    this.reservationService.reserveBook(reservationRequest).subscribe(result => {
+      console.log(result);
+    }, error =>  {
+      this.toastr.error('დაფიქსირდა შეცდომა');
     })
   }
 

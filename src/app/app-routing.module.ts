@@ -8,6 +8,7 @@ import {AdminGuardService} from './services/guards/admin-guard.service';
 import {AdminPageComponent} from './components/admin-page/admin-page.component';
 import {MainPageUserComponent} from './components/main-page-user/main-page-user.component';
 import {AddBookPageComponent} from './components/main-page-admin/add-book-page/add-book-page.component';
+import {HeaderBookingComponent} from './components/header-booking/header-booking.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'userpage', component: UserPageComponent, canActivate: [AuthGuardService] },
   { path: 'adminpage', component: AdminPageComponent, canActivate: [AdminGuardService]},
   { path: 'book/:id', component: AddBookPageComponent, canActivate: [AdminGuardService] },
-  { path: 'book', component: AddBookPageComponent, canActivate: [AdminGuardService] }
+  { path: 'book', component: AddBookPageComponent, canActivate: [AdminGuardService] },
+  { path: 'booking', component: HeaderBookingComponent, canActivate: [AdminGuardService]}
 ];
 
 @NgModule({

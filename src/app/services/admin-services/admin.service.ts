@@ -12,7 +12,7 @@ import {SettingsBasicInterface} from '../../interfaces/admin/settings/settings-b
 
 export class AdminService {
 
-  private BASE_URL = `http://localhost:8080/api/reservations`
+  private BASE_URL = `http://localhost:8080/api/`
 
   constructor(private http: HttpClient, private shared: SharedService) { }
 
