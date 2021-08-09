@@ -131,7 +131,7 @@ export class MainPageAdminComponent implements OnInit, OnDestroy, AfterViewInit{
     this.booksAdminService.deleteBook(book.id).subscribe(result => {
       if (result) {
         this.toastr.success('წიგნი წარმატებით წაიშალა');
-        this.changeDetectorRefs.detectChanges();
+        this.loadBooks();
       } else {
         this.toastr.error('წიგნის წაშლისას დაფიქსირდა შეცდომა');
       }

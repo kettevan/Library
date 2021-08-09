@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   mail = new FormControl('', [Validators.required]);
   password = new FormControl('', Validators.required);
+  role = new FormControl('user');
 
   constructor(private fb: FormBuilder, private router: Router,
               private socialAuthService: SocialAuthService, private loginService: LoginService,
@@ -35,7 +36,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.loginForm = fb.group( {
       mail: this.mail,
-      password: this.password
+      password: this.password,
+      role: this.role
     });
   }
 

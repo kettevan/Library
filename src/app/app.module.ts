@@ -45,6 +45,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { BookingPageComponent } from './components/main-page-admin/booking-page/booking-page.component';
 import { HeaderBookingComponent } from './components/header-booking/header-booking.component';
 import {MatStepperModule} from '@angular/material/stepper';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import {MatStepperModule} from '@angular/material/stepper';
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatStepperModule
+    MatStepperModule,
+    MatRadioModule
   ],
   providers: [{
     provide: 'SocialAuthServiceConfig',

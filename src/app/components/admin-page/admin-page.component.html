@@ -1,5 +1,6 @@
 <mat-tab-group>
   <mat-tab label="მკითხველები">
+
     <div class="mat-elevation-z8">
     <table mat-table [dataSource]="studentsDataSource">
       <ng-container matColumnDef="firstName">
@@ -93,7 +94,7 @@
     </div>
   </mat-tab>
   <mat-tab label="პარამეტრები">
-    <div>
+    <div class="container">
       <mat-expansion-panel [expanded]="genresOpenState" (click)="genresOpenState = !genresOpenState" >
         <mat-expansion-panel-header>
           <mat-panel-title class="panel-title">

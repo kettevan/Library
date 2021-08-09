@@ -1,7 +1,7 @@
 <div class="login">
   <form [formGroup]="loginForm" class="col-8 col-md-4">
     <div class="form-group">
-      <mat-form-field style="width: 100%">
+      <mat-form-field style="width: 100%" >
         <mat-label>მეილი</mat-label>
         <input type='email' matInput formControlName='mail'>
       </mat-form-field>
@@ -20,10 +20,14 @@
         <p> პაროლი სავალდებულოა</p>
       </div>
     </div>
+    <mat-radio-group formControlName="role">
+      <mat-radio-button value="admin">ადმინი</mat-radio-button>
+      <mat-radio-button value="user">მომხმარებელი</mat-radio-button>
+    </mat-radio-group>
     <mat-card-actions>
       <div>
-        <button (click)="loginAsAdmin()" mat-raised-button>Login</button>
-        <button (click)="loginWithGoogle()" mat-raised-button class="google-login-btn googleBtn">Google</button>
+        <button (click)="loginAsAdmin()" [disabled]="role.value === 'user'" mat-raised-button>შესვლა</button>
+        <button (click)="loginWithGoogle()" [disabled]="role.value === 'admin'" mat-raised-button class="google-login-btn googleBtn">Google</button>
       </div>
     </mat-card-actions>
   </form>
