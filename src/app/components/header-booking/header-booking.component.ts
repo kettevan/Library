@@ -23,7 +23,7 @@ import {HeaderBookingRequestInterface} from '../../interfaces/admin/booking/head
 })
 export class HeaderBookingComponent implements OnInit, AfterViewInit {
 
-  public displayColumns: string[] = ['title', 'author', 'publish_year', 'bookCopies', 'rubric', 'language', 'actions']
+  public displayColumns: string[] = ['title', 'author', 'bookCopies', 'rubric', 'actions']
   public booksDatasource = new MatTableDataSource<BooksInterface>();
   public savedBooksArr: BooksInterface[] = []
   public savedBooks = new MatTableDataSource<BooksInterface>(this.savedBooksArr);
