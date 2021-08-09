@@ -18,8 +18,10 @@ mat-icon {
 }
 
 .nextBtn {
+  margin-top: 10px;
   background-color: #ffc87c;
   float: right;
+  margin-right: 10px;
 }
 
 table {
@@ -43,3 +45,23 @@ table {
     line-height: 25px;
   }
 }
+
+h3 {
+  margin: 20px;
+  font-family: 'avaza';
+}
+
+h1 {
+  display: flex;
+  align-items: center;
+  font-family: 'avaza';
+}
+
+::ng-deep .mat-horizontal-stepper-header{
+  pointer-events: none !important;
+}
+
+mat-divider {
+  padding-bottom: 10px;
+}
+

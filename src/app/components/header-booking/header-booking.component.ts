@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {AdminService} from '../../services/admin-services/admin.service';
 import {ToastrService} from 'ngx-toastr';
@@ -10,6 +10,7 @@ import {BooksResponseInterface} from '../../interfaces/admin/main-page/books-res
 import {MatPaginator} from '@angular/material/paginator';
 import {ViewBookPageComponent} from '../main-page-admin/view-book-page/view-book-page.component';
 import {MatDialog} from '@angular/material/dialog';
+import {HeaderBookingRequestInterface} from '../../interfaces/admin/booking/header-booking-request.interface';
 
 @Component({
   selector: 'app-header-booking',
@@ -22,25 +23,31 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class HeaderBookingComponent implements OnInit, AfterViewInit {
 
-  public displayColumns: string[] = ['title', 'author', 'publish_year', 'rubric', 'language', 'actions']
+  public displayColumns: string[] = ['title', 'author', 'publish_year', 'bookCopies', 'rubric', 'language', 'actions']
   public booksDatasource = new MatTableDataSource<BooksInterface>();
-  private savedBooksArr: BooksInterface[] = []
+  public savedBooksArr: BooksInterface[] = []
   public savedBooks = new MatTableDataSource<BooksInterface>(this.savedBooksArr);
   @ViewChild('booksPagination', {static: true}) booksPagination: MatPaginator;
   @ViewChild('savedBooksPagination', {static: true}) savedBooksPagination: MatPaginator;
   readerFormGroup: FormGroup;
   reservedBooksForm: FormGroup;
+  booksInfoForm: FormArray = new FormArray([]);
+
 
   readerPersonalNum = new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern("^[0-9]*$")])
   reader = new FormControl(null, [Validators.required]);
+  private readerObj = null;
 
-  bookSearchField = new FormControl(null, [Validators.required]);
-  selectedBooks = new FormControl([], [Validators.required]);
+  bookSearchField = new FormControl(null);
 
+  public minDate: Date = new Date();
+  public maxDate: Date = new Date();
 
   constructor(private _formBuilder: FormBuilder, private adminService: AdminService,
               private toastr: ToastrService, private booksService: BooksAdminService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog) {
+    this.maxDate.setMonth(this.maxDate.getMonth() + 1);
+  }
 
   ngOnInit(): void {
     this.readerFormGroup = this._formBuilder.group({
@@ -48,9 +55,40 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
       reader: this.reader
     });
     this.reservedBooksForm = this._formBuilder.group({
-      bookSearchField: this.bookSearchField,
-      selectedBooks: this.selectedBooks
+      bookSearchField: this.bookSearchField
     });
+  }
+
+  finalStep(): void {
+    console.log(this.reader);
+    const request: HeaderBookingRequestInterface = {
+      userId: this.readerObj.id,
+      bookCopies: []
+    }
+    for(let i = 0; i < this.booksInfoForm.controls.length; i++) {
+      console.log(this.booksInfoForm.controls[i].value);
+      request.bookCopies.push({
+        bookCopyId: this.booksInfoForm.controls[i].value.bookCopy.id,
+        startDate: this.booksInfoForm.controls[i].value.startDate,
+        endDate: this.booksInfoForm.controls[i].value.endDate,
+      })
+    }
+    console.log(request);
+  }
+
+  createFromArray(): void {
+    this.booksInfoForm = new FormArray([]);
+    for (let i = 0; i < this.savedBooksArr.length; i++) {
+      this.booksInfoForm.push(this._formBuilder.group({
+        bookTitle: new FormControl(this.savedBooksArr[i].title),
+        bookAuthor: new FormControl(this.savedBooksArr[i].author),
+        book: new FormControl(this.savedBooksArr[i], [Validators.required]),
+        bookCopy: new FormControl('', [Validators.required]),
+        startDate: new FormControl('', [Validators.required]),
+        endDate: new FormControl('', [Validators.required])
+      }))
+    }
+    console.log(this.booksInfoForm.controls);
   }
 
   findBooksWithSearchParam(): void {
@@ -59,6 +97,11 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
     } else {
       // შესაცვლელია url
       this.booksService.bookingFilter(this.bookSearchField.value).subscribe(result => {
+        if (result['content'].length == 0) {
+          this.bookSearchField.reset();
+          this.toastr.error('წიგნი ვერ მოიძებნა');
+          return;
+        }
         this.booksDatasource = new MatTableDataSource(result['content']);
         this.booksDatasource.paginator = this.booksPagination;
         console.log(result);
@@ -81,6 +124,8 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
       return;
     }
     this.savedBooksArr.push(element);
+    this.booksDatasource = new MatTableDataSource<BooksInterface>();
+    this.bookSearchField.reset();
     this.savedBooks.paginator = this.savedBooksPagination;
   }
 
@@ -90,7 +135,8 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
       return;
     } else {
       this.savedBooksArr = this.savedBooksArr.filter(x => x !== element);
-      this.toastr.success('')
+      this.savedBooks = new MatTableDataSource<BooksInterface>(this.savedBooksArr)
+      this.toastr.success('წიგნი წარმატებით წაიშალა');
     }
   }
 
@@ -101,14 +147,23 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
     }
     this.adminService.getUsers(false, this.readerPersonalNum.value).subscribe(result => {
       if (result['content'].length == 1) {
-        this.reader.setValue(result['content'][0])
-        this.reader.setValue(this.reader.value.firstName + ' ' + this.reader.value.lastName);
+        this.readerObj = result['content'][0]
+        this.reader.setValue(this.readerObj.firstName + ' ' + this.readerObj.lastName);
       } else {
-        this.reader.setValue(null);
+        this.readerObj = null;
         this.reader.setValue(null);
         this.toastr.error('დაფიქსირდა შეცდომა');
       }
     })
+  }
+
+  deleteBook(index: number): void {
+    this.booksInfoForm.removeAt(index);
+    this.savedBooksArr = this.savedBooksArr.filter(x => {
+      return x !== this.savedBooksArr[index];
+    })
+    this.savedBooks = new MatTableDataSource(this.savedBooksArr);
+    this.savedBooks.paginator = this.savedBooksPagination;
   }
 
   ngAfterViewInit(): void {

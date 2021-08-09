@@ -94,7 +94,7 @@
         <div class="col">
           <mat-form-field style="width: 100%;" appearance="outline">
             <mat-label>საგნობრივი რუბრიკა</mat-label>
-            <mat-select formControlName="rubricId">
+            <mat-select formControlName="bookCopy">
               <mat-option *ngFor="let rubric of rubrics" [value]="rubric.id">
                 {{rubric.name}}
               </mat-option>

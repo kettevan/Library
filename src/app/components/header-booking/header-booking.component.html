@@ -1,6 +1,6 @@
 <div class="container">
   <mat-horizontal-stepper #stepper>
-    <mat-step [stepControl]="readerFormGroup">
+    <mat-step [stepControl]="readerFormGroup" [editable]="false">
       <form [formGroup]="readerFormGroup">
         <ng-template matStepLabel>მკითხველი</ng-template>
         <mat-form-field style="width: 40%" appearance="outline">
@@ -23,15 +23,15 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="reservedBooksForm">
+    <mat-step [stepControl]="reservedBooksForm" [editable]="true">
       <form [formGroup]="reservedBooksForm">
         <ng-template matStepLabel>აირჩიეთ წიგნები</ng-template>
         <mat-form-field style="width: 70%" appearance="outline">
           <mat-label>წიგნის ძებნა</mat-label>
-          <input matInput placeholder="შეიყვანეთ საძიებო პარამეტრი" formControlName="bookSearchField" required>
-          <mat-error *ngIf='bookSearchField.invalid && (bookSearchField.dirty || bookSearchField.touched)'>
-            საძიებო ველის შეყვანა აუცილებელია
-          </mat-error>
+          <input matInput placeholder="შეიყვანეთ საძიებო პარამეტრი" formControlName="bookSearchField">
+<!--          <mat-error *ngIf='bookSearchField.invalid && (bookSearchField.dirty || bookSearchField.touched)'>-->
+<!--            საძიებო ველის შეყვანა აუცილებელია-->
+<!--          </mat-error>-->
         </mat-form-field>
         <button  mat-mini-fab class="my-fab searchButton" type="button" [matTooltip]="'ძენნა'" (click)="findBooksWithSearchParam()">
           <mat-icon>search</mat-icon>
@@ -54,6 +54,11 @@
               <td mat-cell class="row-height" *matCellDef="let element"> {{element.publishDate ? element.publishDate.split('-')[0] : ''}} </td>
             </ng-container>
 
+            <ng-container matColumnDef="bookCopies">
+              <th mat-header-cell *matHeaderCellDef> ეგზემპ. </th>
+              <td mat-cell class="row-height" *matCellDef="let element"> {{element.bookCopies ? element.bookCopies.length : ''}} </td>
+            </ng-container>
+
             <ng-container matColumnDef="rubric">
               <th mat-header-cell *matHeaderCellDef> რუბრიკა </th>
               <td mat-cell class="row-height" *matCellDef="let element"> {{element.subject ? element.subject.name : ''}} </td>
@@ -72,7 +77,7 @@
                   <button  mat-mini-fab class="my-fab small-fab" type="button" [matTooltip]="'ნახვა'" (click)="viewBook(element)">
                     <mat-icon>visibility</mat-icon>
                   </button>
-                  <button  mat-mini-fab class="my-fab small-fab" type="button" [matTooltip]="'დამატება'" (click)="addBookInReservedList(element)">
+                  <button  mat-mini-fab class="my-fab small-fab" type="button" [matTooltip]="'დამატება'" [disabled]="element.bookCopies.length == 0" (click)="addBookInReservedList(element)">
                     <mat-icon>add</mat-icon>
                   </button>
                 </div>
@@ -84,6 +89,7 @@
           </table>
           <mat-paginator #booksPagination="matPaginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
         </div>
+        <h3>arCeuli wignebi</h3>
         <div class="mat-elevation-z8">
           <table mat-table [dataSource]="savedBooks">
 
@@ -100,6 +106,11 @@
             <ng-container matColumnDef="publish_year">
               <th mat-header-cell *matHeaderCellDef> წელი </th>
               <td mat-cell class="row-height" *matCellDef="let element"> {{element.publishDate ? element.publishDate.split('-')[0] : ''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="bookCopies">
+              <th mat-header-cell *matHeaderCellDef> ეგზემპ. </th>
+              <td mat-cell class="row-height" *matCellDef="let element"> {{element.bookCopies ? element.bookCopies.length : ''}} </td>
             </ng-container>
 
             <ng-container matColumnDef="rubric">
@@ -133,48 +144,59 @@
           <mat-paginator #savedBooksPagination="matPaginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
         </div>
         <div>
-          <button class="nextBtn" [disabled]="reservedBooksForm.invalid" mat-button matStepperNext>შემდეგი</button>
+          <button class="nextBtn" [disabled]="savedBooksArr.length == 0" mat-button matStepperNext (click)="createFromArray()">შემდეგი</button>
         </div>
       </form>
     </mat-step>
+    <mat-step [editable]="false">
+      <h1 *ngIf="savedBooksArr.length == 0">
+        dasajavSni wignebi ar aris
+      </h1>
+      <form *ngFor="let form of booksInfoForm.controls; index as i" [formGroup]="form">
+        <div class="row">
+          <div class="col">
+            <mat-form-field style="width: 100%" appearance="outline">
+              <mat-label>სათაური</mat-label>
+              <input matInput formControlName="bookTitle" [readonly]="true">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field style="width: 100%" appearance="outline">
+              <mat-label>ავტორი</mat-label>
+              <input matInput formControlName="bookAuthor" [readonly]="true">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field style="width: 100%;" appearance="outline">
+              <mat-label>ეგზემპლარები</mat-label>
+              <mat-select formControlName="bookCopy">
+                <mat-option *ngFor="let copy of savedBooksArr[i].bookCopies" [value]="copy">
+                  {{copy.code}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="outline" >
+              <mat-label>აირჩიეთ თარიღები</mat-label>
+              <mat-date-range-input [min]="minDate" [max]="maxDate"  [rangePicker]="picker">
+                <input  matStartDate  placeholder="დასაწყისი" formControlName="startDate">
+                <input matEndDate placeholder="დასასრული" formControlName="endDate">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </div>
+          <button  mat-mini-fab class="my-fab searchButton" type="button" [matTooltip]="'წაშლა'" (click)="deleteBook(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </form>
+      <div>
+        <button class="nextBtn" [disabled]="booksInfoForm.invalid || booksInfoForm.controls.length == 0" mat-button matStepperNext (click)="finalStep()">დასრულება</button>
+        <button class="nextBtn" mat-button matStepperPrevious>უკან</button>
+      </div>
+    </mat-step>
   </mat-horizontal-stepper>
-
-  <!--  <mat-stepper #stepper>-->
-<!--    <mat-step [stepControl]="firstFormGroup" errorMessage="Name is required.">-->
-<!--      <form [formGroup]="firstFormGroup">-->
-<!--        <ng-template matStepLabel>Fill out your name</ng-template>-->
-<!--        <mat-form-field appearance="fill">-->
-<!--          <mat-label>Name</mat-label>-->
-<!--          <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>-->
-<!--        </mat-form-field>-->
-<!--        <div>-->
-<!--          <p>Go to a different step to see the error state</p>-->
-<!--          <button mat-button matStepperNext>Next</button>-->
-<!--        </div>-->
-<!--      </form>-->
-<!--    </mat-step>-->
-<!--    <mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">-->
-<!--      <form [formGroup]="secondFormGroup">-->
-<!--        <ng-template matStepLabel>Fill out your address</ng-template>-->
-<!--        <mat-form-field appearance="fill">-->
-<!--          <mat-label>Address</mat-label>-->
-<!--          <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"-->
-<!--                 required>-->
-<!--        </mat-form-field>-->
-<!--        <div>-->
-<!--          <p>Go to a different step to see the error state</p>-->
-<!--          <button mat-button matStepperPrevious>Back</button>-->
-<!--          <button mat-button matStepperNext>Next</button>-->
-<!--        </div>-->
-<!--      </form>-->
-<!--    </mat-step>-->
-<!--    <mat-step>-->
-<!--      <ng-template matStepLabel>Done</ng-template>-->
-<!--      <p>You are now done.</p>-->
-<!--      <div>-->
-<!--        <button mat-button matStepperPrevious>Back</button>-->
-<!--        <button mat-button (click)="stepper.reset()">Reset</button>-->
-<!--      </div>-->
-<!--    </mat-step>-->
-<!--  </mat-stepper>-->
 </div>

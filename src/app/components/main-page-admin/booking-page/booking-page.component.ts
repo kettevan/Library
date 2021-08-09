@@ -32,7 +32,6 @@ export class BookingPageComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: BookCopyInterface,
               private matDialogRef: MatDialogRef<any>) {
     this.maxDate.setMonth(this.maxDate.getMonth() + 1);
-    console.log(this.maxDate)
     if (this.data == null) {
       matDialogRef.close();
     } else {
