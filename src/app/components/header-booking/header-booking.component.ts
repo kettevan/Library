@@ -11,6 +11,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import {ViewBookPageComponent} from '../main-page-admin/view-book-page/view-book-page.component';
 import {MatDialog} from '@angular/material/dialog';
 import {HeaderBookingRequestInterface} from '../../interfaces/admin/booking/header-booking-request.interface';
+import {ReservationsService} from '../../services/admin-services/reservations.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header-booking',
@@ -43,10 +45,23 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
 
+  public disabledDatesArr = [new Date('08/11/2021').getTime()];
+
   constructor(private _formBuilder: FormBuilder, private adminService: AdminService,
               private toastr: ToastrService, private booksService: BooksAdminService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog, private reservationsService: ReservationsService, private router: Router) {
     this.maxDate.setMonth(this.maxDate.getMonth() + 1);
+  }
+
+
+  dateFilter = (d: Date): boolean => {
+    const index = this.disabledDatesArr.indexOf(d.getTime())
+    return index === -1;
+  }
+
+  disableDates(index: any): void {
+    const value =  this.booksInfoForm.controls[index].value.bookCopy.bookedDates;
+    console.log(value);
   }
 
   ngOnInit(): void {
@@ -60,20 +75,23 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   }
 
   finalStep(): void {
-    console.log(this.reader);
-    const request: HeaderBookingRequestInterface = {
-      userId: this.readerObj.id,
-      bookCopies: []
-    }
+    const request: HeaderBookingRequestInterface[] = []
     for(let i = 0; i < this.booksInfoForm.controls.length; i++) {
       console.log(this.booksInfoForm.controls[i].value);
-      request.bookCopies.push({
+      request.push({
+        borrowerId: this.readerObj.id,
         bookCopyId: this.booksInfoForm.controls[i].value.bookCopy.id,
         startDate: this.booksInfoForm.controls[i].value.startDate,
         endDate: this.booksInfoForm.controls[i].value.endDate,
       })
     }
-    console.log(request);
+    this.reservationsService.reserveBook(request).subscribe(result => {
+      console.log(result);
+      this.toastr.success('წიგნები წარმატებით დაიჯავშნა');
+      this.router.navigate(['/adminmainpage']);
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
   }
 
   createFromArray(): void {

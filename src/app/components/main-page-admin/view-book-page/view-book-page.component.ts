@@ -7,6 +7,7 @@ import {BookingPageComponent} from '../booking-page/booking-page.component';
 import {ReservationsService} from '../../../services/admin-services/reservations.service';
 import {ToastrService} from 'ngx-toastr';
 import {BooksReservationRequestInterface} from '../../../interfaces/admin/main-page/books-reservation.interface';
+import {HeaderBookingRequestInterface} from '../../../interfaces/admin/booking/header-booking-request.interface';
 
 @Component({
   selector: 'app-view-book-page',
@@ -47,13 +48,14 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
 
   private reserveBook(reservationInfo: any, bookCopy: BookCopyInterface): void {
     console.log(reservationInfo);
-    const reservationRequest: BooksReservationRequestInterface = {
+    const request: HeaderBookingRequestInterface[] = []
+    request.push({
       bookCopyId: bookCopy.id,
-      userId: reservationInfo.readersObj.id,
+      borrowerId: reservationInfo.readersObj.id,
       startDate: reservationInfo.dateFrom,
       endDate: reservationInfo.dateTo
-    }
-    this.reservationService.reserveBook(reservationRequest).subscribe(result => {
+    })
+    this.reservationService.reserveBook(request).subscribe(result => {
       console.log(result);
     }, error =>  {
       this.toastr.error('დაფიქსირდა შეცდომა');

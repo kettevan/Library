@@ -1,14 +1,6 @@
 export class HeaderBookingRequestInterface {
-  userId: number;
-  bookCopies: {
+    borrowerId: number;
     bookCopyId: number;
     startDate: Date;
     endDate: Date;
-  }[]
-}
-
-export class BookCopiesReserveInterface {
-  bookCopyId: number;
-  startDate: Date;
-  endDate: Date;
 }
