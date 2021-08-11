@@ -1,1 +1,27 @@
-<p>main-page-user works!</p>
+<div class="books">
+  <div class="row">
+    <div class="column" *ngFor="let book of booksDatasource">
+      <mat-card>
+        <mat-card-title>
+          {{book.title? book.title.length < 20 ? book.title : book.title.substr(0, 15) + '...' : ''}}
+        </mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-card-subtitle>
+          {{book.subtitle? book.subtitle.length < 20 ? book.subtitle : book.subtitle.substr(0, 15) + '...' : ''}}
+        </mat-card-subtitle>
+        <mat-card-content>
+          <p>{{book.author? book.author.length < 25 ? book.author : book.author.substr(0, 20) + '...' : ''}}</p>
+          <p>რუბრიკა: {{book.rubric?.name}} </p>
+          <p>ენა: {{book.language?.name}} </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button style="width: 100%" type="button" color="accent" mat-raised-button>დეტალურად</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+  </div>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+</div>
+

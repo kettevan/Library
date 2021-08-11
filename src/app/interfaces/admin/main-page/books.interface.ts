@@ -18,13 +18,14 @@ export interface BooksInterface {
   publisher?: SettingsBasicInterface;
   resourceType?: SettingsBasicInterface;
   resourceForm?: SettingsBasicInterface;
-  subjectId?: SettingsBasicInterface;
+  rubricId?: SettingsBasicInterface;
   udc?: string;
   link?: string;
   place?: string;
   price?: string;
   file?: string;
   isbn: string;
+  image?: string;
 }
 
 export interface BookCopyInterface {

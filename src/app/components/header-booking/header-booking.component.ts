@@ -54,6 +54,7 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   }
 
 
+
   dateFilter = (d: Date): boolean => {
     const index = this.disabledDatesArr.indexOf(d.getTime())
     return index === -1;

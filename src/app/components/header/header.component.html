@@ -9,7 +9,9 @@
       <a *ngIf="admin$ | async" class="navigation" href="/adminmainpage">wignebi</a>
       <a *ngIf="user$ | async" class="navigation" href="/userpage">Cemi gverdi</a>
       <a *ngIf="admin$ | async" class="navigation" href="/adminpage">adminis gverdi</a>
-
+      <button *ngIf="(admin$ | async) || (user$ | async)"  mat-mini-fab class="my-fab searchButton" type="button" [matTooltip]="'გასვლა'" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
     </div>
 
 

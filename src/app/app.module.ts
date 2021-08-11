@@ -46,6 +46,7 @@ import { BookingPageComponent } from './components/main-page-admin/booking-page/
 import { HeaderBookingComponent } from './components/header-booking/header-booking.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
+import { BookDetailsPageComponent } from './components/main-page-user/book-details-page/book-details-page.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {MatRadioModule} from '@angular/material/radio';
     AddBookPageComponent,
     ViewBookPageComponent,
     BookingPageComponent,
-    HeaderBookingComponent
+    HeaderBookingComponent,
+    BookDetailsPageComponent
   ],
   imports: [
     ToastrModule.forRoot({

@@ -4,6 +4,9 @@ import {LoginComponent} from '../login/login.component';
 import {LoginService} from '../../services/login-services/login.service';
 import {Observable, of} from 'rxjs';
 import {SharedService} from '../../services/shared/shared.service';
+import {take} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {SocialAuthService} from 'angularx-social-login';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +18,7 @@ export class HeaderComponent implements OnInit{
   public user$: Observable<boolean>;
   public admin$: Observable<boolean>;
 
-  constructor(private sharedService: SharedService) {
+  constructor(private sharedService: SharedService, private router: Router, public socialAuthServive: SocialAuthService) {
     this.sharedService.user.subscribe(result => {
       console.log(result)
       if (result.toUpperCase() === 'ADMIN') {
@@ -31,6 +34,20 @@ export class HeaderComponent implements OnInit{
     })
   };
 
+  logout(): void {
+    this.user$.subscribe(isUser => {
+      if (isUser) {
+        localStorage.clear();
+        this.socialAuthServive.signOut().then(() => this.router.navigate(['/login']));
+      }
+    })
+    this.admin$.subscribe(isAdmin => {
+      if (isAdmin) {
+        localStorage.clear();
+        this.router.navigate(['/login'])
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.getTokenInfo();
@@ -38,7 +55,6 @@ export class HeaderComponent implements OnInit{
 
   getTokenInfo() {
     var token = localStorage.getItem('token');
-    console.log(token);
     if (token != null) {
       var decoded = jwt_decode(token);
       if (decoded['Role'].toUpperCase() === 'USER') {

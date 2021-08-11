@@ -1,0 +1,47 @@
+.books {
+  margin: 0 auto;
+}
+
+mat-paginator {
+  float: right;
+  padding: 20px;
+}
+
+::ng-deep mat-card {
+  margin-bottom: 20px;
+  display:flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+::ng-deep mat-card-actions {
+  position: absolute;
+  bottom: 10px;
+  width: 90%;
+  padding-bottom: 5px!important;
+}
+
+::ng-deep .mat-card-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.column {
+  width: 18%;
+  padding: 10px 10px;
+  display:inline-block;
+  vertical-align: middle;
+  align-items: stretch;
+  float: none;
+}
+
+.row {
+  margin: 0 auto;
+}
+
+.mat-flat-button .mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+  color: black;
+  background-color: #ffc87c;
+}
+
+

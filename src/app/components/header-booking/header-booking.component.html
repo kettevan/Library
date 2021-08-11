@@ -241,7 +241,7 @@
           <div class="col">
             <mat-form-field style="width: 100%;" appearance="outline" >
               <mat-label>ეგზემპლარები</mat-label>
-              <mat-select formControlName="bookCopy" (valueChange)="disableDates(i)">
+              <mat-select formControlName="bookCopy" (selectionChange)="disableDates(i)">
                 <mat-option *ngFor="let copy of savedBooksArr[i].bookCopies" [value]="copy" >
                   {{copy.code}}
                 </mat-option>
