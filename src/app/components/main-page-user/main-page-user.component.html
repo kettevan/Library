@@ -15,7 +15,7 @@
           <p>ენა: {{book.language?.name}} </p>
         </mat-card-content>
         <mat-card-actions>
-            <button style="width: 100%" type="button" color="accent" mat-raised-button>დეტალურად</button>
+            <button style="width: 100%" type="button" color="accent" mat-raised-button (click)="bookDetails(book.id)">დეტალურად</button>
         </mat-card-actions>
       </mat-card>
     </div>

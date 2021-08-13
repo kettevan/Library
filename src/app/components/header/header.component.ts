@@ -38,6 +38,8 @@ export class HeaderComponent implements OnInit{
     this.user$.subscribe(isUser => {
       if (isUser) {
         localStorage.clear();
+        this.user$ = of(false);
+        this.admin$ = of(false);
         this.socialAuthServive.signOut().then(() => this.router.navigate(['/login']));
       }
     })

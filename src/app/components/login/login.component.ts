@@ -13,7 +13,7 @@ import {SharedService} from '../../services/shared/shared.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
@@ -27,13 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private router: Router,
               private socialAuthService: SocialAuthService, private loginService: LoginService,
               private toastr: ToastrService, private sharedService: SharedService) {
-    var token = localStorage.getItem('token');
-    if (sharedService.isAdminToken(token)) {
-      this.router.navigate(["adminmainpage"])
-    } else if (sharedService.isUserToken(token)) {
-      this.router.navigate(["usermainpage"])
-    }
-
+    localStorage.clear();
     this.loginForm = fb.group( {
       mail: this.mail,
       password: this.password,

@@ -49,6 +49,10 @@ export class MainPageUserComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
+  public bookDetails(bookId: number): void {
+    this.router.navigate([`/book/view/${bookId}`])
+  }
+
   private loadBooks(loaded: boolean) {
     let pageIndex = 1;
     let pageSize = 10;

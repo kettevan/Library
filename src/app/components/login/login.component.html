@@ -20,16 +20,16 @@
         <p> პაროლი სავალდებულოა</p>
       </div>
     </div>
-    <mat-radio-group formControlName="role">
-      <mat-radio-button value="admin">ადმინი</mat-radio-button>
-      <mat-radio-button value="user">მომხმარებელი</mat-radio-button>
-    </mat-radio-group>
-    <mat-card-actions>
-      <div>
+    <div>
+      <mat-radio-group formControlName="role" style="margin: 10px">
+        <mat-radio-button value="admin">ადმინი</mat-radio-button>
+        <mat-radio-button value="user">მომხმარებელი</mat-radio-button>
+      </mat-radio-group>
+      <div style="margin: 20px">
         <button (click)="loginAsAdmin()" [disabled]="role.value === 'user'" mat-raised-button>შესვლა</button>
         <button (click)="loginWithGoogle()" [disabled]="role.value === 'admin'" mat-raised-button class="google-login-btn googleBtn">Google</button>
       </div>
-    </mat-card-actions>
+    </div>
   </form>
 </div>
 
