@@ -1,5 +1,6 @@
 <header class="header">
-    <a href="/mainpage"><img src="../../../assets/images/freeuni-transparent.png"></a>
+    <a *ngIf="user$ | async" href="/usermainpage"><img src="../../../assets/images/freeuni-transparent.png"></a>
+    <a *ngIf="admin$ | async" href="/adminmainpage"><img src="../../../assets/images/freeuni-transparent.png"></a>
     <h1>
       Tavisufali universiteti
     </h1>

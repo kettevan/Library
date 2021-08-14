@@ -48,6 +48,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
 import { BookDetailsPageComponent } from './components/main-page-user/book-details-page/book-details-page.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { UserBookingPageComponent } from './components/main-page-user/user-booking-page/user-booking-page.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
     BookingPageComponent,
     HeaderBookingComponent,
     BookDetailsPageComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    UserBookingPageComponent
   ],
   imports: [
     ToastrModule.forRoot({

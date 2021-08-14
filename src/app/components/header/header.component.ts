@@ -71,10 +71,4 @@ export class HeaderComponent implements OnInit{
       this.admin$ = of(false);
     }
   }
-
-
-
-
-
-
 }

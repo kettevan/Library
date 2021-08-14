@@ -10,7 +10,7 @@ import {HeaderBookingRequestInterface} from '../../interfaces/admin/booking/head
 
 export class ReservationsService {
 
-  private BASE_URL = `http://localhost:8080/api/reservations/_lend`
+  private BASE_URL = `http://localhost:8080/api/reservations/`
 
   constructor(private http: HttpClient, private shared: SharedService) {
   }
@@ -19,6 +19,14 @@ export class ReservationsService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     const final = {'bookCopyReservationList': reservedBooks};
-    return this.http.post(this.BASE_URL, final, { headers: {'Authorization': `Bearer ${token}`} });
+    const requestUrl = this.BASE_URL + `_lend`
+    return this.http.post(requestUrl, final, { headers: {'Authorization': `Bearer ${token}`} });
+  }
+
+  reserveUserBook(reservationInfo: HeaderBookingRequestInterface): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = this.BASE_URL
+    return this.http.post(requestUrl, reservationInfo, { headers: {'Authorization': `Bearer ${token}`} });
   }
 }

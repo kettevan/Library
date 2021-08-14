@@ -1,0 +1,25 @@
+<div>
+  <form [formGroup]="userBookingForm">
+    <mat-form-field style="width: 100%;" appearance="outline" >
+      <mat-label>ეგზემპლარები</mat-label>
+      <mat-select formControlName="bookCopy" (selectionChange)="disableDates()">
+        <mat-option *ngFor="let copy of data.bookCopies" [value]="copy" >
+          {{copy.code}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>აირჩიეთ თარიღები</mat-label>
+      <mat-date-range-input [disabled]="selectedBookCopy === null" [min]="minDate" [max]="maxDate"  [rangePicker]="picker" [dateFilter]="dateFilter">
+        <input  matStartDate placeholder="დასაწყისი" formControlName="startDate">
+        <input matEndDate placeholder="დასასრული" formControlName="endDate">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <div class="d-flex justify-end mt-24 child-ml-12 actions">
+      <button type="button" mat-raised-button (click)="onCancelClick()">გაუქმება</button>
+      <button type="button" color="accent" mat-raised-button (click)="onSubmitClick()">შენახვა</button>
+    </div>
+  </form>
+</div>

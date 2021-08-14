@@ -84,8 +84,10 @@ export class LoginComponent implements OnInit, OnDestroy {
               googleSubs.subscribe(res => {
                 this.subs.push(googleSubs);
               if (res) {
+                console.log(res);
                 this.sharedService.editUser("USER");
                 localStorage.setItem("token", res.accessToken);
+                localStorage.setItem("id", res['id']);
                 this.router.navigate(['usermainpage'])
               } else {
                 this.toastr.error("მონაცემები არასწორია");

@@ -45,7 +45,7 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
 
-  public disabledDatesArr = [new Date('08/11/2021').getTime()];
+  public disabledDatesArr = [new Date('16/11/2021').getTime()];
 
   constructor(private _formBuilder: FormBuilder, private adminService: AdminService,
               private toastr: ToastrService, private booksService: BooksAdminService,
