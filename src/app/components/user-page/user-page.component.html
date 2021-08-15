@@ -12,6 +12,8 @@
                 <h3>სახელი: <span>{{  userInfo.firstName}}</span> </h3>
                 <h3>გვარი: <span>{{  userInfo.lastName}}</span> </h3>
                 <h3>მეილი: <span>{{  userInfo.email}}</span> </h3>
+                <h3>პირადი ნომერი: <span>{{  userInfo.personalNo}}</span></h3>
+                <h3>ტელეფონის ნომერი: <span>{{  userInfo.phoneNum}}</span></h3>
                 <h3>ქვეყანა: <span> Georgia</span> </h3>
               </mat-card-content>
             </mat-card>
@@ -25,7 +27,18 @@
     <div class="d-md-flex h-md-100 justify-content-center">
       <mat-tab-group style="width: 100%">
         <mat-tab label="დაჯავშნილი/გატანილი წიგნები">
-
+          <div class="row">
+            <div class="col">
+              <h2 class="label">dajavSnili wignebi</h2>
+              <div class="mat-elevation-z8">
+<!--                <table mat-table [dataSource]="reservationDataSource">-->
+<!--                </table>-->
+              </div>
+            </div>
+            <div class="col">
+              <h2 class="label">gatanili wignebi</h2>
+            </div>
+          </div>
         </mat-tab>
         <mat-tab label="შენახული წიგნები">
 

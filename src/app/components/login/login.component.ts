@@ -88,6 +88,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.sharedService.editUser("USER");
                 localStorage.setItem("token", res.accessToken);
                 localStorage.setItem("id", res['id']);
+                localStorage.setItem("personalNo", res.identityNumber);
+                localStorage.setItem("phoneNum", res.phoneNumber);
                 this.router.navigate(['usermainpage'])
               } else {
                 this.toastr.error("მონაცემები არასწორია");

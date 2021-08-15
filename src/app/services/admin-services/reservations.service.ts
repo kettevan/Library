@@ -11,6 +11,7 @@ import {HeaderBookingRequestInterface} from '../../interfaces/admin/booking/head
 export class ReservationsService {
 
   private BASE_URL = `http://localhost:8080/api/reservations/`
+  private USERS_BASE_UEL = `http://localhost:8080/api/users/`
 
   constructor(private http: HttpClient, private shared: SharedService) {
   }
@@ -25,8 +26,15 @@ export class ReservationsService {
 
   reserveUserBook(reservationInfo: HeaderBookingRequestInterface): Observable<any> {
     const token = localStorage.getItem('token');
-    if (!this.shared.isAdminToken(token)) return of(null);
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
     const requestUrl = this.BASE_URL
     return this.http.post(requestUrl, reservationInfo, { headers: {'Authorization': `Bearer ${token}`} });
+  }
+
+  getUserReservations(userId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
+    const requestUrl = this.USERS_BASE_UEL + `${userId}/reservations`
+    return this.http.get(requestUrl, { headers: {'Authorization': `Bearer ${token}`} });
   }
 }

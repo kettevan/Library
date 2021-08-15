@@ -26,6 +26,14 @@ export interface BooksInterface {
   file?: string;
   isbn: string;
   image?: string;
+  comments?: CommentsInterface[];
+}
+
+export interface CommentsInterface {
+  id?: number;
+  userId: number;
+  bookId: number;
+  comment: string;
 }
 
 export interface BookCopyInterface {

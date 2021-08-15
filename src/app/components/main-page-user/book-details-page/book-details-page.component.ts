@@ -42,6 +42,7 @@ export class BookDetailsPageComponent implements OnInit {
       data: this.data
     }).afterClosed().subscribe(result => {
       if (result) {
+        console.log(result);
         const bookingInfo: HeaderBookingRequestInterface = {
           borrowerId: +localStorage.getItem('id'),
           bookCopyId: result.bookCopy.id,
@@ -55,8 +56,11 @@ export class BookDetailsPageComponent implements OnInit {
           this.toastr.error('დაფიქსირდა შეცდომა');
         })
       }
-      console.log(result);
     })
+  }
+
+  addToFavourites(): void {
+    console.log('added to favourites')
   }
 
 }
