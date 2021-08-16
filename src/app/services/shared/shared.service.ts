@@ -10,10 +10,22 @@ export class SharedService {
   private userSource = new BehaviorSubject<string>('');
   public user = this.userSource.asObservable();
 
+  public userObj: any;
+
+
   constructor() { }
 
   public editUser(user) {
     this.userSource.next(user);
+  }
+
+  public setUser(user) {
+    this.userObj = user;
+    console.log(this.userObj);
+  }
+
+  public getUser() {
+    return this.userObj;
   }
 
   public isAdminToken(token: string) {

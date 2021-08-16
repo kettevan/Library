@@ -85,6 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.subs.push(googleSubs);
               if (res) {
                 console.log(res);
+                this.sharedService.setUser(res);
                 this.sharedService.editUser("USER");
                 localStorage.setItem("token", res.accessToken);
                 localStorage.setItem("id", res['id']);

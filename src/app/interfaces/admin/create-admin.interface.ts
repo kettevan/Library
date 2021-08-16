@@ -1,8 +1,10 @@
 export class CreateAdminInterface {
+  id?: number;
   firstName: string;
   lastName: string;
   email: string;
   personalNo: string;
-  password: string;
-  repeatPassword: string;
+  phoneNumber?: string;
+  password?: string;
+  repeatPassword?: string;
 }

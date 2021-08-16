@@ -44,4 +44,29 @@ mat-card {
 
 }
 
+.my-fab {
+  margin: 0 auto;
+  transition: none !important;
+  box-shadow: none !important;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
 
+  &::ng-deep .mat-button-wrapper{
+    line-height: 25px;
+    padding: 0;
+  }
+  .mat-icon {
+    font-size: 16px;
+    line-height: 25px;
+  }
+}
+
+.mat-flat-button .mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+  color: black;
+  background-color: #ffc87c;
+}
+
+.edit-button {
+  background-color: #ffc87c;
+}

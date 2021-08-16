@@ -22,7 +22,7 @@ export class SettingEditDialogComponent implements OnInit {
     this.settingForm = this.fb.group( {
       name: this.name
     });
-    if (this.data != null) {
+    if (this.data != null && this.data.name !== undefined) {
       this.name.setValue( this.data.name);
     }
   }

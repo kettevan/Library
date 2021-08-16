@@ -34,6 +34,14 @@ export class HeaderComponent implements OnInit{
     })
   };
 
+  isAdminOrUser(): boolean {
+    if (localStorage.getItem('token')) {
+      return true;
+    }
+    return false;
+  }
+
+
   logout(): void {
     this.user$.subscribe(isUser => {
       if (isUser) {
