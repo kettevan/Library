@@ -49,6 +49,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { BookDetailsPageComponent } from './components/main-page-user/book-details-page/book-details-page.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { UserBookingPageComponent } from './components/main-page-user/user-booking-page/user-booking-page.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -71,42 +72,43 @@ import { UserBookingPageComponent } from './components/main-page-user/user-booki
     ErrorPageComponent,
     UserBookingPageComponent
   ],
-  imports: [
-    ToastrModule.forRoot({
-        positionClass: 'toast-top-right',
-        timeOut: 2000
-      }
-    ),
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatInputModule,
-    SocialLoginModule,
-    ReactiveFormsModule,
-    NgbModule,
-    MatMenuModule,
-    MatTabsModule,
-    HttpClientModule,
-    MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatListModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    ScrollingModule,
-    MatTooltipModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatCheckboxModule,
-    MatStepperModule,
-    MatRadioModule
-  ],
+    imports: [
+        ToastrModule.forRoot({
+                positionClass: 'toast-top-right',
+                timeOut: 2000
+            }
+        ),
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatInputModule,
+        SocialLoginModule,
+        ReactiveFormsModule,
+        NgbModule,
+        MatMenuModule,
+        MatTabsModule,
+        HttpClientModule,
+        MatIconModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatListModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        ScrollingModule,
+        MatTooltipModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatCheckboxModule,
+        MatStepperModule,
+        MatRadioModule,
+        MatProgressSpinnerModule
+    ],
   providers: [{
     provide: 'SocialAuthServiceConfig',
     useValue: {

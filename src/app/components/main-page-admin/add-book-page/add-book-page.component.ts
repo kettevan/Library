@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {SettingsService} from '../../../services/admin-services/settings.service';
 import {SettingsBasicInterface} from '../../../interfaces/admin/settings/settings-basic.interface';
@@ -10,7 +10,7 @@ import {SettingEditDialogComponent} from '../../admin-page/setting-edit-dialog/s
 import {MatDialog} from '@angular/material/dialog';
 import {MatListOption} from '@angular/material/list';
 import {BookCopyInterface, BooksInterface} from '../../../interfaces/admin/main-page/books.interface';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {startWith} from 'rxjs/operators';
 import {resolve} from '@angular/compiler-cli/src/ngtsc/file_system';
 
@@ -20,6 +20,9 @@ import {resolve} from '@angular/compiler-cli/src/ngtsc/file_system';
   styleUrls: ['./add-book-page.component.scss']
 })
 export class AddBookPageComponent implements OnInit, OnDestroy {
+  @ViewChild('fileUpload', {static: false}) fileUpload: ElementRef;
+  public uploading: boolean = false;
+
   private data: BooksInterface = null;
   subs = [];
   newBookForm: FormGroup;
@@ -39,12 +42,12 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
   pageNumber = new FormControl(null);
   UDC = new FormControl(null);
   active = new FormControl(null);
-  rubricId = new FormControl(null);
+  subjectId = new FormControl(null);
   formId = new FormControl(null);
   typeId = new FormControl(null);
   link = new FormControl(null);
   collectionId = new FormControl(null);
-  file = new FormControl(null);
+  public file = new FormControl(null);
   place = new FormControl(null);
   price = new FormControl(null);
 
@@ -92,7 +95,7 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       typeId: this.typeId,
       pageNumber: this.pageNumber,
       UDC: this.UDC,
-      rubricId: this.rubricId,
+      subjectId: this.subjectId,
       formId: this.formId,
       link: this.link,
       collectionId: this.collectionId,
@@ -123,7 +126,7 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       this.pageNumber.setValue(this.data.pageNumber);
       this.UDC.setValue(this.data.udc);
       if (this.data.subject) {
-        this.rubricId.setValue(this.data.subject.id);
+        this.subjectId.setValue(this.data.subject.id);
       }
       if (this.data.resourceForm) {
         this.formId.setValue(this.data.resourceForm.id);
@@ -190,8 +193,41 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     this.bookCopies = this.bookCopies.filter(x => copiesCodesToDelete.indexOf(x) == -1)
   }
 
-  uploadFile(event: Event): void {
-    console.log('ფაილის ატვირთვა')
+  onFileChange(event: Event): void {
+    this.uploading = true;
+    const uploaded = (event.target as HTMLInputElement).files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(uploaded);
+    reader.onload = (event: any) => {
+      this.file.setValue(reader.result);
+      console.log(this.file.value);
+      this.uploading = false;
+    };
+    reader.onerror = (error) => {
+      this.uploading = false;
+      console.log('Error: ', error);
+    };
+    // if (file) {
+    //   this.uploadFiles(file).subscribe(
+    //     result => {
+    //       if (result.success) {
+    //         this.toastr.success(`ფაილი წარმატებით აიტვირთა`);
+    //       }
+    //     },
+    //     error => {
+    //       this.toastr.error(`ფაილი ვერ აიტვირთა`);
+    //     }
+    //   );
+    // }
+  }
+
+  uploadFiles(file: File): Observable<any> {
+    this.fileUpload.nativeElement.value = '';
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('directory', 'cms/reglaments');
+    formData.append('appendRandomString', 'false');
+    return of(null);
   }
 
   ngOnDestroy(): void {
@@ -239,7 +275,7 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       active: this.active.value,
       publishDate: this.publishDate.value,
       createDate: this.createDate.value,
-      subjectId: this.rubricId.value,
+      subjectId: this.subjectId.value,
       languageId: this.languageId.value,
       fundId: this.collectionId.value,
       publisherId: this.publisherId.value,

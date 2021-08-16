@@ -94,7 +94,7 @@
         <div class="col">
           <mat-form-field style="width: 100%;" appearance="outline">
             <mat-label>საგნობრივი რუბრიკა</mat-label>
-            <mat-select formControlName="bookCopy">
+            <mat-select formControlName="subjectId">
               <mat-option *ngFor="let rubric of rubrics" [value]="rubric.id">
                 {{rubric.name}}
               </mat-option>
@@ -134,10 +134,12 @@
       </div>
       <div class="row">
         <div class="col">
-          <button mat-button (click)="fileInput.click()">
+          <button mat-button (click)="fileUpload.click()" [disabled]="uploading">
             <mat-icon>upload</mat-icon>ფაილის ატვირთვა
+            <mat-icon *ngIf="uploading"><mat-spinner diameter="20"></mat-spinner></mat-icon>
           </button>
-          <input #fileInput type="file" accept=".dpf" class="hidden" (change)="uploadFile($event)">
+<!--          <input type="file" accept="application/pdf" #fileUpload (change)="onFileChange($event)" style="display: none" />-->
+          <input #fileUpload type="file" accept="application/pdf" class="hidden" (change)="onFileChange($event)">
         </div>
         <div class="col">
           <mat-form-field style="width: 100%;" appearance="outline">
