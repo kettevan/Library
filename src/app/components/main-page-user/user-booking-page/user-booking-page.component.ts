@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {BooksInterface} from '../../../interfaces/admin/main-page/books.interface';
+import {BooksInterface} from '../../../interfaces/admin/books/books.interface';
 import {ToastrService} from 'ngx-toastr';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 

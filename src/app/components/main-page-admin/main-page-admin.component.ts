@@ -1,11 +1,11 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SharedService} from '../../services/shared/shared.service';
 import {BooksAdminService} from '../../services/books-admin/books-admin.service';
-import {BooksResponseInterface} from '../../interfaces/admin/main-page/books-response.interface';
+import {BooksResponseInterface} from '../../interfaces/admin/books/books-response.interface';
 import {BookDataSource} from '../../data-sources/book-data-source.datasource';
 import {MatPaginator} from '@angular/material/paginator';
 import {tap} from 'rxjs/operators';
-import {BooksInterface} from '../../interfaces/admin/main-page/books.interface';
+import {BooksInterface} from '../../interfaces/admin/books/books.interface';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {ConfirmDeleteDialogComponent} from '../shared/confirm-delete-dialog/confirm-delete-dialog.component';

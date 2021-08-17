@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {startWith, switchMap} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {BooksAdminService} from '../../../services/books-admin/books-admin.service';
-import {BooksInterface} from '../../../interfaces/admin/main-page/books.interface';
+import {BooksInterface} from '../../../interfaces/admin/books/books.interface';
 import {MatDialog} from '@angular/material/dialog';
 import {UserBookingPageComponent} from '../user-booking-page/user-booking-page.component';
 import {HeaderBookingRequestInterface} from '../../../interfaces/admin/booking/header-booking-request.interface';
@@ -10,8 +10,10 @@ import {SocialAuthService} from 'angularx-social-login';
 import {ReservationsService} from '../../../services/admin-services/reservations.service';
 import {ToastrService} from 'ngx-toastr';
 import {BehaviorSubject} from 'rxjs';
-import {CommentInterface} from '../../../interfaces/admin/main-page/comment.interface';
+import {CommentInterface} from '../../../interfaces/admin/books/comment.interface';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UsersService} from '../../../services/users/users.service';
+import {FavouriteInterface} from '../../../interfaces/admin/user/favourite.interface';
 
 @Component({
   selector: 'app-book-details-page',
@@ -30,7 +32,8 @@ export class BookDetailsPageComponent implements OnInit {
   newComment = new FormControl(null, [Validators.required]);
 
   constructor(private route: ActivatedRoute, private booksService: BooksAdminService, private dialog: MatDialog,
-              private reservationService: ReservationsService, private toastr: ToastrService, private fb: FormBuilder) {
+              private reservationService: ReservationsService, private toastr: ToastrService, private fb: FormBuilder,
+              private userService: UsersService) {
   }
 
   ngOnInit(): void {
@@ -94,7 +97,19 @@ export class BookDetailsPageComponent implements OnInit {
   }
 
   addToFavourites(): void {
-    console.log('added to favourites')
+    const userId = +localStorage.getItem('id');
+    if (!userId) return;
+    const favObj: FavouriteInterface = {
+      userId: userId,
+      bookId: this.bookId
+    }
+    console.log(favObj);
+    this.userService.addBookToFavourites(favObj).subscribe(result => {
+      console.log(result);
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+      console.log(error);
+    })
   }
 
 }

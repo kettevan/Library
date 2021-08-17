@@ -1,7 +1,7 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
-import {BooksResponseInterface} from '../interfaces/admin/main-page/books-response.interface';
+import {BooksResponseInterface} from '../interfaces/admin/books/books-response.interface';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {BooksInterface} from '../interfaces/admin/main-page/books.interface';
+import {BooksInterface} from '../interfaces/admin/books/books.interface';
 import {BooksAdminService} from '../services/books-admin/books-admin.service';
 import {catchError, finalize} from 'rxjs/operators';
 

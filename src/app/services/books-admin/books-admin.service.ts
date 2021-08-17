@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {BooksResponseInterface} from '../../interfaces/admin/main-page/books-response.interface';
+import {BooksResponseInterface} from '../../interfaces/admin/books/books-response.interface';
 import {SharedService} from '../shared/shared.service';
-import {BooksInterface} from '../../interfaces/admin/main-page/books.interface';
-import {NewBookRequestInterface} from '../../interfaces/admin/main-page/new-book-request.interface';
-import {CommentInterface} from '../../interfaces/admin/main-page/comment.interface';
+import {BooksInterface} from '../../interfaces/admin/books/books.interface';
+import {NewBookRequestInterface} from '../../interfaces/admin/books/new-book-request.interface';
+import {CommentInterface} from '../../interfaces/admin/books/comment.interface';
 
 @Injectable({
   providedIn: 'root',

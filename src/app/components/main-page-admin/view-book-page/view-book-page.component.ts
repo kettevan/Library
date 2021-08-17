@@ -1,12 +1,12 @@
 import {Component, OnInit, Inject, ViewChild, AfterViewInit} from '@angular/core';
-import {BookCopyInterface, BooksInterface} from '../../../interfaces/admin/main-page/books.interface';
+import {BookCopyInterface, BooksInterface} from '../../../interfaces/admin/books/books.interface';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {BookingPageComponent} from '../booking-page/booking-page.component';
 import {ReservationsService} from '../../../services/admin-services/reservations.service';
 import {ToastrService} from 'ngx-toastr';
-import {BooksReservationRequestInterface} from '../../../interfaces/admin/main-page/books-reservation.interface';
+import {BooksReservationRequestInterface} from '../../../interfaces/admin/books/books-reservation.interface';
 import {HeaderBookingRequestInterface} from '../../../interfaces/admin/booking/header-booking-request.interface';
 
 @Component({

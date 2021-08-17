@@ -7,7 +7,7 @@ import {ToastrService} from 'ngx-toastr';
 import {UsersResponseInterface} from '../../../interfaces/admin/users-response.interface';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SettingsBasicInterface} from '../../../interfaces/admin/settings/settings-basic.interface';
-import {BookCopyInterface} from '../../../interfaces/admin/main-page/books.interface';
+import {BookCopyInterface} from '../../../interfaces/admin/books/books.interface';
 
 @Component({
   selector: 'app-booking-page',
