@@ -3,9 +3,9 @@ img {
   max-width: 100%;
 }
 
-h1 {
-  font-family: 'avaza';
-}
+//h1 {
+//  font-family: 'avaza';
+//}
 
 .title {
   font-size: 30px;
@@ -17,4 +17,22 @@ h1 {
 
 .detailsBtns {
   margin-right: 10px;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0px;
+}
+
+.rigth {
+  float: right;
+  margin-bottom: 5px;
+}
+
+::ng-deep mat-card {
+  margin-bottom: 10px;
+}
+
+.commentsLabel {
+  font-family: 'avaza';
+  margin-bottom: 10px;
 }
