@@ -33,7 +33,7 @@
     <div class="col">
       <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
         <mat-label>ენა</mat-label>
-        <mat-select formControlName="rubricId">
+        <mat-select formControlName="languageId">
           <mat-option></mat-option>
           <mat-option *ngFor="let language of languages" [value]="language.id">
             {{language.name}}

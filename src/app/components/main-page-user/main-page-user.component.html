@@ -4,6 +4,18 @@
       <div class="row">
         <div class="col">
           <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+            <mat-label>სათაური</mat-label>
+            <input type='text' matInput formControlName='title'>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+            <mat-label>ავტორი</mat-label>
+            <input type='text' matInput formControlName='author'>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
             <mat-label>საგნობრივი რუბრიკა</mat-label>
             <mat-select formControlName="subjectId">
               <mat-option></mat-option>
@@ -12,6 +24,38 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+            <mat-label>ენა</mat-label>
+            <mat-select formControlName="languageId">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let language of languages" [value]="language.id">
+                {{language.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+            <mat-label>გამომცემლობა</mat-label>
+            <mat-select formControlName="publisherId">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let publisher of publishers" [value]="publisher.id">
+                {{publisher.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+            <mat-label>ეგზემპლარის N</mat-label>
+            <input type='text' matInput formControlName='bookCopyCode'>
+          </mat-form-field>
+        </div>
+        <div class="col vertically-centered">
+          <button type="button"  color="accent" class="cancelBtn searchBtn filterBtn" mat-raised-button (click)="onFilterClick()">ძებნა</button>
+          <button type="button"  color="accent" class="cancelBtn searchBtn filterBtn" mat-raised-button (click)="resetForm()">გასუფთავება</button>
         </div>
       </div>
     </div>

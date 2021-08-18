@@ -33,6 +33,7 @@ export class MainPageUserComponent implements OnInit, AfterViewInit, OnDestroy {
   subjectId = new FormControl(null);
   publisherId = new FormControl(null);
   languageId = new FormControl(null);
+  bookCopyCode = new FormControl(null);
 
   constructor(private router: Router, private booksAdminService: BooksAdminService,
               public socialAuthService: SocialAuthService, private sharedService: SharedService, private toastr: ToastrService,
@@ -60,7 +61,8 @@ export class MainPageUserComponent implements OnInit, AfterViewInit, OnDestroy {
       title: this.title,
       subjectId: this.subjectId,
       publisherId: this.publisherId,
-      languageId: this.languageId
+      languageId: this.languageId,
+      bookCopyCode: this.bookCopyCode
     });
     this.loadBooks(false);
     const publishersSubs = this.settingsService.getAllPublishers()
@@ -79,6 +81,23 @@ export class MainPageUserComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(result)
     } );
     this.subs.push(subjectsSubs);
+  }
+
+  resetForm(): void {
+    this.filterForm.reset();
+    this.loadBooks(false);
+  }
+
+  onFilterClick(): void {
+    const filtered = {};
+    if (this.filterForm.valid) {
+      for (let key in this.filterForm.value) {
+        if (this.filterForm.value[key]) {
+          filtered[key] = this.filterForm.value[key];
+        }
+      }
+    }
+    this.filterBooksServ(filtered);
   }
 
   ngAfterViewInit(): void {
@@ -104,7 +123,16 @@ export class MainPageUserComponent implements OnInit, AfterViewInit, OnDestroy {
     this.booksAdminService.books(pageIndex, pageSize).subscribe(result => {
       this.booksDatasource = result.content;
       this.contentSize = result.totalElements;
-      console.log(this.booksDatasource);
+      this.paginator.length = result.totalElements;
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+  private filterBooksServ(filterObj: any): void {
+    this.booksAdminService.filterBooks(filterObj).subscribe(result => {
+      this.booksDatasource = result.content;
+      this.contentSize = result.totalElements;
       this.paginator.length = result.totalElements;
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
