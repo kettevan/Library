@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {startWith, switchMap} from 'rxjs/operators';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {startWith, switchMap, tap} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {BooksAdminService} from '../../../services/books-admin/books-admin.service';
 import {BooksInterface} from '../../../interfaces/admin/books/books.interface';
@@ -14,19 +14,23 @@ import {CommentInterface} from '../../../interfaces/admin/books/comment.interfac
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UsersService} from '../../../services/users/users.service';
 import {FavouriteInterface} from '../../../interfaces/admin/user/favourite.interface';
+import {MatPaginator} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-book-details-page',
   templateUrl: './book-details-page.component.html',
   styleUrls: ['./book-details-page.component.scss']
 })
-export class BookDetailsPageComponent implements OnInit {
+export class BookDetailsPageComponent implements OnInit, AfterViewInit {
   private userData = null;
   public data: BooksInterface = null;
   private bookId: number;
   commentsRequest$ = new BehaviorSubject<boolean>(true);
   comments$;
-  public comments: CommentInterface[] = []
+  public comments = []
+  private contentSize = 0;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   commentsForm: FormGroup;
   newComment = new FormControl(null, [Validators.required]);
@@ -47,11 +51,7 @@ export class BookDetailsPageComponent implements OnInit {
         this.booksService.getBookById(id).subscribe(result => {
           this.data = result;
         })
-        this.comments$ = this.commentsRequest$.pipe(switchMap(() => this.booksService.comments(this.bookId)))
-        this.comments$.subscribe(result => {
-          this.comments = result;
-          console.log(this.comments);
-        }, error => console.log(error));
+        this.loadComments(false);
       }
     });
   }
@@ -66,7 +66,8 @@ export class BookDetailsPageComponent implements OnInit {
    this.booksService.addNewComment(comment).subscribe(result => {
       this.toastr.success('კომენტარი წარმატებით დაემატა');
       this.commentsForm.reset();
-      this.commentsRequest$.next(true);
+      this.loadComments(false);
+      // this.commentsRequest$.next(true);
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
       console.log(error);
@@ -112,4 +113,30 @@ export class BookDetailsPageComponent implements OnInit {
     })
   }
 
+
+  private loadComments(loaded: boolean) {
+    let pageIndex = 1;
+    let pageSize = 5;
+    if (loaded) {
+      pageIndex = this.paginator.pageIndex+1;
+      pageSize = this.paginator.pageSize;
+    }
+    this.booksService.comments(pageIndex, pageSize, this.bookId).subscribe(result => {
+      console.log(result);
+      this.comments = result.content;
+      this.contentSize = result.totalElements;
+      this.paginator.length = result.totalElements;
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+  ngAfterViewInit(): void {
+    this.paginator.length = this.contentSize;
+    this.paginator.page
+      .pipe(
+        tap(() => this.loadComments(true))
+      )
+      .subscribe();
+  }
 }

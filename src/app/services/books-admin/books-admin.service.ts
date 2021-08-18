@@ -5,7 +5,7 @@ import {BooksResponseInterface} from '../../interfaces/admin/books/books-respons
 import {SharedService} from '../shared/shared.service';
 import {BooksInterface} from '../../interfaces/admin/books/books.interface';
 import {NewBookRequestInterface} from '../../interfaces/admin/books/new-book-request.interface';
-import {CommentInterface} from '../../interfaces/admin/books/comment.interface';
+import {CommentInterface, CommentsResponseInterface} from '../../interfaces/admin/books/comment.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -65,11 +65,11 @@ export class BooksAdminService {
     return this.http.get<any>(requestUrl, {params: {author: filterValue}, headers: {'Authorization': `Bearer ${token}`}})
   }
 
-  comments(bookId: number): Observable<CommentInterface[]> {
+  comments(page: number, limit: number, bookId: number): Observable<CommentsResponseInterface> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
-    const requestUrl = this.BASE_URL + `books/${bookId}/comments`;
-    return this.http.get<CommentInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}});
+    const requestUrl = this.BASE_URL + `books/${bookId}/comments?page=${page}&limit=${limit}`;
+    return this.http.get<CommentsResponseInterface>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}});
   }
 
   addNewComment(comment: CommentInterface): Observable<any> {
