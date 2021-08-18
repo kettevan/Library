@@ -1,3 +1,22 @@
+<div class="filter">
+  <form [formGroup]="filterForm">
+    <div class="bordered">
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearance="outline" style="padding-bottom: 2px!important;">
+            <mat-label>საგნობრივი რუბრიკა</mat-label>
+            <mat-select formControlName="subjectId">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let subject of subjects" [value]="subject.id">
+                {{subject.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
 <div class="books">
   <div class="row">
     <div class="column" *ngFor="let book of booksDatasource">

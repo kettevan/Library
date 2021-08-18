@@ -19,7 +19,7 @@ export class SettingsService {
 
   getAllGenres(): Observable<SettingsBasicInterface[]> {
     const token = localStorage.getItem('token');
-    if (!this.shared.isAdminToken(token)) return of(null);
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
     const requestUrl = this.BASE_URL + `/rubrics`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
   }
@@ -51,7 +51,7 @@ export class SettingsService {
 
   getAllCollections(): Observable<SettingsBasicInterface[]> {
     const token = localStorage.getItem('token');
-    if (!this.shared.isAdminToken(token)) return of(null);
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
     // TO DO change url
     const requestUrl = this.BASE_SETTINGS_URL + `/funds`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
@@ -87,7 +87,7 @@ export class SettingsService {
 
   getAllForms(): Observable<SettingsBasicInterface[]> {
     const token = localStorage.getItem('token');
-    if (!this.shared.isAdminToken(token)) return of(null);
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
     // TO DO change url
     const requestUrl = this.BASE_SETTINGS_URL + `/resourceForms`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
@@ -121,7 +121,7 @@ export class SettingsService {
 
   getAllTypes(): Observable<SettingsBasicInterface[]> {
     const token = localStorage.getItem('token');
-    if (!this.shared.isAdminToken(token)) return of(null);
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
     // TO DO change url
     const requestUrl = this.BASE_SETTINGS_URL + `/resourceTypes`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
@@ -155,7 +155,7 @@ export class SettingsService {
 
   getAllLanguages(): Observable<SettingsBasicInterface[]> {
     const token = localStorage.getItem('token');
-    if (!this.shared.isAdminToken(token)) return of(null);
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
     const requestUrl = this.BASE_SETTINGS_URL + `/languages`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
   }
@@ -184,7 +184,7 @@ export class SettingsService {
 
   getAllPublishers(): Observable<SettingsBasicInterface[]> {
     const token = localStorage.getItem('token');
-    if (!this.shared.isAdminToken(token)) return of(null);
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
     const requestUrl = this.BASE_SETTINGS_URL + `/publishers`
     return this.http.get<SettingsBasicInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}})
   }

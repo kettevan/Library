@@ -1,28 +1,42 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import jwt_decode from 'jwt-decode';
 import {take, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {SocialAuthService} from 'angularx-social-login';
 import {SharedService} from '../../services/shared/shared.service';
-import {BookDataSource} from '../../data-sources/book-data-source.datasource';
 import {MatPaginator} from '@angular/material/paginator';
 import {BooksAdminService} from '../../services/books-admin/books-admin.service';
 import {ToastrService} from 'ngx-toastr';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {SettingsBasicInterface} from '../../interfaces/admin/settings/settings-basic.interface';
+import {SettingsService} from '../../services/admin-services/settings.service';
 
 @Component({
   selector: 'app-main-page-user',
   templateUrl: './main-page-user.component.html',
   styleUrls: ['./main-page-user.component.scss']
 })
-export class MainPageUserComponent implements OnInit, AfterViewInit {
+export class MainPageUserComponent implements OnInit, AfterViewInit, OnDestroy {
   public userInfo: any;
   private subs = [];
   public booksDatasource = [];
   private contentSize = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  publishers: SettingsBasicInterface[] = []
+  languages: SettingsBasicInterface[] = []
+  subjects: SettingsBasicInterface[] = []
+
+  public filterForm: FormGroup;
+  author = new FormControl(null);
+  title = new FormControl(null);
+  subjectId = new FormControl(null);
+  publisherId = new FormControl(null);
+  languageId = new FormControl(null);
+
   constructor(private router: Router, private booksAdminService: BooksAdminService,
-              public socialAuthService: SocialAuthService, private sharedService: SharedService, private toastr: ToastrService) {
+              public socialAuthService: SocialAuthService, private sharedService: SharedService, private toastr: ToastrService,
+              private fb: FormBuilder, private settingsService: SettingsService) {
     const token = localStorage.getItem('token');
     if (token != null && jwt_decode(token)['Role'].toUpperCase() === 'USER') {
       const socialAuthSubs = socialAuthService.authState.pipe(take(1))
@@ -36,8 +50,35 @@ export class MainPageUserComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngOnDestroy() {
+    this.subs.forEach(x => x.unsubscribe);
+  }
+
   ngOnInit(): void {
+    this.filterForm = this.fb.group({
+      author: this.author,
+      title: this.title,
+      subjectId: this.subjectId,
+      publisherId: this.publisherId,
+      languageId: this.languageId
+    });
     this.loadBooks(false);
+    const publishersSubs = this.settingsService.getAllPublishers()
+    publishersSubs.subscribe(result => {
+      this.publishers = result
+    })
+    this.subs.push(publishersSubs);
+    // ენები
+    const languagesSubs = this.settingsService.getAllLanguages()
+    languagesSubs.subscribe(result => this.languages = result)
+    this.subs.push(languagesSubs);
+    // რუბრიკები
+    const subjectsSubs = this.settingsService.getAllGenres()
+    subjectsSubs.subscribe(result => {
+      this.subjects = result,
+        console.log(result)
+    } );
+    this.subs.push(subjectsSubs);
   }
 
   ngAfterViewInit(): void {
