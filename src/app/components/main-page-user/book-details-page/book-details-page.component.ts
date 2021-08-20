@@ -1,15 +1,13 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {startWith, switchMap, tap} from 'rxjs/operators';
+import {startWith, tap} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {BooksAdminService} from '../../../services/books-admin/books-admin.service';
 import {BooksInterface} from '../../../interfaces/admin/books/books.interface';
 import {MatDialog} from '@angular/material/dialog';
 import {UserBookingPageComponent} from '../user-booking-page/user-booking-page.component';
 import {HeaderBookingRequestInterface} from '../../../interfaces/admin/booking/header-booking-request.interface';
-import {SocialAuthService} from 'angularx-social-login';
 import {ReservationsService} from '../../../services/admin-services/reservations.service';
 import {ToastrService} from 'ngx-toastr';
-import {BehaviorSubject} from 'rxjs';
 import {CommentInterface} from '../../../interfaces/admin/books/comment.interface';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UsersService} from '../../../services/users/users.service';
@@ -22,11 +20,8 @@ import {MatPaginator} from '@angular/material/paginator';
   styleUrls: ['./book-details-page.component.scss']
 })
 export class BookDetailsPageComponent implements OnInit, AfterViewInit {
-  private userData = null;
   public data: BooksInterface = null;
   private bookId: number;
-  commentsRequest$ = new BehaviorSubject<boolean>(true);
-  comments$;
   public comments = []
   private contentSize = 0;
 
@@ -67,7 +62,6 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
       this.toastr.success('კომენტარი წარმატებით დაემატა');
       this.commentsForm.reset();
       this.loadComments(false);
-      // this.commentsRequest$.next(true);
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
       console.log(error);
@@ -104,12 +98,12 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
       userId: userId,
       bookId: this.bookId
     }
-    console.log(favObj);
     this.userService.addBookToFavourites(favObj).subscribe(result => {
-      console.log(result);
+      if (result) {
+        this.toastr.success('წიგნი წარმატებით დაემატა ფავორიტებში');
+      }
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
-      console.log(error);
     })
   }
 

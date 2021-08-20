@@ -40,7 +40,7 @@ export interface BookCopyInterface {
   id?: number;
   bookId?: null;
   description?: string;
-  bookedDates?: [];
+  bookedDates?: Date[];
   confirmerAdminId?: number;
   code: string;
   createDate?: Date;

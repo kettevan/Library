@@ -1,12 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserResponseInterface} from '../../../interfaces/login/google-user-response.interface';
-import {LoginService} from '../../../services/login-services/login.service';
 import {AdminService} from '../../../services/admin-services/admin.service';
 import {ToastrService} from 'ngx-toastr';
 import {UsersResponseInterface} from '../../../interfaces/admin/users-response.interface';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {SettingsBasicInterface} from '../../../interfaces/admin/settings/settings-basic.interface';
 import {BookCopyInterface} from '../../../interfaces/admin/books/books.interface';
 
 @Component({
@@ -26,7 +23,7 @@ export class BookingPageComponent implements OnInit {
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
 
-  readers: UsersResponseInterface[] = [];
+  public disabledDatesArr = [];
 
   constructor(private fb: FormBuilder, private adminService: AdminService, private toastr: ToastrService,
               @Inject(MAT_DIALOG_DATA) public data: BookCopyInterface,
@@ -35,6 +32,10 @@ export class BookingPageComponent implements OnInit {
     if (this.data == null) {
       matDialogRef.close();
     } else {
+      data.bookedDates?.forEach(bookedDate => {
+        let date = new Date(bookedDate);
+        this.disabledDatesArr.push(date.getTime())
+      })
       this.bookingForm = this.fb.group({
         dateFrom: this.dateFrom,
         dateTo: this.dateTo,
@@ -43,6 +44,11 @@ export class BookingPageComponent implements OnInit {
         readersObj: this.readerObj
       })
     }
+  }
+
+  dateFilter = (d: Date): boolean => {
+    const index = this.disabledDatesArr.indexOf(d.getTime())
+    return index === -1;
   }
 
   onSubmit(): void {
@@ -67,11 +73,6 @@ export class BookingPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.adminService.getUsers(false).subscribe(result => {
-      this.readers = result['content'];
-    }, error => {
-      this.toastr.error('დაფიქსირდა შეცდომა');
-    })
   }
 
 }

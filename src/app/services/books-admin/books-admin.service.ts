@@ -6,6 +6,8 @@ import {SharedService} from '../shared/shared.service';
 import {BooksInterface} from '../../interfaces/admin/books/books.interface';
 import {NewBookRequestInterface} from '../../interfaces/admin/books/new-book-request.interface';
 import {CommentInterface, CommentsResponseInterface} from '../../interfaces/admin/books/comment.interface';
+import {FavouriteInterface} from '../../interfaces/admin/user/favourite.interface';
+import {FavouriteResponseInterface} from '../../interfaces/admin/user/favourite-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -78,5 +80,6 @@ export class BooksAdminService {
     const requestUrl = this.BASE_URL + `books/comments`;
     return this.http.post<CommentInterface[]>(requestUrl, comment,{headers: {'Authorization': `Bearer ${token}`}});
   }
+
 }
 

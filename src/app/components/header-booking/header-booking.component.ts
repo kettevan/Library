@@ -45,7 +45,7 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
 
-  public disabledDatesArr = [new Date('16/11/2021').getTime()];
+  public disabledDatesArr = [];
 
   constructor(private _formBuilder: FormBuilder, private adminService: AdminService,
               private toastr: ToastrService, private booksService: BooksAdminService,
@@ -62,7 +62,12 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
 
   disableDates(index: any): void {
     const value =  this.booksInfoForm.controls[index].value.bookCopy.bookedDates;
-    console.log(value);
+    if (value) {
+      value.forEach(bookedDate => {
+        let date = new Date(bookedDate);
+        this.disabledDatesArr.push(date.getTime())
+      })
+    }
   }
 
   ngOnInit(): void {
@@ -87,7 +92,6 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
       })
     }
     this.reservationsService.reserveBook(request).subscribe(result => {
-      console.log(result);
       this.toastr.success('წიგნები წარმატებით დაიჯავშნა');
       this.router.navigate(['/adminmainpage']);
     }, error => {

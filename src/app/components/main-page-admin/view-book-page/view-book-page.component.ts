@@ -47,7 +47,6 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
   }
 
   private reserveBook(reservationInfo: any, bookCopy: BookCopyInterface): void {
-    console.log(reservationInfo);
     const request: HeaderBookingRequestInterface[] = []
     request.push({
       bookCopyId: bookCopy.id,
@@ -56,7 +55,9 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
       endDate: reservationInfo.dateTo
     })
     this.reservationService.reserveBook(request).subscribe(result => {
-      console.log(result);
+      if (result) {
+        this.toastr.success('წიგნი წარმატებით დაიჯავშნა');
+      }
     }, error =>  {
       this.toastr.error('დაფიქსირდა შეცდომა');
     })

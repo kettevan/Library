@@ -1,7 +1,7 @@
 <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline" style="width: 100%">
       <mat-label>აირჩიეთ თარიღები</mat-label>
-      <mat-date-range-input [min]="minDate" [max]="maxDate"  [rangePicker]="picker">
+      <mat-date-range-input [min]="minDate" [max]="maxDate"  [rangePicker]="picker" [dateFilter]="dateFilter">
         <input  matStartDate  placeholder="დასაწყისი" formControlName="dateFrom">
         <input matEndDate placeholder="დასასრული" formControlName="dateTo">
       </mat-date-range-input>
