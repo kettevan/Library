@@ -11,6 +11,9 @@ import {SettingEditDialogComponent} from '../admin-page/setting-edit-dialog/sett
 import {SettingsBasicInterface} from '../../interfaces/admin/settings/settings-basic.interface';
 import {UsersService} from '../../services/users/users.service';
 import {CreateAdminInterface} from '../../interfaces/admin/create-admin.interface';
+import {UserResponseInterface} from '../../interfaces/admin/user/user-response.interface';
+import {ToastrService} from 'ngx-toastr';
+import {ConfirmDeleteDialogComponent} from '../shared/confirm-delete-dialog/confirm-delete-dialog.component';
 
 @Component({
   selector: 'app-user-page',
@@ -18,35 +21,69 @@ import {CreateAdminInterface} from '../../interfaces/admin/create-admin.interfac
   styleUrls: ['./user-page.component.scss']
 })
 export class UserPageComponent implements OnInit, AfterViewInit {
-  public userInfo: any = {};
-  private userId = localStorage.getItem('id');
+  public userInfo: UserResponseInterface;
+  private userId = +localStorage.getItem('id');
 
   public reservationDisplayedColumns: string[] = ['bookTitle', 'author', 'bookCopyCode', 'startDate', 'endDate', 'status', 'actions'];
   reservationsRequest$ = new BehaviorSubject<boolean>(true);
   reservations$ = this.reservationsRequest$.pipe(switchMap(() => this.reservationService.getUserReservations(+this.userId)))
   reservationDataSource = new MatTableDataSource<any>();
 
+  public favouritesDisplayedColumns: string[] = ['bookTitle', 'author'];
+  favouritesRequest$ = new BehaviorSubject<boolean>(true);
+  favourites$ = this.favouritesRequest$.pipe(switchMap(() => this.userService.favouritesByUser(+this.userId)))
+  favouritesDataSource = new MatTableDataSource<any>();
+
   @ViewChild('reservationPagination', {static: true}) reservationPagination: MatPaginator;
+ // @ViewChild('favouritesPagination', {static: true}) favouritesPagination: MatPaginator;
+
 
   constructor(private reservationService: ReservationsService, private dialog: MatDialog,
-              public userService: UsersService) {
+              public userService: UsersService, private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
-    this.userInfo = JSON.parse(localStorage.getItem('user'));
-    this.userInfo['personalNo'] = localStorage.getItem('personalNo');
-    this.userInfo['phoneNum'] = localStorage.getItem('phoneNum');
-    console.log(this.userInfo);
-    this.subscribeToReservations()
+    this.userService.getUserInfo(this.userId).subscribe(result => {
+      this.userInfo = result;
+      this.userInfo.authorities = null;
+    })
+    this.subscribeToReservations();
+    this.subscribeToFavourites();
+
+  }
+
+  private subscribeToFavourites(): void {
+    this.favourites$.subscribe(result => {
+      if (result != null) {
+        console.log(result);
+        this.favouritesDataSource = new MatTableDataSource<any>(result);
+      //  this.favouritesDataSource.paginator = this.favouritesPagination;
+      }
+    })
   }
 
   public onCancelClick(element: any): void {
-    console.log("cancel", element);
+    this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '400px'
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.cancelReservationServ(element);
+      }
+    })
+  }
+
+  private cancelReservationServ(element: any): void {
+    this.reservationService.cancelReservation(element.id).subscribe(result => {
+      this.reservationsRequest$.next(true);
+      this.toastr.success('ჯავშანი წარმატებით გაუქმდა');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
   }
 
   public phoneNumEdit(): void {
     let phoneInfo: SettingsBasicInterface = {
-      name: this.userInfo['phoneNum']
+      name: this.userInfo.phoneNumber
     }
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
@@ -61,29 +98,20 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   }
 
   phoneNumEditServ(phoneNum: string): void {
-    let userId = localStorage.getItem('id');
-    if (userId) {
-      let user: CreateAdminInterface = {
-        id: +userId,
-        phoneNumber: phoneNum,
-        firstName: this.userInfo.firstName,
-        lastName: this.userInfo.lastName,
-        email: this.userInfo.email,
-        personalNo: localStorage.getItem('personalNo')
-      }
-      console.log(user);
-      this.userService.editUserPhone(+userId, user).subscribe(result => {
-        console.log(result);
+    this.userInfo.phoneNumber = phoneNum;
+      this.userService.editUserPhone(this.userId, this.userInfo).subscribe(res => {
+        if (res) {
+          this.toastr.success('ნომერი წარმატებით შეიცვალა');
+        }
       }, error => {
-        console.log(error);
+        this.toastr.error('დაფიქსირდა შეცდომა');
       })
-    }
   }
 
 
 
   private subscribeToReservations(): void {
-    this.reservationService.getUserReservations(+this.userId).subscribe(result => {
+    this.reservations$.subscribe(result => {
       if (result != null) {
         console.log(result);
         this.reservationDataSource = new MatTableDataSource<any>(result);
@@ -95,6 +123,7 @@ export class UserPageComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.reservationDataSource.paginator = this.reservationPagination;
+   // this.favouritesDataSource.paginator = this.favouritesPagination;
   }
 
 }

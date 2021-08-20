@@ -37,4 +37,11 @@ export class ReservationsService {
     const requestUrl = this.USERS_BASE_UEL + `${userId}/reservations`
     return this.http.get(requestUrl, { headers: {'Authorization': `Bearer ${token}`} });
   }
+
+  cancelReservation(reservationId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `${reservationId}/_cancel`
+    return this.http.post(requestUrl, null, { headers: {'Authorization': `Bearer ${token}`} });
+  }
 }

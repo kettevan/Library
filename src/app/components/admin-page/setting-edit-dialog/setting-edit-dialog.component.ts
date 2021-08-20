@@ -22,7 +22,7 @@ export class SettingEditDialogComponent implements OnInit {
     this.settingForm = this.fb.group( {
       name: this.name
     });
-    if (this.data != null && this.data.name !== undefined) {
+    if (this.data !== null && this.data.name !== undefined) {
       this.name.setValue( this.data.name);
     }
   }
@@ -33,14 +33,11 @@ export class SettingEditDialogComponent implements OnInit {
   onSubmit(): void {
     if (!this.settingForm.valid) {
       this.toastr.error('არავალიდური ინფორმაცია');
-      return;
-    }
-    if (this.data == null) {
+    } else if (this.data == null) {
       const result: SettingsBasicInterface = {
         name: this.name.value
       };
       this.matDialogRef.close(result);
-      return;
     } else {
       this.data.name = this.name.value
       this.save.emit(this.data);

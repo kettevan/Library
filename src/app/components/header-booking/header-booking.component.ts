@@ -6,7 +6,6 @@ import {ToastrService} from 'ngx-toastr';
 import {BooksAdminService} from '../../services/books-admin/books-admin.service';
 import {BooksInterface} from '../../interfaces/admin/books/books.interface';
 import {MatTableDataSource} from '@angular/material/table';
-import {BooksResponseInterface} from '../../interfaces/admin/books/books-response.interface';
 import {MatPaginator} from '@angular/material/paginator';
 import {ViewBookPageComponent} from '../main-page-admin/view-book-page/view-book-page.component';
 import {MatDialog} from '@angular/material/dialog';
