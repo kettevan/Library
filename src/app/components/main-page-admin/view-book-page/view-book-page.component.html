@@ -107,7 +107,7 @@
     <mat-tab-group>
       <mat-tab label="ისტორია">
       </mat-tab>
-      <mat-tab label="ეგზემპლარები ({{data.bookCopies.length}})">
+      <mat-tab label="ეგზემპლარები ({{booksCopyDataSource.data.length}})">
         <div class="example-header">
           <mat-form-field appearance="outline">
             <input matInput (input)="applyFilter($event.target.value)" placeholder="ფილტრი">
@@ -121,7 +121,7 @@
 
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef> სტატუსი </th>
-            <td mat-cell class="row-height"  *matCellDef="let element"> {{element.description ? element.description : ''}} </td>
+            <td mat-cell class="row-height"  *matCellDef="let element"> {{element.status ? element.status : ''}} </td>
           </ng-container>
 
           <ng-container matColumnDef="action">
@@ -133,11 +133,35 @@
           <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
         </table>
-        <mat-paginator [length]="booksCopyDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+        <mat-paginator #bookCopiesPaginator [length]="booksCopyDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
       </mat-tab>
-      <mat-tab label="გატანილი ეგზემპლარები">
-      </mat-tab>
-      <mat-tab label="დაჯავშნილი ეგზემპლარები">
+      <mat-tab label="გატანილი ეგზემპლარები ({{lentBooksCopyDataSource.data.length}})">
+        <div class="example-header">
+          <mat-form-field appearance="outline">
+            <input matInput (input)="applyFilter($event.target.value)" placeholder="ფილტრი">
+          </mat-form-field>
+        </div>
+        <table mat-table [dataSource]="lentBooksCopyDataSource" style="width: 100%">
+          <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef> კოდი </th>
+            <td mat-cell class="row-height" *matCellDef="let element"> {{element.code ? element.code : '' }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> სტატუსი </th>
+            <td mat-cell class="row-height"  *matCellDef="let element"> {{element.status ? element.status : ''}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell class="row-height"  *matCellDef="let element">
+<!--              <button type="button" class="cancelBtn" mat-raised-button (click)="onBookingClick(element)">გაცემა</button>-->
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+        </table>
+        <mat-paginator #lentBookCopiesPaginator [length]="booksCopyDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
       </mat-tab>
     </mat-tab-group>
 

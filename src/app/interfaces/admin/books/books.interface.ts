@@ -42,9 +42,14 @@ export interface BookCopyInterface {
   description?: string;
   bookedDates?: Date[];
   confirmerAdminId?: number;
+  status?: string;
   code: string;
   createDate?: Date;
   active?: boolean
+}
 
-
+export enum BookCopyStatuses {
+  PRESENT,
+  MISSING,
+  LENT
 }

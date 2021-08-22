@@ -1,5 +1,5 @@
 import {Component, OnInit, Inject, ViewChild, AfterViewInit} from '@angular/core';
-import {BookCopyInterface, BooksInterface} from '../../../interfaces/admin/books/books.interface';
+import {BookCopyInterface, BookCopyStatuses, BooksInterface} from '../../../interfaces/admin/books/books.interface';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
@@ -8,6 +8,8 @@ import {ReservationsService} from '../../../services/admin-services/reservations
 import {ToastrService} from 'ngx-toastr';
 import {BooksReservationRequestInterface} from '../../../interfaces/admin/books/books-reservation.interface';
 import {HeaderBookingRequestInterface} from '../../../interfaces/admin/booking/header-booking-request.interface';
+import {BehaviorSubject} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-book-page',
@@ -16,14 +18,30 @@ import {HeaderBookingRequestInterface} from '../../../interfaces/admin/booking/h
 })
 
 export class ViewBookPageComponent implements OnInit, AfterViewInit {
-  constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface,
-              public dialog: MatDialog, private reservationService: ReservationsService, private toastr: ToastrService) { }
+
+  bookCopies: BookCopyInterface[] = [];
+  lentBookCopies: BookCopyInterface[] = [];
+
+  booksCopyDataSource = new MatTableDataSource<BookCopyInterface>();
+  lentBooksCopyDataSource = new MatTableDataSource<BookCopyInterface>();
+
+  @ViewChild('bookCopiesPaginator', {static: true}) paginator: MatPaginator;
+  @ViewChild('lentBookCopiesPaginator', {static: true}) lentBookPaginator: MatPaginator;
+
   displayColumns: string[] = ['code', 'status', 'action']
-  public booksCopyDataSource = new MatTableDataSource<BookCopyInterface>();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface,
+              public dialog: MatDialog, private reservationService: ReservationsService, private toastr: ToastrService) {
+
+    this.bookCopies = this.data.bookCopies.filter(x => x.status === "PRESENT")
+    this.lentBookCopies = this.data.bookCopies.filter(x => x.status === "LENT")
+
+    this.booksCopyDataSource = new MatTableDataSource<BookCopyInterface>(this.bookCopies);
+    this.lentBooksCopyDataSource = new MatTableDataSource<BookCopyInterface>(this.lentBookCopies);
+  }
+
 
   ngOnInit(): void {
-    this.booksCopyDataSource = new MatTableDataSource<BookCopyInterface>(this.data.bookCopies);
     this.booksCopyDataSource.filterPredicate = function(data, filter: string): boolean {
       return data.code.toLowerCase().includes(filter);
     };
@@ -56,6 +74,14 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
     })
     this.reservationService.reserveBook(request).subscribe(result => {
       if (result) {
+        this.bookCopies = this.bookCopies.filter(x => {
+          if (x !== bookCopy){
+            return true;
+          }
+          return false;
+        })
+        this.booksCopyDataSource = new MatTableDataSource<BookCopyInterface>(this.bookCopies);
+        this.lentBookCopies.push(bookCopy);
         this.toastr.success('წიგნი წარმატებით დაიჯავშნა');
       }
     }, error =>  {
@@ -69,5 +95,6 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.booksCopyDataSource.paginator = this.paginator;
+    this.lentBooksCopyDataSource.paginator = this.lentBookPaginator;
   }
 }

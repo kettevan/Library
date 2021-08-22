@@ -3,18 +3,14 @@ import {BehaviorSubject} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {MatTableDataSource} from '@angular/material/table';
 import {ReservationsService} from '../../services/admin-services/reservations.service';
-import {UsersResponseInterface} from '../../interfaces/admin/users-response.interface';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
-import {CreateAdminDialogComponent} from '../admin-page/create-admin-dialog/create-admin-dialog.component';
 import {SettingEditDialogComponent} from '../admin-page/setting-edit-dialog/setting-edit-dialog.component';
 import {SettingsBasicInterface} from '../../interfaces/admin/settings/settings-basic.interface';
 import {UsersService} from '../../services/users/users.service';
-import {CreateAdminInterface} from '../../interfaces/admin/create-admin.interface';
 import {UserResponseInterface} from '../../interfaces/admin/user/user-response.interface';
 import {ToastrService} from 'ngx-toastr';
 import {ConfirmDeleteDialogComponent} from '../shared/confirm-delete-dialog/confirm-delete-dialog.component';
-import {FavouriteResponseInterface} from '../../interfaces/admin/user/favourite-response.interface';
 import {FavouriteInterface} from '../../interfaces/admin/user/favourite.interface';
 import {Router} from '@angular/router';
 
