@@ -14,6 +14,9 @@ import {CreateAdminInterface} from '../../interfaces/admin/create-admin.interfac
 import {UserResponseInterface} from '../../interfaces/admin/user/user-response.interface';
 import {ToastrService} from 'ngx-toastr';
 import {ConfirmDeleteDialogComponent} from '../shared/confirm-delete-dialog/confirm-delete-dialog.component';
+import {FavouriteResponseInterface} from '../../interfaces/admin/user/favourite-response.interface';
+import {FavouriteInterface} from '../../interfaces/admin/user/favourite.interface';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-page',
@@ -29,17 +32,17 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   reservations$ = this.reservationsRequest$.pipe(switchMap(() => this.reservationService.getUserReservations(+this.userId)))
   reservationDataSource = new MatTableDataSource<any>();
 
-  public favouritesDisplayedColumns: string[] = ['bookTitle', 'author'];
+  public favouritesDisplayedColumns: string[] = ['bookTitle', 'author', 'note', 'actions'];
   favouritesRequest$ = new BehaviorSubject<boolean>(true);
   favourites$ = this.favouritesRequest$.pipe(switchMap(() => this.userService.favouritesByUser(+this.userId)))
   favouritesDataSource = new MatTableDataSource<any>();
 
-  @ViewChild('reservationPagination', {static: true}) reservationPagination: MatPaginator;
- // @ViewChild('favouritesPagination', {static: true}) favouritesPagination: MatPaginator;
+  @ViewChild('reservationPagination') reservationPagination: MatPaginator;
+  @ViewChild('favouritesPagination') favouritesPagination: MatPaginator;
 
 
   constructor(private reservationService: ReservationsService, private dialog: MatDialog,
-              public userService: UsersService, private toastr: ToastrService) {
+              public userService: UsersService, private toastr: ToastrService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -52,12 +55,36 @@ export class UserPageComponent implements OnInit, AfterViewInit {
 
   }
 
+  public viewFavBooksDetails(element: FavouriteInterface): void {
+    this.router.navigate([`book/view/${element.id}`]);
+  }
+
+  public deleteFromFavourite(element: FavouriteInterface): void {
+    this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '400px'
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteFromFavouriteServ(element.id);
+      }
+    })
+  }
+
+  private deleteFromFavouriteServ(favouriteId: number): void {
+    this.userService.deleteFromFavourite(favouriteId).subscribe(result => {
+      this.favouritesRequest$.next(true);
+      this.toastr.success('წარმატებით წაიშალა');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+
   private subscribeToFavourites(): void {
     this.favourites$.subscribe(result => {
       if (result != null) {
         console.log(result);
         this.favouritesDataSource = new MatTableDataSource<any>(result);
-      //  this.favouritesDataSource.paginator = this.favouritesPagination;
+        this.favouritesDataSource.paginator = this.favouritesPagination;
       }
     })
   }
@@ -91,8 +118,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
     }).afterClosed().subscribe(result => {
       if (result) {
         this.phoneNumEditServ(result.name);
-        // this.userInfo['phoneNum'] = result.name
-        // localStorage.setItem('phoneNum', result.name)
       }
     })
   }
@@ -123,7 +148,7 @@ export class UserPageComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.reservationDataSource.paginator = this.reservationPagination;
-   // this.favouritesDataSource.paginator = this.favouritesPagination;
+    this.favouritesDataSource.paginator = this.favouritesPagination;
   }
 
 }

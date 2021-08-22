@@ -44,4 +44,11 @@ export class UsersService {
     const requestUrl = this.USERS_BASE_UEL + `${userId}/favourites`
     return this.http.get<FavouriteInterface[]>(requestUrl, { headers: {'Authorization': `Bearer ${token}`}})
   }
+
+  deleteFromFavourite(favouriteId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isUserToken(token) && !this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = this.USERS_BASE_UEL + `favourites/${favouriteId}`
+    return this.http.delete<any>(requestUrl, { headers: {'Authorization': `Bearer ${token}`}})
+  }
 }
