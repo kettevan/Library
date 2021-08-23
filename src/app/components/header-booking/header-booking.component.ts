@@ -12,6 +12,10 @@ import {MatDialog} from '@angular/material/dialog';
 import {HeaderBookingRequestInterface} from '../../interfaces/admin/booking/header-booking-request.interface';
 import {ReservationsService} from '../../services/admin-services/reservations.service';
 import {Router} from '@angular/router';
+import {ReservationsDataSource} from '../../data-sources/reservations-data-source.datasource';
+import {tap} from 'rxjs/operators';
+import {ReservationsInterface} from '../../interfaces/admin/booking/reservations.interface';
+import {ReservationsDetailsPageComponent} from './reservations-details-page/reservations-details-page.component';
 
 @Component({
   selector: 'app-header-booking',
@@ -34,6 +38,10 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   reservedBooksForm: FormGroup;
   booksInfoForm: FormArray = new FormArray([]);
 
+  public reservationsDataSource: ReservationsDataSource;
+  public reservationsDisplayColumns: string[] = ['author', 'title', 'bookCopyCode', 'startDate', 'endDate', 'status', 'actions']
+  @ViewChild('reservationsPagination', {static: true}) reservationsPagination: MatPaginator;
+
 
   readerPersonalNum = new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern("^[0-9]*$")])
   reader = new FormControl(null, [Validators.required]);
@@ -50,8 +58,18 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
               private toastr: ToastrService, private booksService: BooksAdminService,
               private dialog: MatDialog, private reservationsService: ReservationsService, private router: Router) {
     this.maxDate.setMonth(this.maxDate.getMonth() + 1);
+    this.reservationsDataSource = new ReservationsDataSource(this.reservationsService);
+    this.reservationsDataSource.loadReservations();
   }
 
+  public viewDetails(element: ReservationsInterface): void {
+    this.dialog.open(ReservationsDetailsPageComponent, {
+      width: '800px',
+      data: element
+    }).afterClosed().subscribe(result => {
+      console.log(result);
+    })
+  }
 
 
   dateFilter = (d: Date): boolean => {
@@ -77,6 +95,11 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
     this.reservedBooksForm = this._formBuilder.group({
       bookSearchField: this.bookSearchField
     });
+    // this.reservationsService.reservations(1, 20).subscribe(result => {
+    //   console.log(result);
+    // }, error => {
+    //   this.toastr.error('დაფიქსირდა შეცდომა');
+    // })
   }
 
   finalStep(): void {
@@ -191,6 +214,24 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.booksDatasource.paginator = this.booksPagination;
     this.savedBooks.paginator = this.savedBooksPagination;
+
+    this.reservationsDataSource.counter$
+      .pipe(
+        tap((count) => {
+          this.reservationsPagination.length = count;
+        })
+      )
+      .subscribe();
+
+    this.reservationsPagination.page
+      .pipe(
+        tap(() => this.loadReservations())
+      )
+      .subscribe();
+  }
+
+  private loadReservations() {
+    this.reservationsDataSource.loadReservations(this.reservationsPagination.pageIndex+1, this.reservationsPagination.pageSize)
   }
 
 }

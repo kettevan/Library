@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (result) {
           this.sharedService.editUser("ADMIN");
           localStorage.setItem("token", result.accessToken);
-          this.router.navigate(['adminpage']);
+          this.router.navigate(['adminmainpage']);
         } else {
           this.toastr.error('დაფიქსირდა შეცდომა')
         }

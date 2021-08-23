@@ -74,14 +74,13 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
     })
     this.reservationService.reserveBook(request).subscribe(result => {
       if (result) {
-        this.bookCopies = this.bookCopies.filter(x => {
+        this.booksCopyDataSource.data = this.booksCopyDataSource.data.filter(x => {
           if (x !== bookCopy){
             return true;
           }
           return false;
         })
-        this.booksCopyDataSource = new MatTableDataSource<BookCopyInterface>(this.bookCopies);
-        this.lentBookCopies.push(bookCopy);
+        this.lentBooksCopyDataSource.data.push(bookCopy);
         this.toastr.success('წიგნი წარმატებით დაიჯავშნა');
       }
     }, error =>  {

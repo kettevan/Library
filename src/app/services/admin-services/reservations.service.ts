@@ -16,6 +16,13 @@ export class ReservationsService {
   constructor(private http: HttpClient, private shared: SharedService) {
   }
 
+  reservations(pageNumber: number, limit: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = `http://localhost:8080/api/reservations` + `?page=${pageNumber}&limit=${limit}`;
+    return this.http.get(requestUrl, { headers: {'Authorization': `Bearer ${token}`} });
+  }
+
   reserveBook(reservedBooks: HeaderBookingRequestInterface[]): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);

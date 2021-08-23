@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {SharedService} from '../shared/shared.service';
 import {Observable, of} from 'rxjs';
-import {CreateAdminInterface} from '../../interfaces/admin/create-admin.interface';
 import {FavouriteInterface} from '../../interfaces/admin/user/favourite.interface';
 import {FavouriteResponseInterface} from '../../interfaces/admin/user/favourite-response.interface';
 import {UserResponseInterface} from '../../interfaces/admin/user/user-response.interface';
@@ -19,7 +18,7 @@ export class UsersService {
 
   getUserInfo(userId: number): Observable<UserResponseInterface> {
     const token = localStorage.getItem('token');
-    if (!this.shared.isUserToken(token)) return of(null);
+    if (!this.shared.isUserToken(token) && !this.shared.isAdminToken(token)) return of(null);
     const requestUrl = this.USERS_BASE_UEL + `${userId}`
     return this.http.get<UserResponseInterface>(requestUrl, { headers: {'Authorization': `Bearer ${token}`} })
   }

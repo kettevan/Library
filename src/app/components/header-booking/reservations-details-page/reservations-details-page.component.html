@@ -1,0 +1,76 @@
+<div class="bordered">
+    <div class="row">
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>ავტორი</mat-label>
+          <input type='text' matInput value="{{data.bookinfo ? data.bookinfo.author : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>სათაური</mat-label>
+          <input type='text' matInput value="{{data.bookinfo ? data.bookinfo.title : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>ეგზემპლარის N</mat-label>
+          <input type='text' matInput value="{{data.bookCopy ? data.bookCopy.code : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>სტატუსი</mat-label>
+          <input type='text' matInput value="{{data.status ? data.status : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>მკითხველი</mat-label>
+          <input type='text' matInput value="{{userData ? userData.firstName + ' ' + userData.lastName: ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>მკითხველის პირადი ნომერი</mat-label>
+          <input type='text' matInput value="{{userData ? userData.personalNo : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>დაწყების თარიღი</mat-label>
+          <input type='text' matInput value="{{data.startDate ? data.startDate : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>დასრულების თარიღი</mat-label>
+          <input type='text' matInput value="{{data.endDate ? data.endDate : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>დამადასტურებელი ადმინის სახელი</mat-label>
+          <input type='text' matInput value="{{confirmerUserData ? confirmerUserData.firstName : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>დამადასტურებელი ადმინის გვარი</mat-label>
+          <input type='text' matInput value="{{confirmerUserData ? confirmerUserData.lastName : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>გამცემი ადმინის სახელი</mat-label>
+          <input type='text' matInput value="{{lendererUserData ? lendererUserData.firstName : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>გამცემი ადმინის გვარი</mat-label>
+          <input type='text' matInput value="{{lendererUserData ? lendererUserData.lastName : ''}}" [readonly]="true">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
