@@ -45,4 +45,8 @@ export class ReservationsDetailsPageComponent implements OnInit {
 
   }
 
+  public onCloseClick(): void {
+    this.dialogRef.close();
+  }
+
 }

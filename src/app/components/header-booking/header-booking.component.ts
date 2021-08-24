@@ -16,6 +16,7 @@ import {ReservationsDataSource} from '../../data-sources/reservations-data-sourc
 import {tap} from 'rxjs/operators';
 import {ReservationsInterface} from '../../interfaces/admin/booking/reservations.interface';
 import {ReservationsDetailsPageComponent} from './reservations-details-page/reservations-details-page.component';
+import {ReservationConformationDialogComponent} from '../shared/reservation-conformation-dialog/reservation-conformation-dialog.component';
 
 @Component({
   selector: 'app-header-booking',
@@ -54,20 +55,142 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
 
   public disabledDatesArr = [];
 
+  public reservationsFilterForm: FormGroup;
+  public status = new FormControl(null);
+  public personalNoOfReader = new FormControl(null);
+  public bookAuthor = new FormControl(null);
+  public bookTitle = new FormControl(null);
+  public bookCopyCode = new FormControl(null);
+  public startDateFrom = new FormControl(null);
+  public startDateTo = new FormControl(null);
+  public endDateFrom = new FormControl(null);
+  public endDateTo = new FormControl(null);
+
+  public statuses: string[] = ['PENDING', 'CONFIRMED', 'LENT', 'COMPLETED', 'REJECTED', 'CANCELED', 'OVERDUE'];
+
+
   constructor(private _formBuilder: FormBuilder, private adminService: AdminService,
               private toastr: ToastrService, private booksService: BooksAdminService,
-              private dialog: MatDialog, private reservationsService: ReservationsService, private router: Router) {
+              private dialog: MatDialog, private reservationsService: ReservationsService, private router: Router,
+              private fb: FormBuilder) {
     this.maxDate.setMonth(this.maxDate.getMonth() + 1);
     this.reservationsDataSource = new ReservationsDataSource(this.reservationsService);
     this.reservationsDataSource.loadReservations();
+    this.reservationsFilterForm = this.fb.group({
+      status: this.status,
+      personalNoOfReader: this.personalNoOfReader,
+      bookAuthor: this.bookAuthor,
+      bookTitle: this.bookTitle,
+      bookCopyCode: this.bookCopyCode,
+      startDateFrom: this.startDateFrom,
+      startDateTo: this.startDateTo,
+      endDateFrom: this.endDateFrom,
+      endDateTo: this.endDateTo
+    })
+
+  }
+
+  onReservationFilterClear(): void {
+    this.loadReservations();
+    this.reservationsFilterForm.reset()
+  }
+
+  onReservationFilterClick(): void {
+    const filtered = {};
+    if (this.reservationsFilterForm.valid) {
+      for (let key in this.reservationsFilterForm.value) {
+        if (this.reservationsFilterForm.value[key]) {
+          filtered[key] = this.reservationsFilterForm.value[key];
+        }
+      }
+    }
+    this.reservationsDataSource.filterReservations(filtered);
   }
 
   public viewDetails(element: ReservationsInterface): void {
     this.dialog.open(ReservationsDetailsPageComponent, {
       width: '800px',
       data: element
+    })
+  }
+
+  public confirmReservation(element: ReservationsInterface): void {
+    this.dialog.open(ReservationConformationDialogComponent, {
+      width: '400px',
+      data: 'ნამდვილად გსურთ დადასტურება?'
     }).afterClosed().subscribe(result => {
-      console.log(result);
+      if (result) {
+        this.confirmReservationServ(element.id);
+      }
+    })
+  }
+
+  public rejectReservation(element: ReservationsInterface): void {
+    this.dialog.open(ReservationConformationDialogComponent, {
+      width: '400px',
+      data: 'ნამდვილად გსურთ უარყოფა?'
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.rejectReservationServ(element.id);
+      }
+    })
+  }
+
+  public lentBook(element: ReservationsInterface): void {
+    this.dialog.open(ReservationConformationDialogComponent, {
+      width: '400px',
+      data: 'ნამდვილად გსურთ გაცემა?'
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.lentBookServ(element.id);
+      }
+    })
+  }
+
+  public completeReservation(element: ReservationsInterface): void {
+    this.dialog.open(ReservationConformationDialogComponent, {
+      width: '400px',
+      data: 'ნამდვილად გსურთ მიღება?'
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.completeReservationServ(element.id);
+      }
+    })
+  }
+
+  private confirmReservationServ(reservationId: number): void {
+    this.reservationsService.confirmReservationByAdmin(reservationId).subscribe(result => {
+      this.loadReservations();
+      this.toastr.success('რეზერვაცია დადასტურებულია');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+  private rejectReservationServ(reservationId: number): void {
+    this.reservationsService.rejectReservationByAdmin(reservationId).subscribe(result => {
+      this.loadReservations();
+      this.toastr.success('რეზერვაცია უარყოფილია');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+  private lentBookServ(reservationId: number): void {
+    this.reservationsService.lentBookByAdmin(reservationId).subscribe(result => {
+      this.loadReservations();
+      this.toastr.success('წიგნი გაცემულია');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+  private completeReservationServ(reservationId: number): void {
+    this.reservationsService.completeReservationByAdmin(reservationId).subscribe(result => {
+      this.loadReservations();
+      this.toastr.success('წიგნი მიღებულია');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
     })
   }
 
@@ -95,11 +218,6 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
     this.reservedBooksForm = this._formBuilder.group({
       bookSearchField: this.bookSearchField
     });
-    // this.reservationsService.reservations(1, 20).subscribe(result => {
-    //   console.log(result);
-    // }, error => {
-    //   this.toastr.error('დაფიქსირდა შეცდომა');
-    // })
   }
 
   finalStep(): void {

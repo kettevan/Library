@@ -5,12 +5,17 @@ mat-icon {
 
 .mat-flat-button .mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
   background-color: #ffc87c;
+  color: black;
 }
 
 
 ::ng-deep .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
   background-color: #ffc87c;
   color: black;
+}
+
+.filterBtns {
+  margin-right: 5px;
 }
 
 .my-fab {
@@ -26,6 +31,16 @@ mat-icon {
 
 table {
   width: 100%;
+}
+
+.bordered {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 7px !important;
+  border-radius: 5px;
+}
+
+.vertically-centered {
+  padding-top: 10px;
 }
 
 .small-fab {

@@ -51,4 +51,40 @@ export class ReservationsService {
     const requestUrl = this.BASE_URL + `${reservationId}/_cancel`
     return this.http.post(requestUrl, null, { headers: {'Authorization': `Bearer ${token}`} });
   }
+
+  confirmReservationByAdmin(reservationId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `${reservationId}/_confirm`
+    return this.http.post(requestUrl, null, { headers: {'Authorization': `Bearer ${token}`} });
+  }
+
+  rejectReservationByAdmin(reservationId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `${reservationId}/_reject`
+    return this.http.post(requestUrl, null, { headers: {'Authorization': `Bearer ${token}`} });
+  }
+
+  completeReservationByAdmin(reservationId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `${reservationId}/_complete`
+    return this.http.post(requestUrl, null, { headers: {'Authorization': `Bearer ${token}`} });
+  }
+
+  lentBookByAdmin(reservationId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `${reservationId}/_lend`
+    return this.http.post(requestUrl, null, { headers: {'Authorization': `Bearer ${token}`} });
+  }
+
+  filterReservations(filterObj: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = `http://localhost:8080/api/reservations`;
+    return this.http.get<any>(requestUrl, {params: filterObj, headers: {'Authorization': `Bearer ${token}`} });
+  }
+
 }

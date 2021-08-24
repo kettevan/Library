@@ -54,6 +54,8 @@ export class HeaderComponent implements OnInit{
     this.admin$.subscribe(isAdmin => {
       if (isAdmin) {
         localStorage.clear();
+        this.user$ = of(false);
+        this.admin$ = of(false);
         this.router.navigate(['/login'])
       }
     })

@@ -1,3 +1,74 @@
+<form [formGroup]="reservationsFilterForm">
+  <div class="bordered">
+    <div class="row">
+      <div class="col">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>მკითხველის პირადი ნომერი</mat-label>
+          <input type='text' matInput formControlName='personalNoOfReader'>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>სტატუსი</mat-label>
+          <mat-select formControlName="status">
+            <mat-option></mat-option>
+            <mat-option *ngFor="let status of statuses" [value]="status">
+              {{status}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>ავტორი</mat-label>
+          <input type='text' matInput formControlName='bookAuthor'>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>სათაური</mat-label>
+          <input type='text' matInput formControlName='bookTitle'>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>ეგზემპლარის N</mat-label>
+          <input type='text' matInput formControlName='bookCopyCode'>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <mat-form-field appearance="outline">
+          <mat-label>ჯავშნის დაწყების თარიღი (დან)</mat-label>
+          <mat-date-range-input [rangePicker]="picker1">
+            <input matStartDate placeholder="დასაწყისი" formControlName="startDateFrom">
+            <input matEndDate placeholder="დასასრული" formControlName="startDateTo">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker1></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+      <div class="col-3">
+        <mat-form-field appearance="outline">
+          <mat-label>გამოცემის თარიღი (დან)</mat-label>
+          <mat-date-range-input [rangePicker]="picker2">
+            <input matStartDate placeholder="დასაწყისი" formControlName="endDateFrom">
+            <input matEndDate placeholder="დასასრული" formControlName="endDateTo">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker2></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+      <div class="col-4 vertically-centered">
+        <button type="button"  color="accent" class="filterBtns" mat-raised-button (click)="onReservationFilterClick()">ძებნა</button>
+        <button type="button"  color="accent" class="filterBtns" mat-raised-button (click)="onReservationFilterClear()" >გასუფთავება</button>
+      </div>
+    </div>
+  </div>
+
+</form>
+
 <mat-tab-group>
   <mat-tab label="რეზერვაციები">
     <div class="mat-elevation-z8">
@@ -38,8 +109,10 @@
             <button mat-mini-fab class="small-fab" (click)="viewDetails(element)">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button *ngIf="element.status === 'PENDING'" mat-button> დადასტურება </button>
-            <button *ngIf="element.status === 'LENT'" mat-button> დაბრუნება </button>
+            <button *ngIf="element.status === 'PENDING'" mat-button (click)="confirmReservation(element)"> დადასტურება </button>
+            <button *ngIf="element.status === 'PENDING'" mat-button (click)="rejectReservation(element)"> უარყოფა </button>
+            <button *ngIf="element.status === 'CONFIRMED'" mat-button (click)="lentBook(element)"> გაცემა </button>
+            <button *ngIf="element.status === 'LENT'" mat-button (click)="completeReservation(element)"> მიღება </button>
           </td>
         </ng-container>
 

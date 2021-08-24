@@ -41,17 +41,17 @@ mat-icon {
   }
 }
 
-tr {
-  height: 20px;
-}
-
-.row-height {
-  height: 20px !important;
-}
-
-//::ng-deep .mat-form-field-wrapper {
-//  padding-bottom: 0px !important;
+//tr {
+//  height: 20px;
 //}
+//
+//.row-height {
+//  height: 20px !important;
+//}
+
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}
 
 .vertically-centered {
   display: flex;

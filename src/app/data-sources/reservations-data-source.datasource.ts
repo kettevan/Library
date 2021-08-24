@@ -40,4 +40,16 @@ export class ReservationsDataSource implements DataSource<ReservationsInterface>
       );
   }
 
+  filterReservations(filterObj: any) {
+    this.loadingSubject.next(true);
+    this.reservationsService.filterReservations(filterObj)
+      .pipe(
+        catchError(() => of([])),
+        finalize(() => this.loadingSubject.next(false))
+      ).subscribe((result: any) => {
+        this.reservationsSubject.next(result.content);
+        this.countSubject.next(result.totalElements);
+    })
+  }
+
 }

@@ -51,6 +51,7 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 import { UserBookingPageComponent } from './components/main-page-user/user-booking-page/user-booking-page.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ReservationsDetailsPageComponent } from './components/header-booking/reservations-details-page/reservations-details-page.component';
+import { ReservationConformationDialogComponent } from './components/shared/reservation-conformation-dialog/reservation-conformation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { ReservationsDetailsPageComponent } from './components/header-booking/re
     BookDetailsPageComponent,
     ErrorPageComponent,
     UserBookingPageComponent,
-    ReservationsDetailsPageComponent
+    ReservationsDetailsPageComponent,
+    ReservationConformationDialogComponent
   ],
     imports: [
         ToastrModule.forRoot({
