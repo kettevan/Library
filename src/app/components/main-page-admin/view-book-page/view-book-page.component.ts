@@ -47,12 +47,22 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
     this.booksCopyDataSource.filterPredicate = function(data, filter: string): boolean {
       return data.code.toLowerCase().includes(filter);
     };
+
+    this.lentBooksCopyDataSource.filterPredicate = function(data, filter: string): boolean {
+      return data.code.toLowerCase().includes(filter);
+    };
   }
 
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     this.booksCopyDataSource.filter = filterValue;
+  }
+
+  lentCopiesFilter(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    this.lentBooksCopyDataSource.filter = filterValue;
   }
 
   onBookingClick(bookCopy: BookCopyInterface): void {

@@ -138,7 +138,7 @@
       <mat-tab label="გატანილი ეგზემპლარები ({{lentBooksCopyDataSource.data.length}})">
         <div class="example-header">
           <mat-form-field appearance="outline">
-            <input matInput (input)="applyFilter($event.target.value)" placeholder="ფილტრი">
+            <input matInput (input)="lentCopiesFilter($event.target.value)" placeholder="ფილტრი">
           </mat-form-field>
         </div>
         <table mat-table [dataSource]="lentBooksCopyDataSource" style="width: 100%">

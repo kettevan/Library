@@ -13,7 +13,7 @@
       <h3>ენა: {{data?.language?.name}}</h3>
       <h3>გამოცემის წელი: {{data?.publishDate?.toString().split('-')[0]}}</h3>
       <h3>ელ. ვერსია:
-          <button type="button" class="cancelBtn" mat-raised-button>გადმოწერა
+          <button [disabled]="data?.file === null || data?.file === undefined" type="button" class="cancelBtn" mat-raised-button (click)="onClickDownloadPdf()">გადმოწერა
           <mat-icon>download</mat-icon>
           </button>
       </h3>

@@ -52,6 +52,18 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
     });
   }
 
+  downloadPdf(base64String, fileName) {
+    const link = document.createElement("a");
+    link.href = base64String;
+    link.download = `${fileName}.pdf`
+    link.click();
+  }
+
+  onClickDownloadPdf(){
+    let base64String = this.data.file;
+    this.downloadPdf(base64String, this.data.title);
+  }
+
   addComment(): void {
     if (this.commentsForm.invalid) return;
     const comment: CommentInterface = {
