@@ -155,13 +155,13 @@
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell class="row-height"  *matCellDef="let element">
-<!--              <button type="button" class="cancelBtn" mat-raised-button (click)="onBookingClick(element)">გაცემა</button>-->
+              <button type="button" class="cancelBtn" mat-raised-button (click)="receiveBook(element)">მიღება</button>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
         </table>
-        <mat-paginator #lentBookCopiesPaginator [length]="booksCopyDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+        <mat-paginator #lentBookCopiesPaginator [length]="lentBooksCopyDataSource.data.length" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
       </mat-tab>
     </mat-tab-group>
 

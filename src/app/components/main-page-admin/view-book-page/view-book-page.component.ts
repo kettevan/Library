@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, OnInit, Inject, ViewChild, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import {BookCopyInterface, BookCopyStatuses, BooksInterface} from '../../../interfaces/admin/books/books.interface';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatPaginator} from '@angular/material/paginator';
@@ -10,6 +10,7 @@ import {BooksReservationRequestInterface} from '../../../interfaces/admin/books/
 import {HeaderBookingRequestInterface} from '../../../interfaces/admin/booking/header-booking-request.interface';
 import {BehaviorSubject} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
+import {BooksAdminService} from '../../../services/books-admin/books-admin.service';
 
 @Component({
   selector: 'app-view-book-page',
@@ -31,7 +32,8 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
   displayColumns: string[] = ['code', 'status', 'action']
 
   constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface,
-              public dialog: MatDialog, private reservationService: ReservationsService, private toastr: ToastrService) {
+              public dialog: MatDialog, private reservationService: ReservationsService, private toastr: ToastrService,
+              private changeDetectorRefs: ChangeDetectorRef, private booksAdminService: BooksAdminService) {
 
     this.bookCopies = this.data.bookCopies.filter(x => x.status === "PRESENT")
     this.lentBookCopies = this.data.bookCopies.filter(x => x.status === "LENT")
@@ -74,18 +76,39 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
     })
     this.reservationService.reserveBook(request).subscribe(result => {
       if (result) {
-        this.booksCopyDataSource.data = this.booksCopyDataSource.data.filter(x => {
-          if (x !== bookCopy){
-            return true;
-          }
-          return false;
-        })
-        this.lentBooksCopyDataSource.data.push(bookCopy);
+        this.reloadBookCopiesData()
         this.toastr.success('წიგნი წარმატებით დაიჯავშნა');
+        // this.booksCopyDataSource.data = this.booksCopyDataSource.data.filter(x => {
+        //   if (x !== bookCopy){
+        //     return true;
+        //   }
+        //   return false;
+        // })
+        // bookCopy.status = 'LENT'
+        // this.lentBookCopies.push(bookCopy);
+        // this.lentBooksCopyDataSource = new MatTableDataSource<BookCopyInterface>(this.lentBookCopies);
+        // this.toastr.success('წიგნი წარმატებით დაიჯავშნა');
+        // this.changeDetectorRefs.detectChanges();
       }
     }, error =>  {
       this.toastr.error('დაფიქსირდა შეცდომა');
     })
+  }
+
+  private reloadBookCopiesData(): void {
+    this.booksAdminService.getBookById(this.data.id).subscribe(result => {
+      this.bookCopies = result.bookCopies.filter(x => x.status === "PRESENT")
+      this.lentBookCopies = result.bookCopies.filter(x => x.status === "LENT")
+
+      this.booksCopyDataSource = new MatTableDataSource<BookCopyInterface>(this.bookCopies);
+      this.lentBooksCopyDataSource = new MatTableDataSource<BookCopyInterface>(this.lentBookCopies);
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+  receiveBook(element: any): void {
+
   }
 
   onCancelClick(): void {

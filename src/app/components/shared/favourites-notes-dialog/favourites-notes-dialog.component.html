@@ -1,0 +1,26 @@
+<div class="bordered">
+  <mat-dialog-content>
+    <form [formGroup]="favouriteNoteForm">
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%" appearance="outline">
+            <mat-label>კომენტარი / შენიშვნა</mat-label>
+            <textarea matInput
+                      cdkTextareaAutosize
+                      formControlName="note"
+                      #autosize="cdkTextareaAutosize"
+                      cdkAutosizeMinRows="1"
+                      cdkAutosizeMaxRows="5"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+      <button type="button" class="cancelBtn" mat-raised-button (click)="onCancelClick()">გაუქმება</button>
+      <button type="button" class="save-button" mat-raised-button (click)="onSubmitClick()">შენახვა</button>
+  </mat-dialog-actions>
+</div>
+
+
+

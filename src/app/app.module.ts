@@ -52,6 +52,7 @@ import { UserBookingPageComponent } from './components/main-page-user/user-booki
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ReservationsDetailsPageComponent } from './components/header-booking/reservations-details-page/reservations-details-page.component';
 import { ReservationConformationDialogComponent } from './components/shared/reservation-conformation-dialog/reservation-conformation-dialog.component';
+import { FavouritesNotesDialogComponent } from './components/shared/favourites-notes-dialog/favourites-notes-dialog.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { ReservationConformationDialogComponent } from './components/shared/rese
     ErrorPageComponent,
     UserBookingPageComponent,
     ReservationsDetailsPageComponent,
-    ReservationConformationDialogComponent
+    ReservationConformationDialogComponent,
+    FavouritesNotesDialogComponent
   ],
     imports: [
         ToastrModule.forRoot({

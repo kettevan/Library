@@ -13,6 +13,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UsersService} from '../../../services/users/users.service';
 import {FavouriteInterface} from '../../../interfaces/admin/user/favourite.interface';
 import {MatPaginator} from '@angular/material/paginator';
+import {FavouritesNotesDialogComponent} from '../../shared/favourites-notes-dialog/favourites-notes-dialog.component';
 
 @Component({
   selector: 'app-book-details-page',
@@ -98,12 +99,23 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
       userId: userId,
       bookId: this.bookId
     }
-    this.userService.addBookToFavourites(favObj).subscribe(result => {
-      if (result) {
-        this.toastr.success('წიგნი წარმატებით დაემატა ფავორიტებში');
+    this.dialog.open(FavouritesNotesDialogComponent, {
+      width: '400px'
+    }).afterClosed().subscribe(note => {
+      if (!note) {
+        return;
       }
-    }, error => {
-      this.toastr.error('დაფიქსირდა შეცდომა');
+      if (note !== '') {
+        favObj.note = note;
+      }
+      console.log(favObj);
+      this.userService.addBookToFavourites(favObj).subscribe(result => {
+        if (result) {
+          this.toastr.success('წიგნი წარმატებით დაემატა ფავორიტებში');
+        }
+      }, error => {
+        this.toastr.error('დაფიქსირდა შეცდომა');
+      })
     })
   }
 
