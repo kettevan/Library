@@ -11,6 +11,9 @@
                       #autosize="cdkTextareaAutosize"
                       cdkAutosizeMinRows="1"
                       cdkAutosizeMaxRows="5"></textarea>
+            <mat-error *ngIf='note.invalid && (note.dirty || note.touched)'>
+              მაქსიმუმ 50 სიმბოლო.
+            </mat-error>
           </mat-form-field>
         </div>
       </div>

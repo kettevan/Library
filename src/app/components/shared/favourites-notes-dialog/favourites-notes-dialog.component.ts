@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
@@ -10,7 +10,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 export class FavouritesNotesDialogComponent implements OnInit {
 
   favouriteNoteForm: FormGroup;
-  note = new FormControl('');
+  note = new FormControl('', [Validators.maxLength(50)]);
 
   constructor(private matDialogRef: MatDialogRef<string>, private fb: FormBuilder) { }
 
@@ -25,10 +25,14 @@ export class FavouritesNotesDialogComponent implements OnInit {
   }
 
   onSubmitClick(): void {
-    if (this.note.value) {
-      this.matDialogRef.close(this.note.value);
+    if (this.note.invalid) {
+      return;
     } else {
-      this.matDialogRef.close('');
+      if (this.note.value) {
+        this.matDialogRef.close(this.note.value);
+      } else {
+        this.matDialogRef.close('');
+      }
     }
   }
 
