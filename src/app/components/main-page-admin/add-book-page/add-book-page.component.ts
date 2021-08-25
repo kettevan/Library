@@ -195,7 +195,7 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     this.bookCopies = this.bookCopies.filter(x => copiesCodesToDelete.indexOf(x) == -1)
   }
 
-  onFileChange(event: Event): void {
+  onFileChange(event: any): void {
     this.uploading = true;
     const uploaded = (event.target as HTMLInputElement).files[0];
     let reader = new FileReader();
@@ -211,6 +211,8 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       this.toastr.error('დაფიქსირდა შეცდომა');
       console.log('Error: ', error);
     };
+
+
     // if (file) {
     //   this.uploadFiles(file).subscribe(
     //     result => {
@@ -225,7 +227,7 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     // }
   }
 
-  onImageChange(event: Event): void {
+  onImageChange(event: any): void {
     this.imageUploading = true;
     const uploaded = (event.target as HTMLInputElement).files[0];
     let reader = new FileReader();
