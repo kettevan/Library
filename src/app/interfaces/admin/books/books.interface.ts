@@ -25,7 +25,7 @@ export interface BooksInterface {
   price?: string;
   file?: string;
   isbn: string;
-  image?: string;
+  coverImage?: string;
   comments?: CommentsInterface[];
 }
 

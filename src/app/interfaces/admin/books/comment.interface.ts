@@ -8,6 +8,9 @@ export interface CommentInterface {
   updateDate?: Date;
   userId: number;
   bookId: number;
+  userInfo?: {
+    fullName?: string;
+  }
 }
 
 export interface CommentsResponseInterface {

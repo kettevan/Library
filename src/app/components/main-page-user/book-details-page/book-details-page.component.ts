@@ -65,7 +65,6 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
       this.loadComments(false);
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
-      console.log(error);
     })
   }
 
@@ -75,7 +74,6 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
       data: this.data
     }).afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
         const bookingInfo: HeaderBookingRequestInterface = {
           borrowerId: +localStorage.getItem('id'),
           bookCopyId: result.bookCopy.id,
@@ -83,7 +81,6 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
           endDate: result.endDate
         }
         this.reservationService.reserveUserBook(bookingInfo).subscribe(result => {
-          console.log(result);
           this.toastr.success('წიგნი წარმატებით დაიჯავშნა');
         }, error => {
           this.toastr.error('დაფიქსირდა შეცდომა');
@@ -108,7 +105,6 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
       if (note !== '') {
         favObj.note = note;
       }
-      console.log(favObj);
       this.userService.addBookToFavourites(favObj).subscribe(result => {
         if (result) {
           this.toastr.success('წიგნი წარმატებით დაემატა ფავორიტებში');
@@ -128,7 +124,6 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
       pageSize = this.paginator.pageSize;
     }
     this.booksService.comments(pageIndex, pageSize, this.bookId).subscribe(result => {
-      console.log(result);
       this.comments = result.content;
       this.contentSize = result.totalElements;
       this.paginator.length = result.totalElements;

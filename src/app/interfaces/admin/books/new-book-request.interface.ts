@@ -24,4 +24,5 @@ export interface NewBookRequestInterface {
   place?: string;
   price?: string;
   file?: string;
+  coverImage?: string;
 }

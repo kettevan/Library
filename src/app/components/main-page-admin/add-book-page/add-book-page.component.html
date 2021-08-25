@@ -141,6 +141,13 @@
           <input #fileUpload type="file" accept="application/pdf" class="hidden" (change)="onFileChange($event)">
         </div>
         <div class="col">
+          <button mat-button (click)="imageUpload.click()" [disabled]="imageUploading">
+            <mat-icon>upload</mat-icon>სურათის ატვირთვა
+            <mat-icon *ngIf="imageUploading"><mat-spinner diameter="20"></mat-spinner></mat-icon>
+          </button>
+          <input #imageUpload type="file" accept="image/jpeg, image/png" class="hidden" (change)="onImageChange($event)">
+        </div>
+        <div class="col">
           <mat-form-field style="width: 100%;" appearance="outline">
             <mat-label>მდებარეობა</mat-label>
             <input type='text' matInput formControlName='place'>

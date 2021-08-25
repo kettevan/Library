@@ -4,7 +4,7 @@ import {SettingsService} from '../../../services/admin-services/settings.service
 import {SettingsBasicInterface} from '../../../interfaces/admin/settings/settings-basic.interface';
 import {BooksAdminService} from '../../../services/books-admin/books-admin.service';
 import {NewBookRequestInterface} from '../../../interfaces/admin/books/new-book-request.interface';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Event, Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {SettingEditDialogComponent} from '../../admin-page/setting-edit-dialog/setting-edit-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
@@ -12,7 +12,6 @@ import {MatListOption} from '@angular/material/list';
 import {BookCopyInterface, BooksInterface} from '../../../interfaces/admin/books/books.interface';
 import {Observable, of} from 'rxjs';
 import {startWith} from 'rxjs/operators';
-import {resolve} from '@angular/compiler-cli/src/ngtsc/file_system';
 
 @Component({
   selector: 'app-add-book-page',
@@ -21,7 +20,9 @@ import {resolve} from '@angular/compiler-cli/src/ngtsc/file_system';
 })
 export class AddBookPageComponent implements OnInit, OnDestroy {
   @ViewChild('fileUpload', {static: false}) fileUpload: ElementRef;
+  @ViewChild('imageUpload', {static: false}) imageUpload: ElementRef;
   public uploading: boolean = false;
+  public imageUploading: boolean = false;
 
   private data: BooksInterface = null;
   subs = [];
@@ -50,6 +51,7 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
   public file = new FormControl(null);
   place = new FormControl(null);
   price = new FormControl(null);
+  image = new FormControl(null);
 
   publishers: SettingsBasicInterface[] = []
   languages: SettingsBasicInterface[] = []
@@ -68,13 +70,11 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     // id უნდა ამოვიღო Url-დან და ისე მივიღო data
     this.route.params.pipe(startWith(this.route.snapshot.params)).subscribe(params => {
       const id = parseInt(params.id, 10);
-      console.log(id);
       if (isFinite(id)) {
         this.bookId = id;
         // გამოვიძახო სერვისი და მივიღო წიგნზე ინფო
         this.booksService.getBookById(id).subscribe(result => {
           this.data = result;
-          console.log(this.data);
           this.setDataValues()
         })
       }
@@ -101,7 +101,8 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       collectionId: this.collectionId,
       file: this.file,
       place: this.place,
-      price: this.price
+      price: this.price,
+      image: this.image
     })
   }
 
@@ -138,7 +139,8 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       if (this.data.fund) {
         this.collectionId.setValue(this.data.fund.id);
       }
-      //file = new FormControl(null);
+      this.file.setValue(this.data.file);
+      this.image.setValue(this.data.coverImage);
       this.place.setValue(this.data.place);
       this.price.setValue(this.data.price);
       this.bookCopies = this.data.bookCopies;
@@ -201,10 +203,12 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     reader.onload = (event: any) => {
       this.file.setValue(reader.result);
       console.log(this.file.value);
+      this.toastr.success('ფაილი წარმატებით აიტვირთა');
       this.uploading = false;
     };
     reader.onerror = (error) => {
       this.uploading = false;
+      this.toastr.error('დაფიქსირდა შეცდომა');
       console.log('Error: ', error);
     };
     // if (file) {
@@ -221,14 +225,31 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     // }
   }
 
-  uploadFiles(file: File): Observable<any> {
-    this.fileUpload.nativeElement.value = '';
-    const formData = new FormData();
-    formData.append('file', file, file.name);
-    formData.append('directory', 'cms/reglaments');
-    formData.append('appendRandomString', 'false');
-    return of(null);
+  onImageChange(event: Event): void {
+    this.imageUploading = true;
+    const uploaded = (event.target as HTMLInputElement).files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(uploaded);
+    reader.onload = (event: any) => {
+      this.image.setValue(reader.result);
+      console.log(this.image.value);
+      this.imageUploading = false;
+      this.toastr.success('სურათი წარმატებით აიტვირთა');
+    };
+    reader.onerror = (error) => {
+      this.imageUploading = false;
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    };
   }
+
+  // uploadFiles(file: File): Observable<any> {
+  //   this.fileUpload.nativeElement.value = '';
+  //   const formData = new FormData();
+  //   formData.append('file', file, file.name);
+  //   formData.append('directory', 'cms/reglaments');
+  //   formData.append('appendRandomString', 'false');
+  //   return of(null);
+  // }
 
   ngOnDestroy(): void {
     this.subs.forEach(x => x.unsubscribe);
@@ -286,7 +307,8 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       link: this.link.value,
       place: this.place.value,
       file: this.file.value,
-      bookCopies: this.bookCopies
+      bookCopies: this.bookCopies,
+      coverImage: this.image.value
     }
     if (this.data == null) {
       this.createBook(newBook)
