@@ -11,6 +11,7 @@ import {HeaderBookingRequestInterface} from '../../../interfaces/admin/booking/h
 import {BehaviorSubject} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {BooksAdminService} from '../../../services/books-admin/books-admin.service';
+import {ReservationConformationDialogComponent} from '../../shared/reservation-conformation-dialog/reservation-conformation-dialog.component';
 
 @Component({
   selector: 'app-view-book-page',
@@ -34,6 +35,13 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
   constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface,
               public dialog: MatDialog, private reservationService: ReservationsService, private toastr: ToastrService,
               private changeDetectorRefs: ChangeDetectorRef, private booksAdminService: BooksAdminService) {
+
+
+    this.booksAdminService.getBookHistory(this.data.id).subscribe(result => {
+      console.log(result);
+    }, error => {
+      console.log(error);
+    })
 
     this.bookCopies = this.data.bookCopies.filter(x => x.status === "PRESENT")
     this.lentBookCopies = this.data.bookCopies.filter(x => x.status === "LENT")
@@ -88,17 +96,6 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
       if (result) {
         this.reloadBookCopiesData()
         this.toastr.success('წიგნი წარმატებით დაიჯავშნა');
-        // this.booksCopyDataSource.data = this.booksCopyDataSource.data.filter(x => {
-        //   if (x !== bookCopy){
-        //     return true;
-        //   }
-        //   return false;
-        // })
-        // bookCopy.status = 'LENT'
-        // this.lentBookCopies.push(bookCopy);
-        // this.lentBooksCopyDataSource = new MatTableDataSource<BookCopyInterface>(this.lentBookCopies);
-        // this.toastr.success('წიგნი წარმატებით დაიჯავშნა');
-        // this.changeDetectorRefs.detectChanges();
       }
     }, error =>  {
       this.toastr.error('დაფიქსირდა შეცდომა');
@@ -118,7 +115,25 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
   }
 
   receiveBook(element: any): void {
+    this.dialog.open(ReservationConformationDialogComponent, {
+      width: '400px',
+      data: 'ადასტურებთ წიგნის მიღებას?'
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.receiveBookServ(element);
+      }
+    })
+  }
 
+  private receiveBookServ(element: any): void {
+    this.booksAdminService.returnBookCopyAdmin(element.id).subscribe(result => {
+      console.log(result);
+      this.toastr.success('წიგნი წარმატებით ჩაბარდა');
+      this.reloadBookCopiesData();
+    }, error => {
+      console.log(error);
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
   }
 
   onCancelClick(): void {
