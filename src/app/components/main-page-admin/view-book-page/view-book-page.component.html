@@ -106,6 +106,39 @@
   <div>
     <mat-tab-group>
       <mat-tab label="ისტორია">
+        <table mat-table [dataSource]="bookHistoryDataSource" style="width: 100%">
+
+          <ng-container matColumnDef="bookCopyCode">
+            <th mat-header-cell *matHeaderCellDef> ეგზემპლარის N </th>
+            <td mat-cell class="row-height"  *matCellDef="let element"> {{element.bookCopyCode ? element.bookCopyCode : ''}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef> გატანის თარიღი </th>
+            <td mat-cell class="row-height"  *matCellDef="let element"> {{element.createDate ? element.createDate.split('T')[0] : ''}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="endDate">
+            <th mat-header-cell *matHeaderCellDef> დაბრუნების თარიღი </th>
+            <td mat-cell class="row-height"  *matCellDef="let element"> {{element.returnDate ? element.returnDate.split('T')[0] : ''}}</td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="readerFullName">
+            <th mat-header-cell *matHeaderCellDef> მკითხველი </th>
+            <td mat-cell class="row-height"  *matCellDef="let element"> {{element.readerFullName ? element.readerFullName : ''}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="lenderFullName">
+            <th mat-header-cell *matHeaderCellDef> გამცემი ადმინი </th>
+            <td mat-cell class="row-height"  *matCellDef="let element"> {{element.lenderAdminFullName ? element.lenderAdminFullName : ''}}</td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="historyColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: historyColumns;"></tr>
+        </table>
+        <mat-paginator #historiesPaginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
       </mat-tab>
       <mat-tab label="ეგზემპლარები ({{booksCopyDataSource.data.length}})">
         <div class="example-header">

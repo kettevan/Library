@@ -9,7 +9,7 @@ import {ToastrService} from 'ngx-toastr';
 import {BooksReservationRequestInterface} from '../../../interfaces/admin/books/books-reservation.interface';
 import {HeaderBookingRequestInterface} from '../../../interfaces/admin/booking/header-booking-request.interface';
 import {BehaviorSubject} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
 import {BooksAdminService} from '../../../services/books-admin/books-admin.service';
 import {ReservationConformationDialogComponent} from '../../shared/reservation-conformation-dialog/reservation-conformation-dialog.component';
 import {BookDataSource} from '../../../data-sources/book-data-source.datasource';
@@ -31,10 +31,13 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
 
   @ViewChild('bookCopiesPaginator', {static: true}) paginator: MatPaginator;
   @ViewChild('lentBookCopiesPaginator', {static: true}) lentBookPaginator: MatPaginator;
+  @ViewChild('historiesPaginator', {static: true}) historiesPaginator: MatPaginator;
 
   public bookHistoryDataSource: BookHistoryDataSource;
 
   displayColumns: string[] = ['code', 'status', 'action']
+  historyColumns: string[] = ['bookCopyCode', 'startDate', 'endDate', 'readerFullName', 'lenderFullName']
+
 
   constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface,
               public dialog: MatDialog, private reservationService: ReservationsService, private toastr: ToastrService,
@@ -42,13 +45,6 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
 
     this.bookHistoryDataSource = new BookHistoryDataSource(this.booksAdminService);
     this.bookHistoryDataSource.loadBookHistories(this.data.id);
-
-
-    // this.booksAdminService.getBookHistory(this.data.id).subscribe(result => {
-    //   console.log(result);
-    // }, error => {
-    //   console.log(error);
-    // })
 
     this.bookCopies = this.data.bookCopies.filter(x => x.status === "PRESENT")
     this.lentBookCopies = this.data.bookCopies.filter(x => x.status === "LENT")
@@ -102,6 +98,7 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
     this.reservationService.reserveBook(request).subscribe(result => {
       if (result) {
         this.reloadBookCopiesData()
+        this.loadHistories()
         this.toastr.success('წიგნი წარმატებით დაიჯავშნა');
       }
     }, error =>  {
@@ -134,7 +131,7 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
 
   private receiveBookServ(element: any): void {
     this.booksAdminService.returnBookCopyAdmin(element.id).subscribe(result => {
-      console.log(result);
+      this.loadHistories()
       this.toastr.success('წიგნი წარმატებით ჩაბარდა');
       this.reloadBookCopiesData();
     }, error => {
@@ -150,5 +147,20 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.booksCopyDataSource.paginator = this.paginator;
     this.lentBooksCopyDataSource.paginator = this.lentBookPaginator;
+
+    this.bookHistoryDataSource.counter$
+      .pipe(
+        tap((count) => {
+          this.historiesPaginator.length = count;
+        })
+      ).subscribe();
+
+    this.historiesPaginator.page.pipe(
+      tap(() => this.loadHistories())
+    ).subscribe();
+  }
+
+  private loadHistories(): void {
+    this.bookHistoryDataSource.loadBookHistories(this.data.id, this.historiesPaginator.pageIndex + 1, this.paginator.pageSize)
   }
 }

@@ -3,14 +3,14 @@ export interface BookHistoryInterface {
   bookCopyCode: string
   bookCopyId: number,
   bookId: number,
-  createDate?: Date,
+  createDate?: string,
   id?: number,
-  lendDate?: Date,
+  lendDate?: string,
   lenderAdminFullName?: string,
   note?: string,
   readerFullName?: string
   reservationId?: number,
-  returnDate?: Date,
-  updateDate?: Date,
+  returnDate?: string,
+  updateDate?: string,
   userId: number
 }
