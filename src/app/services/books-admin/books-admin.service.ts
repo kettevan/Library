@@ -81,10 +81,10 @@ export class BooksAdminService {
     return this.http.post<CommentInterface[]>(requestUrl, comment,{headers: {'Authorization': `Bearer ${token}`}});
   }
 
-  getBookHistory(bookId: number): Observable<any> {
+  getBookHistory(bookId: number, page: number, limit: number): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_URL + `books/${bookId}/history`;
+    const requestUrl = this.BASE_URL + `books/${bookId}/history?page=${page}&limit=${limit}`;
     return this.http.get<any>(requestUrl,{headers: {'Authorization': `Bearer ${token}`}});
   }
 

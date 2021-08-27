@@ -12,6 +12,8 @@ import {BehaviorSubject} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {BooksAdminService} from '../../../services/books-admin/books-admin.service';
 import {ReservationConformationDialogComponent} from '../../shared/reservation-conformation-dialog/reservation-conformation-dialog.component';
+import {BookDataSource} from '../../../data-sources/book-data-source.datasource';
+import {BookHistoryDataSource} from '../../../data-sources/book-history-data-source.datasource';
 
 @Component({
   selector: 'app-view-book-page',
@@ -30,18 +32,23 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
   @ViewChild('bookCopiesPaginator', {static: true}) paginator: MatPaginator;
   @ViewChild('lentBookCopiesPaginator', {static: true}) lentBookPaginator: MatPaginator;
 
+  public bookHistoryDataSource: BookHistoryDataSource;
+
   displayColumns: string[] = ['code', 'status', 'action']
 
   constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface,
               public dialog: MatDialog, private reservationService: ReservationsService, private toastr: ToastrService,
               private changeDetectorRefs: ChangeDetectorRef, private booksAdminService: BooksAdminService) {
 
+    this.bookHistoryDataSource = new BookHistoryDataSource(this.booksAdminService);
+    this.bookHistoryDataSource.loadBookHistories(this.data.id);
 
-    this.booksAdminService.getBookHistory(this.data.id).subscribe(result => {
-      console.log(result);
-    }, error => {
-      console.log(error);
-    })
+
+    // this.booksAdminService.getBookHistory(this.data.id).subscribe(result => {
+    //   console.log(result);
+    // }, error => {
+    //   console.log(error);
+    // })
 
     this.bookCopies = this.data.bookCopies.filter(x => x.status === "PRESENT")
     this.lentBookCopies = this.data.bookCopies.filter(x => x.status === "LENT")
