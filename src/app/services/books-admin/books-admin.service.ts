@@ -88,12 +88,22 @@ export class BooksAdminService {
     return this.http.get<any>(requestUrl,{headers: {'Authorization': `Bearer ${token}`}});
   }
 
+
+  filterBookHistory(bookId: number, bookCopy: string, page: number, limit: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `books/${bookId}/history?bookCopyCode=${bookCopy}&page=${page}&limit=${limit}`;
+    return this.http.get<any>(requestUrl,{headers: {'Authorization': `Bearer ${token}`}});
+  }
+
   returnBookCopyAdmin(bookCopyId: number): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     const requestUrl = this.BASE_URL + `books/bookCopies/${bookCopyId}/_return`;
     return this.http.post<any>(requestUrl,null,{headers: {'Authorization': `Bearer ${token}`}});
   }
+
+
 
 }
 

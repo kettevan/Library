@@ -14,6 +14,7 @@ import {BooksAdminService} from '../../../services/books-admin/books-admin.servi
 import {ReservationConformationDialogComponent} from '../../shared/reservation-conformation-dialog/reservation-conformation-dialog.component';
 import {BookDataSource} from '../../../data-sources/book-data-source.datasource';
 import {BookHistoryDataSource} from '../../../data-sources/book-history-data-source.datasource';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-view-book-page',
@@ -35,13 +36,21 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
 
   public bookHistoryDataSource: BookHistoryDataSource;
 
+  bookHistoryFilterGroup: FormGroup;
+  bookCopyFilter = new FormControl(null, [Validators.required]);
+
   displayColumns: string[] = ['code', 'status', 'action']
   historyColumns: string[] = ['bookCopyCode', 'startDate', 'endDate', 'readerFullName', 'lenderFullName']
 
 
   constructor(private dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: BooksInterface,
               public dialog: MatDialog, private reservationService: ReservationsService, private toastr: ToastrService,
-              private changeDetectorRefs: ChangeDetectorRef, private booksAdminService: BooksAdminService) {
+              private changeDetectorRefs: ChangeDetectorRef, private booksAdminService: BooksAdminService,
+              private fb: FormBuilder) {
+
+    this.bookHistoryFilterGroup = this.fb.group({
+      bookCopyFilter: this.bookCopyFilter
+    });
 
     this.bookHistoryDataSource = new BookHistoryDataSource(this.booksAdminService);
     this.bookHistoryDataSource.loadBookHistories(this.data.id);
@@ -162,5 +171,17 @@ export class ViewBookPageComponent implements OnInit, AfterViewInit {
 
   private loadHistories(): void {
     this.bookHistoryDataSource.loadBookHistories(this.data.id, this.historiesPaginator.pageIndex + 1, this.paginator.pageSize)
+  }
+
+  public filterHistory(): void {
+    if (this.bookCopyFilter.invalid) {
+      return;
+    }
+    this.bookHistoryDataSource.filterHistory(this.data.id, this.bookCopyFilter.value);
+  }
+
+  public clearHistoryFilter(): void {
+    this.bookHistoryFilterGroup.reset();
+    this.bookHistoryDataSource.loadBookHistories(this.data.id);
   }
 }

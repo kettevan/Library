@@ -38,4 +38,17 @@ export class BookHistoryDataSource implements DataSource<BookHistoryInterface> {
       );
   }
 
+  filterHistory(bookId: number, bookCopy: string, pageNumber = 1, pageSize = 10): void {
+    this.loadingSubject.next(true);
+    this.booksService.filterBookHistory(bookId, bookCopy, pageNumber, pageSize)
+      .pipe(
+        catchError(() => of([])),
+        finalize(() => this.loadingSubject.next(false))
+      )
+      .subscribe((result: any) => {
+        this.booksHistorySubject.next(result.content);
+        this.countSubject.next(result.totalElements);
+      })
+  }
+
 }

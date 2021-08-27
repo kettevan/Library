@@ -106,6 +106,18 @@
   <div>
     <mat-tab-group>
       <mat-tab label="ისტორია">
+        <div class="example-header" [formGroup]="bookHistoryFilterGroup">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="ფილტრი ეგზემპლარის N-ით" formControlName="bookCopyFilter">
+          </mat-form-field>
+          <button  mat-mini-fab class="small-fab searchButton" type="button" [matTooltip]="'ძენნა'" (click)="filterHistory()">
+            <mat-icon>search</mat-icon>
+          </button>
+
+          <button  mat-mini-fab class="small-fab searchButton" type="button" [matTooltip]="'ფილტრის გასუფთავება'" (click)="clearHistoryFilter()">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
         <table mat-table [dataSource]="bookHistoryDataSource" style="width: 100%">
 
           <ng-container matColumnDef="bookCopyCode">

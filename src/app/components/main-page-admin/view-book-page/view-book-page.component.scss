@@ -7,6 +7,28 @@
   background-color: #ffc87c;
 }
 
+.small-fab {
+  margin: 0 auto;
+  transition: none !important;
+  box-shadow: none !important;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+
+  &::ng-deep .mat-button-wrapper{
+    line-height: 25px;
+    padding: 0;
+  }
+  .mat-icon {
+    font-size: 16px;
+    line-height: 25px;
+  }
+}
+
+.searchButton {
+  margin-left: 15px;
+}
+
 
 .cancelBtn {
   //position: absolute;
