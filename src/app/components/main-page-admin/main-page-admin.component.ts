@@ -192,4 +192,13 @@ export class MainPageAdminComponent implements OnInit, OnDestroy, AfterViewInit{
     this.subs.push(collectionSubs);
   }
 
+
+  exportBooks(): void {
+    // this.booksAdminService.exportBooks().subscribe(responseMessage => {
+    //   console.log("hello");
+    //
+    // }, error => {
+    //   console.log("error");
+    // })
+  }
 }

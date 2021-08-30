@@ -104,6 +104,13 @@ export class BooksAdminService {
   }
 
 
+  exportBooks(): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `books/_export`;
+    return this.http.get<any>(requestUrl,{headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/octet-stream'}});
+  }
+
 
 }
 

@@ -187,9 +187,14 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell  *matHeaderCellDef>
         <div class="d-flex ml-12 child-ml-12">
-          <button  mat-mini-fab type="button" [matTooltip]="'დამატება'" (click)="createBook()">
+          <button  mat-mini-fab class="headerBtns" type="button" [matTooltip]="'დამატება'" (click)="createBook()">
             <mat-icon>add</mat-icon>
           </button>
+          <a href="http://localhost:8080/api/books/_export" download>
+            <button  mat-mini-fab class="headerBtns" type="button" [matTooltip]="'ექსპორტი'" (click)="exportBooks()">
+              <mat-icon>download</mat-icon>
+            </button>
+          </a>
         </div>
       </th>
 

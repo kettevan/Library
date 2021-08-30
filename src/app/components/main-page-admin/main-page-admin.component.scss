@@ -45,9 +45,9 @@ tr {
   height: 20px;
 }
 
-.row-height {
-  height: 20px !important;
-}
+//.row-height {
+//  height: 20px !important;
+//}
 
 //::ng-deep .mat-form-field-wrapper {
 //  padding-bottom: 0px !important;
@@ -98,4 +98,8 @@ td.mat-cell {
 tr.mat-row {
   /* row border */
   border: 1px solid #ffa600;
+}
+
+.headerBtns {
+  margin-right: 5px;
 }
