@@ -191,10 +191,14 @@
             <mat-icon>add</mat-icon>
           </button>
           <a href="http://localhost:8080/api/books/_export" download>
-            <button  mat-mini-fab class="headerBtns" type="button" [matTooltip]="'ექსპორტი'" (click)="exportBooks()">
+            <button  mat-mini-fab class="headerBtns" type="button" [matTooltip]="'ექსპორტი'">
               <mat-icon>download</mat-icon>
             </button>
           </a>
+          <button  mat-mini-fab class="headerBtns" type="button" [matTooltip]="'იმპორტი'" (click)="fileUpload.click()">
+            <mat-icon>upload</mat-icon>
+          </button>
+          <input #fileUpload type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="hidden" (change)="onFileChange($event)">
         </div>
       </th>
 

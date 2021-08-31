@@ -24,7 +24,8 @@ mat-icon {
 }
 
 .my-fab {
-  margin: 0 auto;
+  //margin: 0 auto;
+  margin-right: 7px;
   transition: none !important;
   box-shadow: none !important;
   width: 25px;
@@ -41,9 +42,9 @@ mat-icon {
   }
 }
 
-tr {
-  height: 20px;
-}
+//tr {
+//  height: 20px;
+//}
 
 //.row-height {
 //  height: 20px !important;
@@ -102,4 +103,8 @@ tr.mat-row {
 
 .headerBtns {
   margin-right: 5px;
+}
+
+.hidden {
+  display: none;
 }
