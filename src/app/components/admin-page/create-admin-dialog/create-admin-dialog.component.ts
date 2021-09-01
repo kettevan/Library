@@ -5,6 +5,7 @@ import { EventEmitter } from '@angular/core';
 import {ToastrService} from 'ngx-toastr';
 import {SettingsBasicInterface} from '../../../interfaces/admin/settings/settings-basic.interface';
 import {UsersResponseInterface} from '../../../interfaces/admin/users-response.interface';
+import {UserEditInterface} from '../../../interfaces/admin/user/user-edit.interface';
 
 @Component({
   selector: 'app-create-admin-dialog',
@@ -22,14 +23,15 @@ export class CreateAdminDialogComponent implements OnInit {
   personalNo = new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern("^[0-9]*$")]);
   email = new FormControl('', [Validators.required, Validators.email]);
   phoneNumber = new FormControl(null);
-  readerType = new FormControl(null);
+  userType = new FormControl(null);
   password = new FormControl(null);
   repeatPassword = new FormControl(null);
+  isAdmin = new FormControl(false);
 
   public hidePassword: boolean = true;
   public hideRepPassword: boolean = true;
 
-  constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<any>, private toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public isAdmin: boolean) {
+  constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<any>, private toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public info: UserEditInterface) {
     this.createUserForm = fb.group( {
       firstName: this.firstName,
       lastName: this.lastName,
@@ -38,15 +40,29 @@ export class CreateAdminDialogComponent implements OnInit {
       phoneNumber: this.phoneNumber,
       password: this.password,
       repeatPassword: this.repeatPassword,
-      readerType: this.readerType
+      userType: this.userType,
+      isAdmin: this.isAdmin
     });
-    if (isAdmin) {
+    console.log(info.userInfo);
+    if (info.userInfo) {
+      this.firstName.setValue(this.info.userInfo.firstName);
+      this.lastName.setValue(this.info.userInfo.lastName);
+      this.personalNo.setValue(this.info.userInfo.personalNo);
+      this.email.setValue(this.info.userInfo.email);
+      this.phoneNumber.setValue(this.info.userInfo.phoneNumber);
+      this.isAdmin.setValue(true);
+      if (!this.info.isAdmin) {
+        this.userType.setValue(this.info.userInfo.userType);
+      }
+    }
+    if (info.isAdmin && info.userInfo === null) {
+      this.isAdmin.setValue(true);
       this.password.setValidators(Validators.required);
       this.repeatPassword.setValidators(Validators.required);
-    } else {
-      this.readerType.setValidators(Validators.required);
+    } else if (!info.isAdmin){
+      this.isAdmin.setValue(false);
+      this.userType.setValidators(Validators.required);
     }
-
   }
 
 
@@ -55,9 +71,10 @@ export class CreateAdminDialogComponent implements OnInit {
 
   onSubmit(): void {
     if (!this.createUserForm.valid) {
+      this.toastr.error('მონაცემები არასწორია/არასაკმარია');
       return;
     }
-    if (this.createUserForm.controls['password'].value != this.createUserForm.controls['repeatPassword'].value) {
+    if (this.info.isAdmin && this.info.userInfo !== null && (this.createUserForm.controls['password'].value != this.createUserForm.controls['repeatPassword'].value)) {
       this.toastr.error("პაროლები არ ემთხვევა");
       return;
     }

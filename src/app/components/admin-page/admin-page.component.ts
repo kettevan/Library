@@ -29,7 +29,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   languageOpenState = false;
   publisherOpenState = false;
 
-  public usersDisplayedColumns: string[] = ['firstName', 'lastName', 'personalNo', 'email', 'createDate'];
+  public usersDisplayedColumns: string[] = ['firstName', 'lastName', 'personalNo', 'email', 'createDate', 'actions'];
   usersRequest$ = new BehaviorSubject<boolean>(true);
   users$ = this.usersRequest$.pipe(switchMap(() => this.adminService.getUsers(true)))
   usersDataSource = new MatTableDataSource<UsersResponseInterface>();
@@ -93,7 +93,11 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
 
   public addReader() {
     this.dialog.open(CreateAdminDialogComponent, {
-      width: '400px'
+      width: '400px',
+      data: {
+        isAdmin: false,
+        userInfo: null
+      }
     }).afterClosed().subscribe(result => {
       console.log(result);
       // გავაგზავნო ბექში მთელი ინფორმაცია
@@ -178,7 +182,6 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
     this.collections$.subscribe(result => {
       if (result != null) {
         this.collectionsDataSource = new MatTableDataSource<SettingsBasicInterface>(result);
-        //this.collectionsDataSource.paginator = this.paginator.toArray()[2];
         this.collectionsDataSource.paginator = this.collectionPagination;
       } else {
         this.toastr.error('არ გაქვს შესაბამისი უფლება');
@@ -429,7 +432,11 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
 
   public createNewUser() {
     this.dialog.open(CreateAdminDialogComponent, {
-      width: '400px'
+      width: '400px',
+      data: {
+        isAdmin: true,
+        userInfo: null
+      }
     }).afterClosed().subscribe(result => {
       if (result) {
         this.createAdminUser(result);
@@ -677,6 +684,65 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+  }
+
+  editReaderUser(element: UsersResponseInterface): void {
+    this.dialog.open(CreateAdminDialogComponent, {
+      width: '400px',
+      data: {
+        isAdmin: false,
+        userInfo: element
+      }
+    }).afterClosed().subscribe(result => {
+      this.editReaderUserServ(result);
+    })
+  }
+
+  private editReaderUserServ(element: CreateAdminInterface): void {
+    this.adminService.editUser(element).subscribe(result => {
+      this.toastr.success('მომხმარებელი წარმატებით განახლდა');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+  editAdminUser(element: UsersResponseInterface): void {
+    this.dialog.open(CreateAdminDialogComponent, {
+      width: '400px',
+      data: {
+        isAdmin: true,
+        userInfo: element
+      }
+    }).afterClosed().subscribe(result => {
+      this.editAdminUserServ(result);
+    })
+  }
+
+  private editAdminUserServ(result: CreateAdminInterface): void {
+    this.adminService.editUser(result).subscribe(result => {
+      this.toastr.success('მომხმარებელი წარმატებით განახლდა');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+
+  deleteAdminUser(element: UsersResponseInterface): void {
+    this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '400px'
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteAdminUserServ(element.id);
+      }
+    })
+  }
+
+  private deleteAdminUserServ(userId: number): void {
+    this.adminService.deleteUser(userId).subscribe(result => {
+      this.toastr.success('მომხმარებელი წარმატებით წაიშალა');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
   }
 
 }

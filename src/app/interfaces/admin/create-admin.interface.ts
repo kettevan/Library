@@ -7,4 +7,5 @@ export class CreateAdminInterface {
   phoneNumber?: string;
   password?: string;
   repeatPassword?: string;
+  isAdmin: boolean;
 }

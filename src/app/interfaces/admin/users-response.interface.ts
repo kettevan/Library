@@ -6,7 +6,7 @@ export interface UsersResponseInterface {
   lastName: string;
   email: string;
   personalNo?: string;
-  phoneNum?: string;
-  readerType?: READER_TYPES;
+  phoneNumber?: string;
+  userType?: READER_TYPES;
   createDate: Date;
 }

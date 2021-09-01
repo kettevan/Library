@@ -33,6 +33,13 @@ export class AdminService {
     return this.http.post(requestUrl, newAdmin, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
+  editUser(user: CreateAdminInterface): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = this.BASE_URL + `users`;
+    return this.http.put(requestUrl, user, { headers: {'Authorization': `Bearer ${token}`} });
+  }
+
   deleteUser(userId: number): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);

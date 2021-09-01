@@ -6,12 +6,11 @@ import {SharedService} from '../shared/shared.service';
 import {BooksInterface} from '../../interfaces/admin/books/books.interface';
 import {NewBookRequestInterface} from '../../interfaces/admin/books/new-book-request.interface';
 import {CommentInterface, CommentsResponseInterface} from '../../interfaces/admin/books/comment.interface';
-import {FavouriteInterface} from '../../interfaces/admin/user/favourite.interface';
-import {FavouriteResponseInterface} from '../../interfaces/admin/user/favourite-response.interface';
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class BooksAdminService {
 
   private BASE_URL = `http://localhost:8080/api/`
