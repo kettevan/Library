@@ -694,7 +694,9 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
         userInfo: element
       }
     }).afterClosed().subscribe(result => {
-      this.editReaderUserServ(result);
+      if (result) {
+        this.editReaderUserServ(result);
+      }
     })
   }
 
@@ -714,7 +716,9 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
         userInfo: element
       }
     }).afterClosed().subscribe(result => {
-      this.editAdminUserServ(result);
+      if (result) {
+        this.editAdminUserServ(result);
+      }
     })
   }
 
