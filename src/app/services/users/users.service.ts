@@ -50,4 +50,11 @@ export class UsersService {
     const requestUrl = this.USERS_BASE_UEL + `favourites/${favouriteId}`
     return this.http.delete<any>(requestUrl, { headers: {'Authorization': `Bearer ${token}`}})
   }
+
+  importFile(formData: FormData): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!this.shared.isAdminToken(token)) return of(null);
+    const requestUrl = this.USERS_BASE_UEL + `_import`;
+    return this.http.post<any>(requestUrl,formData,{headers: {'Authorization': `Bearer ${token}`}});
+  }
 }

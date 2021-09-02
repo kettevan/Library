@@ -15,6 +15,7 @@ import {RubricsResponseInterface} from '../../interfaces/admin/settings/rubrics-
 import {SettingsBasicInterface} from '../../interfaces/admin/settings/settings-basic.interface';
 import {SettingEditDialogComponent} from './setting-edit-dialog/setting-edit-dialog.component';
 import {ConfirmDeleteDialogComponent} from '../shared/confirm-delete-dialog/confirm-delete-dialog.component';
+import {UsersService} from '../../services/users/users.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -78,7 +79,8 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   constructor(private adminService: AdminService,
               private settingsService: SettingsService,
               private toastr: ToastrService,
-              public dialog: MatDialog)
+              public dialog: MatDialog,
+              private usersService: UsersService)
   {
     this.subscribeToUsers();
     this.subscribeToRubrics();
@@ -126,12 +128,20 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   private subscribeToStudents(): void {
-    this.adminService.getUsers(false).subscribe(result => {
+    this.readers$.subscribe(result => {
       if (result != null) {
         this.studentsDataSource = new MatTableDataSource<UsersResponseInterface>(result['content']);
         this.studentsDataSource.paginator = this.readersPagination;
+      } else {
+        this.toastr.error('არ გაქვს შესაბამისი უფლება');
       }
     })
+    // this.adminService.getUsers(false).subscribe(result => {
+    //   if (result != null) {
+    //     this.studentsDataSource = new MatTableDataSource<UsersResponseInterface>(result['content']);
+    //     this.studentsDataSource.paginator = this.readersPagination;
+    //   }
+    // })
   }
 
   private subscribeToForms(): void {
@@ -744,6 +754,18 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   private deleteAdminUserServ(userId: number): void {
     this.adminService.deleteUser(userId).subscribe(result => {
       this.toastr.success('მომხმარებელი წარმატებით წაიშალა');
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
+    })
+  }
+
+  onFileChange(event: any): void {
+    const file = (event.target as HTMLInputElement).files[0];
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    this.usersService.importFile(formData).subscribe(result => {
+      this.toastr.success('ფაილი წარმატებით აიტვირთა');
+      this.readersRequest$.next(true);
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
     })
