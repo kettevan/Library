@@ -202,7 +202,6 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(uploaded);
     reader.onload = (event: any) => {
       this.file.setValue(reader.result);
-      console.log(this.file.value);
       this.toastr.success('ფაილი წარმატებით აიტვირთა');
       this.uploading = false;
     };
@@ -212,19 +211,6 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       console.log('Error: ', error);
     };
 
-
-    // if (file) {
-    //   this.uploadFiles(file).subscribe(
-    //     result => {
-    //       if (result.success) {
-    //         this.toastr.success(`ფაილი წარმატებით აიტვირთა`);
-    //       }
-    //     },
-    //     error => {
-    //       this.toastr.error(`ფაილი ვერ აიტვირთა`);
-    //     }
-    //   );
-    // }
   }
 
   onImageChange(event: any): void {
@@ -234,7 +220,6 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(uploaded);
     reader.onload = (event: any) => {
       this.image.setValue(reader.result);
-      console.log(this.image.value);
       this.imageUploading = false;
       this.toastr.success('სურათი წარმატებით აიტვირთა');
     };
@@ -243,15 +228,6 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       this.toastr.error('დაფიქსირდა შეცდომა');
     };
   }
-
-  // uploadFiles(file: File): Observable<any> {
-  //   this.fileUpload.nativeElement.value = '';
-  //   const formData = new FormData();
-  //   formData.append('file', file, file.name);
-  //   formData.append('directory', 'cms/reglaments');
-  //   formData.append('appendRandomString', 'false');
-  //   return of(null);
-  // }
 
   ngOnDestroy(): void {
     this.subs.forEach(x => x.unsubscribe);
@@ -288,6 +264,10 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
   }
 
   onCreateClick(): void {
+    if (this.newBookForm.invalid) {
+      this.toastr.error('არასაკმარისი ინფორმაცია');
+      return;
+    }
     const newBook: NewBookRequestInterface = {
       id: this.id.value,
       title: this.title.value,

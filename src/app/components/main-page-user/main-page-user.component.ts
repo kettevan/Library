@@ -30,7 +30,7 @@ export class MainPageUserComponent implements OnInit, AfterViewInit, OnDestroy {
   public filterForm: FormGroup;
   author = new FormControl(null);
   title = new FormControl(null);
-  subjectId = new FormControl(null);
+  rubricId = new FormControl(null);
   publisherId = new FormControl(null);
   languageId = new FormControl(null);
   bookCopyCode = new FormControl(null);
@@ -59,7 +59,7 @@ export class MainPageUserComponent implements OnInit, AfterViewInit, OnDestroy {
     this.filterForm = this.fb.group({
       author: this.author,
       title: this.title,
-      subjectId: this.subjectId,
+      rubricId: this.rubricId,
       publisherId: this.publisherId,
       languageId: this.languageId,
       bookCopyCode: this.bookCopyCode
@@ -77,8 +77,7 @@ export class MainPageUserComponent implements OnInit, AfterViewInit, OnDestroy {
     // რუბრიკები
     const subjectsSubs = this.settingsService.getAllGenres()
     subjectsSubs.subscribe(result => {
-      this.subjects = result,
-        console.log(result)
+      this.subjects = result
     } );
     this.subs.push(subjectsSubs);
   }

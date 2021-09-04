@@ -272,7 +272,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public editCollection(collection: SettingsBasicInterface): void {
-    this.collectionOpenState = !this.collectionOpenState
+    //this.collectionOpenState = !this.collectionOpenState
     this.dialog.open(SettingEditDialogComponent, {
       width: '400px',
       data: collection
@@ -284,7 +284,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   public deleteCollection(collection: SettingsBasicInterface): void {
-    this.collectionOpenState = !this.collectionOpenState
+    //this.collectionOpenState = !this.collectionOpenState
     this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(result => {

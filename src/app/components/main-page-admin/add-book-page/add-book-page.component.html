@@ -6,7 +6,7 @@
         <div class="col">
           <mat-form-field style="width: 100%;" appearance="outline">
             <mat-label>ავტორი</mat-label>
-            <input type='text' matInput placeholder="შეიყვანეთ ავტორი" formControlName='author'>
+            <input type='text' matInput placeholder="შეიყვანეთ ავტორი" formControlName='author' required>
             <mat-error *ngIf='author.invalid && (author.dirty || author.touched)'>
               ავტორი სავალდებულოა
             </mat-error>
@@ -15,7 +15,7 @@
         <div class="col">
           <mat-form-field style="width: 100%;" appearance="outline">
             <mat-label>სათაური</mat-label>
-            <input type='text' matInput formControlName='title'>
+            <input type='text' matInput formControlName='title' required>
             <mat-error *ngIf='title.invalid && (title.dirty || title.touched)'>
               სათაური სავალდებულოა
             </mat-error>
@@ -74,7 +74,10 @@
         <div class="col">
           <mat-form-field style="width: 100%;" appearance="outline">
             <mat-label>ISBN</mat-label>
-            <input type='text' matInput formControlName='ISBN'>
+            <input type='text' matInput formControlName='ISBN' required>
+            <mat-error *ngIf='ISBN.invalid && (ISBN.dirty || ISBN.touched)'>
+              ISBN კოდი სავალდებულოა
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="col">
