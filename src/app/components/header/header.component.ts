@@ -81,4 +81,11 @@ export class HeaderComponent implements OnInit{
       this.admin$ = of(false);
     }
   }
+
+  isActive(comp: string): boolean {
+    if (this.router.url === comp) {
+      return true;
+    }
+    return false;
+  }
 }

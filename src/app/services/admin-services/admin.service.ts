@@ -36,7 +36,7 @@ export class AdminService {
   editUser(user: CreateAdminInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
-    const requestUrl = this.BASE_URL + `users`;
+    const requestUrl = this.BASE_URL + `users/${user.id}`;
     return this.http.put(requestUrl, user, { headers: {'Authorization': `Bearer ${token}`} });
   }
 

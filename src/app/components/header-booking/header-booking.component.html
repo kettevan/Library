@@ -108,10 +108,10 @@
             <button mat-mini-fab class="small-fab" (click)="viewDetails(element)">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button *ngIf="element.status === 'PENDING'" mat-button (click)="confirmReservation(element)"> დადასტურება </button>
-            <button *ngIf="element.status === 'PENDING'" mat-button (click)="rejectReservation(element)"> უარყოფა </button>
-            <button *ngIf="element.status === 'CONFIRMED'" mat-button (click)="lentBook(element)"> გაცემა </button>
-            <button *ngIf="element.status === 'LENT'" mat-button (click)="completeReservation(element)"> მიღება </button>
+            <button *ngIf="element.status === 'PENDING'" class="padding" color="accent" mat-raised-button (click)="confirmReservation(element)"> დადასტურება </button>
+            <button *ngIf="element.status === 'PENDING'" class="padding" color="accent" mat-raised-button (click)="rejectReservation(element)"> უარყოფა </button>
+            <button *ngIf="element.status === 'CONFIRMED'" class="padding" color="accent" mat-raised-button (click)="lentBook(element)"> გაცემა </button>
+            <button *ngIf="element.status === 'LENT'" class="padding" color="accent" mat-raised-button (click)="completeReservation(element)"> მიღება </button>
           </td>
         </ng-container>
 

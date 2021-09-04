@@ -18,6 +18,7 @@ export class CreateAdminDialogComponent implements OnInit {
 
 
   createUserForm: FormGroup;
+  id = new FormControl(null);
   firstName = new FormControl('', [Validators.required]);
   lastName = new FormControl('', Validators.required);
   personalNo = new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern("^[0-9]*$")]);
@@ -33,6 +34,7 @@ export class CreateAdminDialogComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<any>, private toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public info: UserEditInterface) {
     this.createUserForm = fb.group( {
+      id: this.id,
       firstName: this.firstName,
       lastName: this.lastName,
       personalNo: this.personalNo,
@@ -45,6 +47,7 @@ export class CreateAdminDialogComponent implements OnInit {
     });
     console.log(info.userInfo);
     if (info.userInfo) {
+      this.id.setValue(this.info.userInfo.id);
       this.firstName.setValue(this.info.userInfo.firstName);
       this.lastName.setValue(this.info.userInfo.lastName);
       this.personalNo.setValue(this.info.userInfo.personalNo);
