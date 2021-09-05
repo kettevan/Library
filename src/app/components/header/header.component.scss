@@ -32,7 +32,7 @@ a {
     padding-right: 5%;
     font-size: 15px;
     display: inline;
-    padding-top: 25px;
+    padding-top: 10px;
     color: black;
 }
 
@@ -90,6 +90,7 @@ mat-icon {
 }
 
 
+
 @media only screen and (max-width: 600px) {
   img {
     width: 25px;
@@ -107,3 +108,11 @@ mat-icon {
     padding: 5px 5px;
   }
 }
+
+@media (max-width: 800px) {
+  .header h1 {
+    display: none;
+  }
+
+}
+

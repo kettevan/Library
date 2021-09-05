@@ -161,6 +161,7 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   private confirmReservationServ(reservationId: number): void {
     this.reservationsService.confirmReservationByAdmin(reservationId).subscribe(result => {
       this.loadReservations();
+      this.reservationsFilterForm.reset();
       this.toastr.success('რეზერვაცია დადასტურებულია');
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
@@ -170,6 +171,7 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   private rejectReservationServ(reservationId: number): void {
     this.reservationsService.rejectReservationByAdmin(reservationId).subscribe(result => {
       this.loadReservations();
+      this.reservationsFilterForm.reset();
       this.toastr.success('რეზერვაცია უარყოფილია');
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
@@ -179,6 +181,7 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   private lentBookServ(reservationId: number): void {
     this.reservationsService.lentBookByAdmin(reservationId).subscribe(result => {
       this.loadReservations();
+      this.reservationsFilterForm.reset();
       this.toastr.success('წიგნი გაცემულია');
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
@@ -188,6 +191,7 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
   private completeReservationServ(reservationId: number): void {
     this.reservationsService.completeReservationByAdmin(reservationId).subscribe(result => {
       this.loadReservations();
+      this.reservationsFilterForm.reset();
       this.toastr.success('წიგნი მიღებულია');
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
@@ -261,7 +265,7 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
       // შესაცვლელია url
       this.booksService.bookingFilter(this.bookSearchField.value).subscribe(result => {
         if (result['content'].length == 0) {
-          this.bookSearchField.reset();
+          // this.bookSearchField.reset();
           this.toastr.error('წიგნი ვერ მოიძებნა');
           return;
         }
@@ -287,9 +291,14 @@ export class HeaderBookingComponent implements OnInit, AfterViewInit {
       return;
     }
     this.savedBooksArr.push(element);
+    // this.booksDatasource = new MatTableDataSource<BooksInterface>();
+    // this.bookSearchField.reset();
+    this.savedBooks.paginator = this.savedBooksPagination;
+  }
+
+  clearSearch(): void {
     this.booksDatasource = new MatTableDataSource<BooksInterface>();
     this.bookSearchField.reset();
-    this.savedBooks.paginator = this.savedBooksPagination;
   }
 
   removeElementFromReservedList(element: BooksInterface): void {

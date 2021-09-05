@@ -42,3 +42,13 @@ img {
   font-family: 'avaza';
   margin-bottom: 10px;
 }
+
+@media (max-width: 800px) {
+  .col-6 {
+    width: 100% !important;
+  }
+
+  .col-8 {
+    max-width: 100%;
+  }
+}

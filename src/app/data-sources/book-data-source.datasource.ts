@@ -33,6 +33,7 @@ export class BookDataSource implements DataSource<BooksInterface> {
         finalize(() => this.loadingSubject.next(false))
       )
       .subscribe((result: BooksResponseInterface) => {
+          console.log(result.content);
           this.booksSubject.next(result.content);
           this.countSubject.next(result.totalElements);
         }

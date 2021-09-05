@@ -196,11 +196,11 @@ export class MainPageAdminComponent implements OnInit, OnDestroy, AfterViewInit{
     const file = (event.target as HTMLInputElement).files[0];
     const formData: FormData = new FormData();
     formData.append('file', file);
-    console.log(formData.get('file'));
     this.booksAdminService.importFile(formData).subscribe(result => {
-      console.log(result);
+      this.toastr.success('წიგნები წარმატებით დაემატა');
+      this.loadBooks();
     }, error => {
-      console.log(error);
+      this.toastr.error('დაფიქსირდა შეცდომა');
     })
   }
 }

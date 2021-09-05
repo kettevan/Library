@@ -111,7 +111,8 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
     this.dialog.open(FavouritesNotesDialogComponent, {
       width: '400px'
     }).afterClosed().subscribe(note => {
-      if (!note) {
+      console.log(note);
+      if (note === undefined || note === null) {
         return;
       }
       if (note !== '') {
@@ -122,7 +123,8 @@ export class BookDetailsPageComponent implements OnInit, AfterViewInit {
           this.toastr.success('წიგნი წარმატებით დაემატა ფავორიტებში');
         }
       }, error => {
-        this.toastr.error('დაფიქსირდა შეცდომა');
+        this.toastr.error('დაფიქსირდა შეცდომა / წიგნი უკვე დამატებულია ფავორიტებში');
+
       })
     })
   }

@@ -76,6 +76,7 @@
           <p>{{book.author? book.author.length < 25 ? book.author : book.author.substr(0, 20) + '...' : ''}}</p>
           <p>რუბრიკა: {{book.subject?.name}} </p>
           <p>ენა: {{book.language?.name}} </p>
+          <p>გამომცემლობა: {{book.publisher?.name}} </p>
         </mat-card-content>
         <mat-card-actions>
             <button style="width: 100%" type="button" color="accent" mat-raised-button (click)="bookDetails(book.id)">დეტალურად</button>

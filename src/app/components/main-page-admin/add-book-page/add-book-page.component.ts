@@ -43,7 +43,7 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
   pageNumber = new FormControl(null);
   UDC = new FormControl(null);
   active = new FormControl(null);
-  subjectId = new FormControl(null);
+  rubricId = new FormControl(null);
   formId = new FormControl(null);
   typeId = new FormControl(null);
   link = new FormControl(null);
@@ -95,7 +95,7 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       typeId: this.typeId,
       pageNumber: this.pageNumber,
       UDC: this.UDC,
-      subjectId: this.subjectId,
+      rubricId: this.rubricId,
       formId: this.formId,
       link: this.link,
       collectionId: this.collectionId,
@@ -126,8 +126,8 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       this.createDate.setValue(this.data.createDate);
       this.pageNumber.setValue(this.data.pageNumber);
       this.UDC.setValue(this.data.udc);
-      if (this.data.subject) {
-        this.subjectId.setValue(this.data.subject.id);
+      if (this.data.rubric) {
+        this.rubricId.setValue(this.data.rubric.id);
       }
       if (this.data.resourceForm) {
         this.formId.setValue(this.data.resourceForm.id);
@@ -278,7 +278,7 @@ export class AddBookPageComponent implements OnInit, OnDestroy {
       active: this.active.value,
       publishDate: this.publishDate.value,
       createDate: this.createDate.value,
-      subjectId: this.subjectId.value,
+      rubricId: this.rubricId.value,
       languageId: this.languageId.value,
       fundId: this.collectionId.value,
       publisherId: this.publisherId.value,

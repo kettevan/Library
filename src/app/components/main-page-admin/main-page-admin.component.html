@@ -120,11 +120,11 @@
         <mat-date-range-picker #picker2></mat-date-range-picker>
       </mat-form-field>
     </div>
-    <div class="col vertically-centered">
-      <section style="padding-bottom: 2px!important;">
-        <mat-checkbox color="accent" formControlName="booked">აქტიური ჯავშანი</mat-checkbox>
-      </section>
-    </div>
+<!--    <div class="col vertically-centered">-->
+<!--      <section style="padding-bottom: 2px!important;">-->
+<!--        <mat-checkbox color="accent" formControlName="booked">აქტიური ჯავშანი</mat-checkbox>-->
+<!--      </section>-->
+<!--    </div>-->
     <div class="col vertically-centered">
       <button type="button"  color="accent" class="cancelBtn searchBtn" mat-raised-button (click)="filterBooks()">ძებნა</button>
       <button type="button"  color="accent" class="cancelBtn searchBtn" mat-raised-button (click)="clearFilter()">გასუფთავება</button>
@@ -176,7 +176,7 @@
 
     <ng-container matColumnDef="rubric">
       <th mat-header-cell *matHeaderCellDef> რუბრიკა </th>
-      <td mat-cell class="row-height" *matCellDef="let element"> {{element.subject ? element.subject.name : ''}} </td>
+      <td mat-cell class="row-height" *matCellDef="let element"> {{element.rubric ? element.rubric.name : ''}} </td>
     </ng-container>
 
     <ng-container matColumnDef="language">

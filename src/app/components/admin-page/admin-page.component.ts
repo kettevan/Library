@@ -741,6 +741,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
         userInfo: element
       }
     }).afterClosed().subscribe(result => {
+      console.log(result);
       if (result) {
         this.editAdminUserServ(result);
       }
@@ -748,6 +749,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   private editAdminUserServ(result: CreateAdminInterface): void {
+    console.log(result);
     this.adminService.editUser(result).subscribe(result => {
       this.usersRequest$.next(true);
       this.toastr.success('მომხმარებელი წარმატებით განახლდა');

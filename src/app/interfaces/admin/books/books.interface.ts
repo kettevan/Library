@@ -12,7 +12,7 @@ export interface BooksInterface {
   createDate?: Date;
   active?: boolean;
   pageNumber?: number
-  subject?: SettingsBasicInterface;
+  rubric?: SettingsBasicInterface;
   language?: SettingsBasicInterface;
   fund?: SettingsBasicInterface;
   publisher?: SettingsBasicInterface;

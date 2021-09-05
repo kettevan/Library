@@ -86,6 +86,7 @@ export class CreateAdminDialogComponent implements OnInit {
       return;
     }
     const rawValue = this.createUserForm.getRawValue();
+    console.log(rawValue);
     this.matDialogRef.close(rawValue);
   }
 

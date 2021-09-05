@@ -12,7 +12,7 @@ export interface NewBookRequestInterface {
   publishDate?: Date;
   createDate?: Date;
   active?: boolean;
-  subjectId?: number;
+  rubricId?: number;
   languageId?: number;
   fundId?: number;
   publisherId?: number;

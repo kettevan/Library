@@ -1,14 +1,14 @@
 <div class="container">
   <div class="row">
-    <div class="col-6">
+    <div class="col">
       <img src="{{data?.coverImage? data.coverImage : 'assets/images/noImage.png'}}">
     </div>
-    <div class="col-6">
+    <div class="col">
       <h1 class="commentsLabel">detalebi:</h1>
       <h1>{{data?.title}}</h1>
       <h2>ავტორი: {{data?.author}}</h2>
       <h3>ქვესათაური: {{data?.subtitle ? data?.subtitle : '[არ არის მითითებული]'}}</h3>
-      <h3>რუბრიკა: {{data?.subject?.name}}</h3>
+      <h3>რუბრიკა: {{data?.rubric?.name}}</h3>
       <h3>გამომცემლობა: {{data?.publisher?.name}}</h3>
       <h3>ენა: {{data?.language?.name}}</h3>
       <h3>გამოცემის წელი: {{data?.publishDate?.toString().split('-')[0]}}</h3>
