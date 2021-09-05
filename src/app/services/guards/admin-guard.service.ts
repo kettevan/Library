@@ -20,7 +20,7 @@ export class AdminGuardService implements CanActivate {
       return false;
     }
     var decoded = jwt_decode(token);
-    if (decoded['Role'].toUpperCase() === 'ADMIN') {
+    if (decoded['Role'].toUpperCase() === 'ADMIN' || decoded['Role'].toUpperCase() === 'SUPER_ADMIN') {
       return true;
     } else {
       this.router.navigate(['/login']);
