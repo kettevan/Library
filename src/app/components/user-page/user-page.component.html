@@ -7,7 +7,8 @@
               <mat-card-title>
                 პირადი ინფორმაცია
               </mat-card-title>
-              <img mat-card-image src="../../../assets/images/my-image.jpeg">
+<!--              <img mat-card-image src="../../../assets/images/my-image.jpeg">-->
+              <img mat-card-image src="{{photoUrl ?  photoUrl : '../../../assets/images/noImage.png'}}">
               <mat-card-content>
                 <h3>სახელი: <span>{{  userInfo.firstName}}</span> </h3>
                 <h3>გვარი: <span>{{  userInfo.lastName}}</span> </h3>
@@ -33,7 +34,7 @@
             <table mat-table [dataSource]="reservationDataSource" style="width: 100%">
               <ng-container matColumnDef="bookTitle">
                 <th mat-header-cell *matHeaderCellDef> დასახელება </th>
-                <td mat-cell *matCellDef="let element"> {{element.bookInfo ? element.bookInfo.title : '' }} </td>
+                <td mat-cell *matCellDef="let element"> {{element.bookinfo ? element.bookinfo.title : '' }} </td>
               </ng-container>
 
               <ng-container matColumnDef="author">

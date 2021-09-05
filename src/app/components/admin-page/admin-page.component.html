@@ -44,14 +44,14 @@
                 <mat-icon>download</mat-icon>
               </button>
             </a>
-            <button  mat-mini-fab type="button" [matTooltip]="'იმპორტი'" (click)="fileUpload.click()">
+            <button  mat-mini-fab type="button" [matTooltip]="'იმპორტი'" (click)="fileUpload.click()" [disabled]="!isSuperAdmin">
               <mat-icon>upload</mat-icon>
             </button>
             <input #fileUpload type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="hidden" (change)="onFileChange($event)">
           </div>
         </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-mini-fab class="my-fab padding" type="button" [matTooltip]="'რედაქტირება'" (click)="editReaderUser(element)">
+          <button mat-mini-fab class="my-fab padding" type="button" [matTooltip]="'რედაქტირება'" (click)="editReaderUser(element)" [disabled]="!isSuperAdmin">
             <mat-icon>edit</mat-icon>
           </button>
           <button  mat-mini-fab class="my-fab" type="button" [matTooltip]="'წაშლა'" (click)="deleteReader(element)">
@@ -104,7 +104,7 @@
             </button>
           </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-mini-fab class="my-fab padding" type="button" [matTooltip]="'რედაქტირება'" (click)="editAdminUser(element)">
+            <button mat-mini-fab class="my-fab padding" type="button" [matTooltip]="'რედაქტირება'" (click)="editAdminUser(element)" [disabled]="!isSuperAdmin">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-mini-fab class="my-fab padding" type="button" [matTooltip]="'წაშლა'" (click)="deleteAdminUser(element)">

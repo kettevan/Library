@@ -13,7 +13,7 @@ export class UserBookingPageComponent implements OnInit {
 
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
-  public disabledDatesArr = [new Date('16/11/2021').getTime()];
+  public disabledDatesArr = [];
 
   public selectedBookCopy = null;
 
@@ -44,6 +44,9 @@ export class UserBookingPageComponent implements OnInit {
     this.endDate.setValue(null);
     if (this.bookCopy.value.bookedDates) {
       this.disabledDatesArr = this.bookCopy.value.bookedDates;
+      this.disabledDatesArr = this.disabledDatesArr.map(x => {
+        return new Date(x).getTime();
+      })
     } else {
       this.disabledDatesArr = [];
     }

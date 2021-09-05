@@ -63,7 +63,7 @@ export class BooksAdminService {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token) && !this.shared.isUserToken(token)) return of(null);
     const requestUrl = this.BASE_URL + `books`;
-    return this.http.get<any>(requestUrl, {params: {author: filterValue}, headers: {'Authorization': `Bearer ${token}`}})
+    return this.http.get<any>(requestUrl, {params: {author: filterValue, bookCopyStatus: 'PRESENT'}, headers: {'Authorization': `Bearer ${token}`}})
   }
 
   comments(page: number, limit: number, bookId: number): Observable<CommentsResponseInterface> {

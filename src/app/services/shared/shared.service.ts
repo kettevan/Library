@@ -28,6 +28,15 @@ export class SharedService {
     return this.userObj;
   }
 
+  public isSuperAdmin(token: string) {
+    if (token == null) {
+      return false;
+    }
+    const role = jwt_decode(token)['Role'].toUpperCase()
+    if (role != 'SUPER_ADMIN') return false;
+    return true;
+  }
+
   public isAdminToken(token: string) {
     if (token == null) {
       return false;

@@ -16,6 +16,7 @@ import {SettingsBasicInterface} from '../../interfaces/admin/settings/settings-b
 import {SettingEditDialogComponent} from './setting-edit-dialog/setting-edit-dialog.component';
 import {ConfirmDeleteDialogComponent} from '../shared/confirm-delete-dialog/confirm-delete-dialog.component';
 import {UsersService} from '../../services/users/users.service';
+import {SharedService} from '../../services/shared/shared.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -29,6 +30,8 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   typeOpenState = false;
   languageOpenState = false;
   publisherOpenState = false;
+
+  public isSuperAdmin: boolean = false;
 
   public usersDisplayedColumns: string[] = ['firstName', 'lastName', 'personalNo', 'email', 'createDate', 'actions'];
   usersRequest$ = new BehaviorSubject<boolean>(true);
@@ -80,8 +83,10 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
               private settingsService: SettingsService,
               private toastr: ToastrService,
               public dialog: MatDialog,
-              private usersService: UsersService)
+              private usersService: UsersService, private sharedService: SharedService)
   {
+    this.isSuperAdmin = this.sharedService.isSuperAdmin(localStorage.getItem('token'));
+    console.log(this.isSuperAdmin);
     this.subscribeToUsers();
     this.subscribeToRubrics();
     this.subscribeToCollections();

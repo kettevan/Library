@@ -13,6 +13,7 @@ import {ToastrService} from 'ngx-toastr';
 import {ConfirmDeleteDialogComponent} from '../shared/confirm-delete-dialog/confirm-delete-dialog.component';
 import {FavouriteInterface} from '../../interfaces/admin/user/favourite.interface';
 import {Router} from '@angular/router';
+import {SocialAuthService} from 'angularx-social-login';
 
 @Component({
   selector: 'app-user-page',
@@ -36,9 +37,16 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   @ViewChild('reservationPagination') reservationPagination: MatPaginator;
   @ViewChild('favouritesPagination') favouritesPagination: MatPaginator;
 
+  public photoUrl: string = null;
+
 
   constructor(private reservationService: ReservationsService, private dialog: MatDialog,
-              public userService: UsersService, private toastr: ToastrService, private router: Router) {
+              public userService: UsersService, private toastr: ToastrService, private router: Router,  public socialAuthServive: SocialAuthService) {
+    this.socialAuthServive.authState.subscribe(result => {
+      if (result) {
+        this.photoUrl = result.photoUrl;
+      }
+    })
   }
 
   ngOnInit(): void {
