@@ -26,11 +26,11 @@ export class AdminService {
     return this.http.get<UsersResponseInterface[]>(requestUrl, {headers: {'Authorization': `Bearer ${token}`}});
   }
 
-  createAdmin(newAdmin: CreateAdminInterface): Observable<any> {
+  createUser(newUser: CreateAdminInterface): Observable<any> {
     const token = localStorage.getItem('token');
     if (!this.shared.isAdminToken(token)) return of(null);
     const requestUrl = this.BASE_URL + `users`;
-    return this.http.post(requestUrl, newAdmin, { headers: {'Authorization': `Bearer ${token}`} });
+    return this.http.post(requestUrl, newUser, { headers: {'Authorization': `Bearer ${token}`} });
   }
 
   editUser(user: CreateAdminInterface): Observable<any> {

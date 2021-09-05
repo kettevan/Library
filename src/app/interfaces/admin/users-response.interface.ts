@@ -8,5 +8,5 @@ export interface UsersResponseInterface {
   personalNo?: string;
   phoneNumber?: string;
   userType?: READER_TYPES;
-  createDate: Date;
+  registerDate: string;
 }

@@ -101,8 +101,22 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
         userInfo: null
       }
     }).afterClosed().subscribe(result => {
-      console.log(result);
-      // გავაგზავნო ბექში მთელი ინფორმაცია
+      if (result) {
+        this.addReaderServ(result);
+      }
+    })
+  }
+
+  private addReaderServ(user: CreateAdminInterface) {
+    this.adminService.createUser(user).subscribe(result => {
+      if (result == null) {
+        this.toastr.error('მომხმარებელი ვერ დაემატა');
+      } else {
+        this.readersRequest$.next(true);
+        this.toastr.success('მომხმარებელი წარმატებით დაემატა');
+      }
+    }, error => {
+      this.toastr.error('დაფიქსირდა შეცდომა');
     })
   }
 
@@ -670,7 +684,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
   }
 
   private createAdminUser(newUser: CreateAdminInterface): void {
-    this.adminService.createAdmin(newUser).subscribe(result => {
+    this.adminService.createUser(newUser).subscribe(result => {
       if (result == null) {
         this.toastr.error('მომხმარებელი ვერ დაემატა');
       } else {
@@ -712,6 +726,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
 
   private editReaderUserServ(element: CreateAdminInterface): void {
     this.adminService.editUser(element).subscribe(result => {
+      this.readersRequest$.next(true);
       this.toastr.success('მომხმარებელი წარმატებით განახლდა');
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
@@ -734,6 +749,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
 
   private editAdminUserServ(result: CreateAdminInterface): void {
     this.adminService.editUser(result).subscribe(result => {
+      this.usersRequest$.next(true);
       this.toastr.success('მომხმარებელი წარმატებით განახლდა');
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
@@ -753,6 +769,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit {
 
   private deleteAdminUserServ(userId: number): void {
     this.adminService.deleteUser(userId).subscribe(result => {
+      this.usersRequest$.next(true);
       this.toastr.success('მომხმარებელი წარმატებით წაიშალა');
     }, error => {
       this.toastr.error('დაფიქსირდა შეცდომა');
