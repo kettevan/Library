@@ -33,7 +33,7 @@ export class SharedService {
       return false;
     }
     const role = jwt_decode(token)['Role'].toUpperCase()
-    if (role != 'SUPER_ADMIN') return false;
+    if (!role.includes('SUPER_ADMIN')) return false;
     return true;
   }
 
@@ -42,7 +42,7 @@ export class SharedService {
       return false;
     }
     const role = jwt_decode(token)['Role'].toUpperCase()
-    if (role != 'ADMIN' && role != 'SUPER_ADMIN') return false;
+    if (!role.includes('ADMIN')) return false;
     return true;
   }
 

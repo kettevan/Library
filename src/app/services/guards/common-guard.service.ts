@@ -21,7 +21,7 @@ export class CommonGuardService implements CanActivate {
       return false;
     }
     var decoded = jwt_decode(token);
-    if (decoded['Role'].toUpperCase() === 'ADMIN' || decoded['Role'].toUpperCase() === 'USER') {
+    if (decoded['Role'].toUpperCase() === 'ADMIN' || decoded['Role'].toUpperCase() === 'SUPER_ADMIN' || decoded['Role'].toUpperCase() === 'USER') {
       return true;
     } else {
       this.router.navigate(['/login']);

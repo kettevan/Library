@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit{
   constructor(private sharedService: SharedService, private router: Router, public socialAuthServive: SocialAuthService) {
     this.sharedService.user.subscribe(result => {
       console.log(result)
-      if (result.toUpperCase() === 'ADMIN' || result.toUpperCase() === 'SUPER_ADMIN') {
+      if (result.toUpperCase().includes('ADMIN')) {
         this.admin$ = of(true);
         this.user$ = of(false);
       } else if (result.toUpperCase() === 'USER') {
@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit{
       if (decoded['Role'].toUpperCase() === 'USER') {
         this.user$ = of(true);
         this.admin$ = of(false);
-      } else if (decoded['Role'].toUpperCase() === 'ADMIN' || decoded['Role'].toUpperCase() === 'SUPER_ADMIN') {
+      } else if (decoded['Role'].toUpperCase().includes('ADMIN')) {
         this.user$ = of(false);
         this.admin$ = of(true);
       }

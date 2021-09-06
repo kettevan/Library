@@ -60,7 +60,7 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   }
 
   public viewFavBooksDetails(element: FavouriteInterface): void {
-    this.router.navigate([`book/view/${element.id}`]);
+    this.router.navigate([`book/view/${element.bookId}`]);
   }
 
   public deleteFromFavourite(element: FavouriteInterface): void {
